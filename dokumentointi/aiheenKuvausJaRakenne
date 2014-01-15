@@ -1,0 +1,18 @@
+Aihe: Sanapeli
+
+Pelissä on ruudukko, johon pelaajan on sijoitettava sanapaloja. Sanapaloja ei voi sijoittaa päällekkäin. Kun pelaaja on sijoittanut sanapalan, hän voi yrittää muodostaa sanan valitsemalla kirjaimia sijoitetuista sanapaloista. Kirjaimen voi valita vain viimeksi valitun kirjaimen vierestä ja kaikkien valittujen kirjaimien on oltava kokonaan joko vaaka- tai pystytasossa. Valittuaan kirjaimet pelaaja antaa sanan pelin arvioitavaksi.  Jos sana on validi suomen kielen sana, pelaaja saa pisteitä. Aikaa on rajallisesti, mutta pelaaja voi saada sitä lisää sijoittamalla sanapaloja ruudukkoon. Ruudukkoon ei kuitenkaan kannata sijoitella paloja miten sattuu, sillä myös tilaa on rajallisesti.
+
+Pisteet riippuvat annetun sanan pituudesta sekä siinä esiintyvistä kirjaimista. Mitä harvinaisempi kirjain on, sitä enemmän siitä saa pisteitä. Vain perusmuodossa olevat sanat kelpaavat.
+
+Sanalista on otettu kotimaisten kielten keskuksen sivuilta.
+http://kaino.kotus.fi/sanat/nykysuomi/
+
+Käyttäjät: Pelaaja
+Pelaajan toiminnot:
+Uuden pelin aloitus
+Sanapalan sijoitus ruudukkoon
+Kirjainten valinta sanaan
+Sanan antaminen varmistettavaksi
+Vaihto sanapalan sijoittamisesta kirjaimien valintaan tai toisinpäin
+Pelin keskeyttäminen
+
