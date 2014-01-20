@@ -3,4 +3,5 @@
 
 20.1.2014
 30min - Hahmottelin luokkakaaviota
-
+1h - Sanat ladataan tiedostosta uutta peliä aloittaessa WordValidatorilla.
+1h - WordValidatorin testit.
