@@ -1,2 +1,6 @@
 15.1.2014
 2h - Säädin gitin ja projektin kuntoon sekä kirjoitin aiheen kuvaksen.
+
+20.1.2014
+30min - Hahmottelin luokkakaaviota
+

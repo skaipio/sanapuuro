@@ -1,18 +1,31 @@
 Aihe: Sanapeli
 
-Pelissä on ruudukko, johon pelaajan on sijoitettava sanapaloja. Sanapaloja ei voi
-sijoittaa päällekkäin. Kun pelaaja on sijoittanut sanapalan, hän voi yrittää
-muodostaa sanan valitsemalla kirjaimia sijoitetuista sanapaloista. Kirjaimen voi
-valita vain viimeksi valitun kirjaimen vierestä ja kaikkien valittujen kirjaimien
-on oltava kokonaan joko vaaka- tai pystytasossa. Valittuaan kirjaimet pelaaja
-antaa sanan pelin arvioitavaksi.  Jos sana on validi suomen kielen sana, pelaaja
-saa pisteitä. Aikaa on rajallisesti, mutta pelaaja voi saada sitä lisää
-sijoittamalla sanapaloja ruudukkoon. Ruudukkoon ei kuitenkaan kannata sijoitella
-paloja miten sattuu, sillä myös tilaa on rajallisesti.
+Pelissä on ruudukko (8x8), johon pelaajan on sijoitettava sanapaloja, valitsemalla
+yksi neljästä satunnaisesta sanapalastaan. Sanapaloja ei voi sijoittaa
+päällekkäin. Kun pelaaja on sijoittanut sanapalan, hän voi yrittää muodostaa sanan
+valitsemalla kirjaimia sijoitetuista sanapaloista. Kirjaimen voi valita vain
+viimeksi valitun kirjaimen vierestä ja kaikkien valittujen kirjaimien on oltava
+kokonaan joko vaaka- tai pystytasossa. Valittuaan kirjaimet pelaaja antaa sanan
+pelin arvioitavaksi.  Jos sana on validi suomen kielen sana, pelaaja saa pisteitä.
+Aikaa on rajallisesti, mutta pelaaja voi saada sitä lisää sijoittamalla sanapaloja
+ruudukkoon. Ruudukkoon ei kuitenkaan kannata sijoitella paloja miten sattuu, sillä
+myös tilaa on rajallisesti.
 
-Pisteet riippuvat annetun sanan pituudesta sekä siinä esiintyvistä kirjaimista.
-Mitä harvinaisempi kirjain on, sitä enemmän siitä saa pisteitä. Vain perusmuodossa
-olevat sanat kelpaavat.
+Ruudukossa saattaa olla erikoissoluja, joita voi käyttää muodostamalla sanan niin
+että yksi kirjaimista on erikoissolun kohdalla. Erikoissoluja syntyy satunnaisesti,
+mutta harvoin pelaajan muodostaessa eri pituisia sanoja. Jos sana on tarpeeksi pitkä,
+niin erikoissolun syntyminen on varmaa. Erikoissolun käyttämiseen riittää minkä
+tahansa pituinen sana.
+
+Pisteet riippuvat annetun sanan pituudesta sekä siinä esiintyvistä kirjaimista. Mitä
+harvinaisempi kirjain on, sitä enemmän siitä saa pisteitä. Vain perusmuodossa olevat
+sanat kelpaavat.
+
+Powerupeja:
+Ruudukon tyhjennys, 6 kirjaiminen sana (50%), 7 kirjaiminen sana (75%),
+8 kirjaiminen sana(100%).
+
+Mahdollisena laajennoksena Scrabblemainen kaksinpeli.
 
 Sanalista on otettu kotimaisten kielten keskuksen sivuilta.
 http://kaino.kotus.fi/sanat/nykysuomi/
