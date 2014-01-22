@@ -7,6 +7,7 @@
 package sanapuuro.sanapuuro.letters;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -19,11 +20,12 @@ import static org.junit.Assert.*;
  *
  * @author skaipio
  */
-public class LetterFactoryTest {
+public class LetterReaderTest {
     private Set<Character> englishLetters;
-    private LetterSpawner letterSpawner;
+    private LetterReader letterReader;
     
-    public LetterFactoryTest() {}
+    public LetterReaderTest() {
+    }
     
     @BeforeClass
     public static void setUpClass() {
@@ -35,7 +37,7 @@ public class LetterFactoryTest {
     
     @Before
     public void setUp() {
-        this.letterSpawner = new LetterSpawner();
+        this.letterReader = new LetterReader();
         this.englishLetters = new HashSet<Character>();
         String letters = "abcdefghijklmnopqrstuvwxyz";
         for(int i = 0; i < letters.length(); i++){
@@ -46,14 +48,19 @@ public class LetterFactoryTest {
     @After
     public void tearDown() {
     }
-    
-     @Test
-     public void allEnglishLettersAreProduced() {
-         for (int i = 0; i < 10000; i++){
-             ScoredLetter scoredLetter = this.letterSpawner.getRandomLetter();
-             this.englishLetters.remove(scoredLetter.letter);
-             if (this.englishLetters.isEmpty()) break;
+
+    // TODO add test methods here.
+    // The methods must be annotated with annotation @Test. For example:
+    //
+    // @Test
+    // public void hello() {}
+    @Test
+     public void allLettersHaveBeenReadIn() {
+         List<Letter> letters = this.letterReader.getLetters();
+         for (int i = 0; i < letters.size(); i++){
+             Letter letter = letters.get(i);
+             this.englishLetters.remove(letter.character);
          }
-         assertTrue(this.englishLetters.size() + " letters were not produced", this.englishLetters.isEmpty());
+         assertTrue(this.englishLetters.size() + " letters were left out", this.englishLetters.isEmpty());
      }
 }

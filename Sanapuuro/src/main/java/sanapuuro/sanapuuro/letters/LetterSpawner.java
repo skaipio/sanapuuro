@@ -24,22 +24,28 @@ import java.util.regex.Pattern;
  */
 public class LetterSpawner {
 
-    private final Random random = new Random();
+    private final Random random;
     private final LetterFrequencyComparator letterFreqComparator = new LetterFrequencyComparator();
     
     private List<Letter> letters;
+    
+    public LetterSpawner(Random randomizer){
+        this.random = randomizer;
+    }
 
     public Letter getRandomLetter() {
         if (this.letters == null){
             throw new NullPointerException("No letters assigned yet.");
         }
         float rnd = (float) random.nextDouble();
+        float accumulated = 0;
         int i = 0;
-        Letter letter = this.letters.get(i);
-        while (letter.frequency < rnd && i < this.letters.size()) {
-            i++;
+        Letter letter;
+        do {          
             letter = this.letters.get(i);
-        }
+            accumulated += letter.frequency;
+            i++;
+        }while (accumulated < rnd && i < this.letters.size());
         return letter;
     }
 

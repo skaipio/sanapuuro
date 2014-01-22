@@ -19,4 +19,8 @@ public class Letter{
         this.score = score;
         this.frequency = frequency;
     }
+    
+    public String toString(){
+        return this.character + " : " + this.score;
+    }
 }
