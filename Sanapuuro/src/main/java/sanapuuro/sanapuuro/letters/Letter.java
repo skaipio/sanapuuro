@@ -14,7 +14,7 @@ public class Letter{
     public final char character;
     public final int score;
     public final float frequency;
-    Letter(char character, int score, float frequency){
+    public Letter(char character, int score, float frequency){
         this.character = character;
         this.score = score;
         this.frequency = frequency;
