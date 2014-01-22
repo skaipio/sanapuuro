@@ -5,18 +5,9 @@
  */
 package sanapuuro.sanapuuro.letters;
 
-import com.sun.org.apache.xerces.internal.impl.xs.identity.Selector;
-import java.io.File;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *
