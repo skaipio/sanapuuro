@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  * @author skaipio
  */
 public class WordValidatorTest {
-    private WordValidator wordValidator = new WordValidator();
+    private final WordValidator wordValidator = new WordValidator();
     
     public WordValidatorTest(){
         List<String> validWords = new ArrayList<>();
