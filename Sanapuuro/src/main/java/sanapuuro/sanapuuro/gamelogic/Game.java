@@ -12,6 +12,5 @@ package sanapuuro.sanapuuro.gamelogic;
  */
 public class Game {
     public void newGame(){
-        
     }
 }
