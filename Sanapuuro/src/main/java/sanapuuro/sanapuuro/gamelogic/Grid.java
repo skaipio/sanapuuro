@@ -29,11 +29,15 @@ public class Grid {
         return this.letters[x][y];
     }
     
-    protected void setLetterTo(int x, int y, Letter letter){
+    public boolean addLetterTo(int x, int y, Letter letter){
         if (!isWithinGrid(x,y)){
             throw new IllegalArgumentException("Given arguments are not within grid.");
         }
-        this.letters[x][y] = letter;
+        if (this.letters[x][y] == null){
+            this.letters[x][y] = letter;
+            return true;
+        }
+        return false;
     }
     
     private boolean isWithinGrid(int x, int y){
