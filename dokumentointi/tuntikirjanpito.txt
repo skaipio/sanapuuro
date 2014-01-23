@@ -11,3 +11,6 @@
 
 22.1.2014
 ~4h Uusien luokkien ja testien tekoa
+
+23.1.2014
+~4h Rakenteen uudelleenjärjestelyä ja luokkakaavion päivitystä.
