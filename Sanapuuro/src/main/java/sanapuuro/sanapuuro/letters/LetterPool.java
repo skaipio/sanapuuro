@@ -25,6 +25,9 @@ public class LetterPool {
     }
 
     public Letter getLetterMatchingCharacter(char c) {
+        if (this.letters == null) {
+            throw new NullPointerException("No letters assigned yet.");
+        }
         for (Letter letter : this.letters) {
             if (letter.character == c) {
                 return letter;

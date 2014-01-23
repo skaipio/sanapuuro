@@ -38,7 +38,7 @@ public class LetterReaderTest {
     @Before
     public void setUp() {
         this.letterReader = new LetterReader();
-        this.englishLetters = new HashSet<Character>();
+        this.englishLetters = new HashSet<>();
         String letters = "abcdefghijklmnopqrstuvwxyz";
         for(int i = 0; i < letters.length(); i++){
             this.englishLetters.add(letters.charAt(i));
