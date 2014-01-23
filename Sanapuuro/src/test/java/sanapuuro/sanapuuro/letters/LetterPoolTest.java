@@ -22,9 +22,9 @@ import static org.junit.Assert.*;
  *
  * @author skaipio
  */
-public class LetterSpawnerTest {
+public class LetterPoolTest {
     private Set<Character> testLetters = new HashSet<Character>();
-    private LetterSpawner letterSpawner;
+    private LetterPool letterSpawner;
     
     @BeforeClass
     public static void setUpClass() {
@@ -44,7 +44,7 @@ public class LetterSpawnerTest {
         letters.add(new Letter('a',0,0.15f));
         letters.add(new Letter('b',0,0.35f));
         letters.add(new Letter('c',0,0.50f));
-        this.letterSpawner = new LetterSpawner(rnd);
+        this.letterSpawner = new LetterPool(rnd);
         this.letterSpawner.setLetters(letters);
     }
     

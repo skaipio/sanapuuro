@@ -10,6 +10,14 @@ package sanapuuro.sanapuuro.gamelogic;
  *
  * @author skaipio
  */
-public class Player {
-    private int score;
+public final class Coordinate {
+    public final int x, y;
+    public Coordinate(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+    
+    public String toString(){
+        return "(" + this.x + "," + this.y + ")";
+    }
 }

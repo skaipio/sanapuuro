@@ -20,6 +20,7 @@ public class Letter{
         this.frequency = frequency;
     }
     
+    @Override
     public String toString(){
         return this.character + " : " + this.score;
     }
