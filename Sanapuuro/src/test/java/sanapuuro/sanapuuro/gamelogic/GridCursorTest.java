@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import sanapuuro.sanapuuro.letters.Letter;
 
 /**
  *
@@ -39,6 +40,16 @@ public class GridCursorTest {
     @After
     public void tearDown() {
     }
+    
+    @Test
+     public void cursorFetchesLetterFromGrid() {    
+         int x = this.gridCursor.getX();
+         int y = this.gridCursor.getY();
+         Letter expected = new Letter('a', 0, 0);
+         this.grid.addLetterTo(x, y, expected);
+         Letter actual = this.gridCursor.getSelectedLetter();
+         assertEquals(expected, actual);
+     }
 
     @Test
      public void cursorStartsAtMiddleOfGrid() {

@@ -55,6 +55,24 @@ public class GridTest {
         }
         assertFalse("grid shouldn't have null cells", hasNulls);
     }
+    
+    @Test
+    public void gridIsHasNoLettersAfterClearing() {
+        this.grid.addLetterTo(0, 0, new Letter('a', 0, 0));
+        this.grid.addLetterTo(7, 7, new Letter('b', 0, 0));
+        boolean hasLetters = false;
+        this.grid.clear();
+        for (int x = 0; x < this.grid.width; x++) {
+            for (int y = 0; y < this.grid.height; y++) {
+                if (this.grid.getCellAt(x, y).getLetter() != null){
+                    hasLetters = true;
+                    break;
+                }
+            }
+            if (hasLetters) break;
+        }
+        assertFalse("grid shouldn't have any letters", hasLetters);
+    }
 
     @Test
     public void throwsExceptionWhenGettingCellOutsideGrid() {
@@ -86,6 +104,17 @@ public class GridTest {
             thrown = true;
         }
         assertTrue("y=gridHeight was not catched as out of bounds", thrown);
+    }
+    
+    @Test
+    public void throwsExceptionWhenAddingCellOutsideGrid() {
+        boolean thrown = false;
+        try {
+            this.grid.addLetterTo(8, 8, new Letter('a', 0, 0));
+        } catch (IllegalArgumentException e) {
+            thrown = true;
+        }
+        assertTrue("trying to add letter outside grid should throw an exception", thrown); 
     }
 
     @Test

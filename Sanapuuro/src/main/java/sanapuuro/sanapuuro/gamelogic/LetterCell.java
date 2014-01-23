@@ -35,9 +35,4 @@ public class LetterCell {
     public void clear(){
         this.letter = null;
     }
-    
-    public String toString(){
-        if (!this.hasLetter()) return "*";
-        return this.letter.character + "";
-    }
 }
