@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package sanapuuro.sanapuuro.gamelogic;
+package sanapuuro.sanapuuro.grid;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -19,7 +19,7 @@ import sanapuuro.sanapuuro.letters.Letter;
  * @author skaipio
  */
 public class GridCursorTest {
-    private Grid grid = new Grid(8, 8);
+    private final Grid grid = new Grid(8, 8);
     private GridCursor gridCursor;
     
     public GridCursorTest() { }
@@ -42,12 +42,12 @@ public class GridCursorTest {
     }
     
     @Test
-     public void cursorFetchesLetterFromGrid() {    
+     public void cursorFetchesCorrectLetterFromGrid() {    
          int x = this.gridCursor.getX();
          int y = this.gridCursor.getY();
          Letter expected = new Letter('a', 0, 0);
          this.grid.addLetterTo(x, y, expected);
-         Letter actual = this.gridCursor.getSelectedLetter();
+         Letter actual = this.gridCursor.getLetterUnderCursor();
          assertEquals(expected, actual);
      }
 
@@ -91,5 +91,30 @@ public class GridCursorTest {
          for (int y = this.gridCursor.getY(); y <= this.grid.height; y++){
              this.gridCursor.moveUp();
          }
+     }
+     
+     @Test
+     public void cursorSetsLetterToGridOnlyWhenInSelectionModeAndCellIsEmpty() {
+         Letter letter = new Letter('a', 0, 0);
+         boolean letterWasSet = this.gridCursor.addLetterUnderCursor(letter);
+         Letter letterInGrid = this.gridCursor.getLetterUnderCursor();
+         assertNull(letterInGrid);
+         assertFalse(letterWasSet);
+         
+         this.gridCursor.turnOnSelectionMode();
+         letterWasSet = this.gridCursor.addLetterUnderCursor(letter);
+         letterInGrid = this.gridCursor.getLetterUnderCursor();
+         assertEquals(letter, letterInGrid);
+         assertTrue(letterWasSet);
+         
+         Letter secondTestLetter = new Letter('b', 0, 0);
+         letterWasSet = this.gridCursor.addLetterUnderCursor(secondTestLetter);
+         assertEquals(letter, letterInGrid);
+         assertFalse(letterWasSet);
+         
+         this.gridCursor.turnOffSelectionMode();
+         letterWasSet = this.gridCursor.addLetterUnderCursor(secondTestLetter);
+         assertEquals(letter, letterInGrid);
+         assertFalse(letterWasSet);
      }
 }

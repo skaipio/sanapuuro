@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sanapuuro.sanapuuro.gamelogic;
+package sanapuuro.sanapuuro;
 
+import sanapuuro.sanapuuro.Game;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import sanapuuro.sanapuuro.letters.Letter;
-import sanapuuro.sanapuuro.letters.LetterReader;
 
 /**
  *
@@ -17,9 +17,7 @@ import sanapuuro.sanapuuro.letters.LetterReader;
  */
 public class GameController {
     private final Game game;
-    private final Map<Coordinate, Letter> selectedLetters = new HashMap<>();
-    private boolean inSelectionMode = false;
-    private Coordinate currentSelection;
+   
     private char[][] testView;
     
     private final Scanner scanner = new Scanner(System.in);
@@ -77,25 +75,5 @@ public class GameController {
 //        }
 //    }
 
-//    public void startSelecting() {
-//        this.inSelectionMode = true;
-//        this.currentSelection = this.gridCursor.getCellAtCursor();
-//    }
-//
-//    public void stopSelecting() {
-//        this.selectedLetters.clear();
-//        this.inSelectionMode = false;
-//    }
-//
-//    public boolean putCharAtCursor(char letter) {
-//        if (this.gridCursor.getCellAtCursor().hasLetter()) {
-//            return false;
-//        }
-//        if (!this.inSelectionMode) {
-//            this.startSelecting();
-//        }
-//        this.game.setLetterTo(currentSelection.x, currentSelection.y, charToAdd);
-//        this.selectedLetters.put(this.currentSelection.coordinate, letter);
-//        return true;
-//    }
+
 }

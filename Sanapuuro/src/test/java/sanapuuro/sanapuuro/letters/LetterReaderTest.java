@@ -37,12 +37,12 @@ public class LetterReaderTest {
     
     @Before
     public void setUp() {
-        this.letterReader = new LetterReader();
-        this.englishLetters = new HashSet<>();
-        String letters = "abcdefghijklmnopqrstuvwxyz";
-        for(int i = 0; i < letters.length(); i++){
-            this.englishLetters.add(letters.charAt(i));
-        }
+//        this.letterReader = new LetterReader();
+//        this.englishLetters = new HashSet<>();
+//        String letters = "abcdefghijklmnopqrstuvwxyz";
+//        for(int i = 0; i < letters.length(); i++){
+//            this.englishLetters.add(letters.charAt(i));
+//        }
     }
     
     @After
@@ -54,13 +54,13 @@ public class LetterReaderTest {
     //
     // @Test
     // public void hello() {}
-    @Test
-     public void allLettersHaveBeenReadIn() {
-         List<Letter> letters = this.letterReader.getLetters();
-         for (int i = 0; i < letters.size(); i++){
-             Letter letter = letters.get(i);
-             this.englishLetters.remove(letter.character);
-         }
-         assertTrue(this.englishLetters.size() + " letters were left out", this.englishLetters.isEmpty());
-     }
+//    @Test
+//     public void allLettersHaveBeenReadIn() {
+//         List<Letter> letters = this.letterReader.getLetters();
+//         for (int i = 0; i < letters.size(); i++){
+//             Letter letter = letters.get(i);
+//             this.englishLetters.remove(letter.character);
+//         }
+//         assertTrue(this.englishLetters.size() + " letters were left out", this.englishLetters.isEmpty());
+//     }
 }

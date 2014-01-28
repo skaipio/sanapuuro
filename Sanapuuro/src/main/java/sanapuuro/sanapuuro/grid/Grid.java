@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sanapuuro.sanapuuro.gamelogic;
+package sanapuuro.sanapuuro.grid;
 
 import sanapuuro.sanapuuro.letters.Letter;
 
@@ -14,7 +14,7 @@ import sanapuuro.sanapuuro.letters.Letter;
 public class Grid {
 
     public int width, height;
-    private LetterCell[][] cells;
+    private final LetterCell[][] cells;
 
     public Grid(int width, int height) {
         this.width = width;
@@ -23,12 +23,8 @@ public class Grid {
         this.init();
     }
 
-    private void init() {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < width; y++) {
-                this.cells[x][y] = new LetterCell(new Coordinate(x, y));
-            }
-        }
+    public GridCursor createGridCursor(){
+        return new GridCursor(this);
     }
 
     public void clear() {
@@ -59,6 +55,14 @@ public class Grid {
 
     private boolean isWithinGrid(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
+    }
+    
+    private void init() {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < width; y++) {
+                this.cells[x][y] = new LetterCell(new Coordinate(x, y));
+            }
+        }
     }
 
 //     public enum Size {

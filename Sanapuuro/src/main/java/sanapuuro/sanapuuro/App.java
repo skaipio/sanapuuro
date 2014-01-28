@@ -1,7 +1,5 @@
 package sanapuuro.sanapuuro;
 
-import sanapuuro.sanapuuro.gamelogic.GameController;
-
 /**
  * Hello world!
  *
