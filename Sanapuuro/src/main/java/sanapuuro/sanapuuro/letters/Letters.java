@@ -5,10 +5,6 @@
  */
 package sanapuuro.sanapuuro.letters;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
 /**
  *
  * @author skaipio
