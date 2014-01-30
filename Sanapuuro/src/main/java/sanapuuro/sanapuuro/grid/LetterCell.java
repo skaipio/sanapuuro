@@ -12,27 +12,22 @@ import sanapuuro.sanapuuro.letters.Letter;
  *
  * @author skaipio
  */
-public class LetterCell {
-    public final Coordinate coordinate;
-    private Letter letter;
+public class LetterCell extends LetterContainer {
     
-    public LetterCell(Coordinate coordinate){
-        this.coordinate = coordinate;
+    public LetterCell(int x, int y){
+        super(x,y);
     }
     
-    public Letter getLetter(){
-        return this.letter;
+    public void setAsUsed(){
+        this.used = true;
     }
 
     public void setLetter(Letter letter){
         this.letter = letter;
     }
     
-     public boolean hasLetter(){
-         return this.letter != null;
-     }
-    
     public void clear(){
         this.letter = null;
+        this.used = false;
     }
 }

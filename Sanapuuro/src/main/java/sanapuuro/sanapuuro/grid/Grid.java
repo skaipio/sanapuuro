@@ -5,8 +5,6 @@
  */
 package sanapuuro.sanapuuro.grid;
 
-import sanapuuro.sanapuuro.letters.Letter;
-
 /**
  *
  * @author skaipio
@@ -23,17 +21,21 @@ public class Grid {
         this.init();
     }
 
-    public GridCursor createGridCursor(){
+    public GridCursor createGridCursor() {
         return new GridCursor(this);
     }
 
     public void clear() {
-        for(LetterCell[] row : this.cells){
-            for(LetterCell cell : row){
+        for (LetterCell[] row : this.cells) {
+            for (LetterCell cell : row) {
                 cell.clear();
             }
         }
     }
+
+//    public boolean hasLetterAt(int x, int y) {
+//        return this.getCellAt(x, y).hasLetter();
+//    }
 
     public LetterCell getCellAt(int x, int y) {
         if (!isWithinGrid(x, y)) {
@@ -42,25 +44,21 @@ public class Grid {
         return this.cells[x][y];
     }
 
-    public boolean addLetterTo(int x, int y, Letter letter) {
-        if (!isWithinGrid(x, y)) {
-            throw new IllegalArgumentException("Given arguments are not within grid.");
-        }
-        if (!this.cells[x][y].hasLetter()) {
-            this.cells[x][y].setLetter(letter);
-            return true;
-        }
-        return false;
-    }
+//    public void setLetterTo(int x, int y, Letter letter) {
+//        if (!isWithinGrid(x, y)) {
+//            throw new IllegalArgumentException("Given arguments are not within grid.");
+//        }
+//        this.cells[x][y].setLetter(letter);
+//    }
 
     private boolean isWithinGrid(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
-    
+
     private void init() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < width; y++) {
-                this.cells[x][y] = new LetterCell(new Coordinate(x, y));
+                this.cells[x][y] = new LetterCell(x, y);
             }
         }
     }

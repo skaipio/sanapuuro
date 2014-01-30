@@ -12,14 +12,6 @@ import java.util.List;
  *
  * @author skaipio
  */
-public class WordValidator {
-    private List<String> words;
-    
-    public void setValidWords(List<String> words){
-        this.words = words;
-    }
-    
-    public boolean isValidWord(String word){
-        return word.length() >= 2 && words.contains(word);
-    }
+public interface WordValidator {
+    boolean isValidWord(String word);
 }

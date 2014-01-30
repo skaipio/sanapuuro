@@ -13,6 +13,7 @@ import java.util.Random;
 import sanapuuro.sanapuuro.letters.Letter;
 import sanapuuro.sanapuuro.letters.LetterPool;
 import sanapuuro.sanapuuro.letters.LetterReader;
+import sanapuuro.sanapuuro.words.WordEvaluator;
 
 /**
  *
@@ -23,13 +24,14 @@ public class Game {
     private final Grid grid;
     private final GridCursor cursor;
     private LetterPool letterPool;
+    private WordEvaluator wordEval;
     
     public Game(){
         this.grid = new Grid(12, 12);
         this.cursor = this.grid.createGridCursor();
     }
     
-    public void newGame(List<Letter> usingLetters) {
+    public void newGame() {
         this.score = 0;
         this.grid.clear();  
         this.letterPool = new LetterReader(new Random());
@@ -48,7 +50,5 @@ public class Game {
     
     public Letter getLetterAt(int x, int y){
         return this.grid.getCellAt(x, y).getLetter();
-    }
-    
-   
+    } 
 }

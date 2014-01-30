@@ -58,8 +58,8 @@ public class GridTest {
     
     @Test
     public void gridIsHasNoLettersAfterClearing() {
-        this.grid.addLetterTo(0, 0, new Letter('a', 0, 0));
-        this.grid.addLetterTo(7, 7, new Letter('b', 0, 0));
+        this.grid.setLetterTo(0, 0, new Letter('a', 0, 0));
+        this.grid.setLetterTo(7, 7, new Letter('b', 0, 0));
         boolean hasLetters = false;
         this.grid.clear();
         for (int x = 0; x < this.grid.width; x++) {
@@ -110,7 +110,7 @@ public class GridTest {
     public void throwsExceptionWhenAddingCellOutsideGrid() {
         boolean thrown = false;
         try {
-            this.grid.addLetterTo(8, 8, new Letter('a', 0, 0));
+            this.grid.setLetterTo(8, 8, new Letter('a', 0, 0));
         } catch (IllegalArgumentException e) {
             thrown = true;
         }
@@ -119,23 +119,13 @@ public class GridTest {
 
     @Test
     public void setsAndGetsLettersAndCorrectly() {
-        boolean wasAbleToAdd = this.grid.addLetterTo(0, 0, new Letter('a', 0, 0));
-        assertTrue("result should be true when successfully adding a letter", wasAbleToAdd);
+        this.grid.setLetterTo(0, 0, new Letter('a', 0, 0));
         Letter letter = this.grid.getCellAt(0, 0).getLetter();
         assertTrue("letter was not set into grid", letter != null);
         assertEquals('a', letter.character);
-        wasAbleToAdd = this.grid.addLetterTo(this.grid.width - 1, this.grid.height - 1, new Letter('b', 0, 0));
-        assertTrue("result should be true when successfully adding a letter", wasAbleToAdd);
+        this.grid.setLetterTo(this.grid.width - 1, this.grid.height - 1, new Letter('b', 0, 0));
         letter = this.grid.getCellAt(this.grid.width - 1, this.grid.height - 1).getLetter();
         assertTrue("letter was not set into grid", letter != null);
         assertEquals('b', letter.character);
-    }
-
-    @Test
-    public void doesNotChangeLettersAlreadyPlaced() {
-        this.grid.addLetterTo(1, 3, new Letter('a', 0, 0));
-        boolean wasAbleToAdd = this.grid.addLetterTo(1, 3, new Letter('b', 0, 0));
-        assertFalse("result should be false when trying to place a letter on another one", wasAbleToAdd);
-        assertEquals("should not be able to replace a letter", 'a', this.grid.getCellAt(1, 3).getLetter().character);
-    }
+    } 
 }

@@ -5,9 +5,9 @@
  */
 package sanapuuro.sanapuuro.grid;
 
-import sanapuuro.sanapuuro.grid.Grid;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import sanapuuro.sanapuuro.letters.Letter;
 import sanapuuro.sanapuuro.utils.MathUtils;
 
@@ -19,8 +19,7 @@ public class GridCursor {
 
     private int x, y;
     private final Grid grid;
-    private final Map<Coordinate, Letter> selectedLetters = new HashMap<>();
-    private Coordinate currentSelection;
+    private final List<LetterCell> selectedCells = new ArrayList<>();
 
     private boolean selectionMode = false;
 
@@ -54,22 +53,43 @@ public class GridCursor {
         this.x = MathUtils.clamp(0, this.grid.width - 1, x + 1);
     }
 
-    public void turnOnSelectionMode() {
+    public void selectionModeOn() {
         this.selectionMode = true;
     }
 
-    public void turnOffSelectionMode() {
+    public Iterator<LetterCell> selectionModeOff() {
         this.selectionMode = false;
-        this.selectedLetters.clear();
+        this.selectedCells.clear();
+        return this.selectedCells.iterator();
     }
+    
+//    public Iterator<LetterCell> getSelectedCells(){
+//        return this.selectedCells.iterator();
+//    }
+    
+//    public boolean hasLetterUnderCursor() {
+//        return this.grid.getCellAt(x, y).hasLetter();
+//    }
 
     public Letter getLetterUnderCursor() {
         return this.grid.getCellAt(x, y).getLetter();
     }
 
     public boolean addLetterUnderCursor(Letter letter) {
-        if (this.selectionMode) {
-            return this.grid.addLetterTo(x, y, letter);
+        LetterCell cell = this.grid.getCellAt(x, y);
+        if (this.selectionMode && !cell.hasLetter()) {
+            cell.setLetter(letter);
+            this.selectedCells.add(cell);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean selectLetterUnderCursor(){  
+        LetterCell cell = this.grid.getCellAt(x, y);
+        if (this.selectionMode && cell.hasLetter()){
+            this.selectedCells.add(cell);
+            return true;
         }
         return false;
     }

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sanapuuro.sanapuuro.words;
 
 import java.io.File;
@@ -15,22 +14,32 @@ import java.util.Scanner;
  *
  * @author skaipio
  */
-public class WordReader {
+public class WordReader implements WordValidator {
     private final String englishWordListPath = "assets/english_words";
+     private List<String> words;
     
-    public List<String> getWords(){
-        try{
+    public WordReader(){
+        this.words = this.getWords();
+    }
+
+    private List<String> getWords() {
+        try {
             Scanner reader = new Scanner(new File(englishWordListPath));
-            List<String> scannedWords = new ArrayList<String>();
-            while(reader.hasNext()){
+            List<String> scannedWords = new ArrayList<>();
+            while (reader.hasNext()) {
                 String word = reader.nextLine();
                 scannedWords.add(word);
             }
             return scannedWords;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-            
+
         }
-        return new ArrayList<String>();
+        return new ArrayList<>();
+    }
+
+    @Override
+    public boolean isValidWord(String word) {
+        return word.length() >= 2 && words.contains(word);
     }
 }
