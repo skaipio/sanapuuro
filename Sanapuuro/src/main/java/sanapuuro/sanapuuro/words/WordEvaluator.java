@@ -17,12 +17,14 @@ import sanapuuro.sanapuuro.utils.LetterCoordinateComparator;
  * @author skaipio
  */
 public class WordEvaluator {   
-    private final WordValidator wordValidator = new WordReader();
+    private final WordList wordValidator = new WordReader();
     
     public boolean isValidWord(List<LetterContainer> letterContainers){
         if (letterContainers == null || letterContainers.isEmpty()){
             throw new IllegalArgumentException("No letters were given for validation.");
         }
+        if (letterContainers.size() < 3) return false;
+        
         List<LetterContainer> containerCopy = new ArrayList(letterContainers);
         if (allContainersOnSameColumnWithoutGaps(containerCopy) || allContainersOnSameRowWithoutGaps(containerCopy)){
             StringBuilder word = new StringBuilder(letterContainers.size());
@@ -34,7 +36,7 @@ public class WordEvaluator {
                     return false;
                 }
             }
-            return wordValidator.isValidWord(word.toString());
+            return wordValidator.hasWord(word.toString());
         }
         return false;
     }
@@ -48,9 +50,9 @@ public class WordEvaluator {
     }
     
     private boolean allContainersOnSameRowWithoutGaps(List<LetterContainer> letterContainers){
-        Collections.sort(letterContainers, new LetterCoordinateComparator(false));
-        LetterContainer previous = letterContainers.get(0);
+        Collections.sort(letterContainers, new LetterCoordinateComparator(false));      
         for(int i = 1; i < letterContainers.size(); i++){
+            LetterContainer previous = letterContainers.get(i-1);
             LetterContainer current = letterContainers.get(i);
             if (current.y != previous.y || (current.x - previous.x) > 1) return false;
         }
@@ -59,8 +61,8 @@ public class WordEvaluator {
     
      private boolean allContainersOnSameColumnWithoutGaps(List<LetterContainer> letterContainers){
         Collections.sort(letterContainers, new LetterCoordinateComparator(true));
-        LetterContainer previous = letterContainers.get(0);
         for(int i = 1; i < letterContainers.size(); i++){
+            LetterContainer previous = letterContainers.get(i-1);
             LetterContainer current = letterContainers.get(i);
             if (current.x != previous.x || (current.y - previous.y) > 1) return false;
         }

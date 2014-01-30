@@ -8,6 +8,7 @@ package sanapuuro.sanapuuro.grid;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -139,7 +140,7 @@ public class GridCursorTest {
      }
      
      @Test
-     public void cursorAddsSelectedAndAddedLettersToSelectionMap() {
+     public void cursorAddsSelectedAndAddedLettersToSelectionList() {
          Letter l1 = new Letter('a', 0, 0);
          this.grid.setLetterTo(4, 4, l1);
          Letter l2 = new Letter('b', 0, 0);
@@ -150,19 +151,17 @@ public class GridCursorTest {
          
          this.gridCursor.selectionModeOn();
          this.gridCursor.selectLetterUnderCursor();
-         Iterator<Coordinate> coordinates = this.gridCursor.coordinatesOfSelectedLetters();
-         Letter selected = this.gridCursor.getSelectedLetterByCoordinate(coordinates.next());
-         expectedLetters.remove(selected);
+         List<LetterContainer> containers = this.gridCursor.getSelectedCells();
+         LetterContainer selected = containers.get(0);
+         expectedLetters.remove(selected.getLetter());
          assertEquals(0, expectedLetters.size());
          
          expectedLetters.add(l1);
          expectedLetters.add(l2);
          this.gridCursor.moveUp();
          this.gridCursor.selectLetterUnderCursor();
-         coordinates = this.gridCursor.coordinatesOfSelectedLetters();
-         while(coordinates.hasNext()){          
-             selected = this.gridCursor.getSelectedLetterByCoordinate(coordinates.next());
-             expectedLetters.remove(selected);
+         for(LetterContainer container : containers){          
+             expectedLetters.remove(container.getLetter());
          }
          assertEquals(0, expectedLetters.size());
          
@@ -172,23 +171,21 @@ public class GridCursorTest {
          expectedLetters.add(l3);
          this.gridCursor.moveLeft();
          this.gridCursor.addLetterUnderCursor(l3);
-         coordinates = this.gridCursor.coordinatesOfSelectedLetters();
-         while(coordinates.hasNext()){          
-             selected = this.gridCursor.getSelectedLetterByCoordinate(coordinates.next());
-             expectedLetters.remove(selected);
+         for(LetterContainer container : containers){          
+             expectedLetters.remove(container.getLetter());
          }
          assertEquals(0, expectedLetters.size());
      }
      
      @Test
-     public void cursorClearsSelectionMapWhenTurningOffSelectionMode() {
+     public void cursorClearsSelectionListWhenTurningOffSelectionMode() {
          Letter l1 = new Letter('a', 0, 0);
          this.grid.setLetterTo(4, 4, l1);
          
          this.gridCursor.selectionModeOn();
          this.gridCursor.selectLetterUnderCursor();        
          this.gridCursor.selectionModeOff();
-         Iterator<Coordinate> coordinates = this.gridCursor.coordinatesOfSelectedLetters();
-         assertFalse(coordinates.hasNext());
+         List<LetterContainer> containers = this.gridCursor.getSelectedCells();
+         assertTrue(containers.isEmpty());
      }
 }

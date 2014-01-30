@@ -6,12 +6,10 @@
 
 package sanapuuro.sanapuuro.words;
 
-import java.util.List;
-
 /**
  *
  * @author skaipio
  */
-public interface WordValidator {
-    boolean isValidWord(String word);
+public interface WordList {
+    boolean hasWord(String word);
 }

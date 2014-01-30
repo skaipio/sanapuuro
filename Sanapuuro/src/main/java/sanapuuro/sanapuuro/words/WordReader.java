@@ -14,15 +14,15 @@ import java.util.Scanner;
  *
  * @author skaipio
  */
-public class WordReader implements WordValidator {
+public class WordReader implements WordList {
     private final String englishWordListPath = "assets/english_words";
-     private List<String> words;
+    private List<String> words;
     
     public WordReader(){
         this.words = this.getWords();
     }
 
-    private List<String> getWords() {
+    public List<String> getWords() {
         try {
             Scanner reader = new Scanner(new File(englishWordListPath));
             List<String> scannedWords = new ArrayList<>();
@@ -39,7 +39,7 @@ public class WordReader implements WordValidator {
     }
 
     @Override
-    public boolean isValidWord(String word) {
+    public boolean hasWord(String word) {
         return word.length() >= 2 && words.contains(word);
     }
 }

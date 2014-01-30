@@ -19,7 +19,7 @@ public class GridCursor {
 
     private int x, y;
     private final Grid grid;
-    private final List<LetterCell> selectedCells = new ArrayList<>();
+    private final List<LetterContainer> selectedCells = new ArrayList<>();
 
     private boolean selectionMode = false;
 
@@ -57,15 +57,15 @@ public class GridCursor {
         this.selectionMode = true;
     }
 
-    public Iterator<LetterCell> selectionModeOff() {
+    public List<LetterContainer> selectionModeOff() {
         this.selectionMode = false;
         this.selectedCells.clear();
-        return this.selectedCells.iterator();
+        return this.selectedCells;
     }
     
-//    public Iterator<LetterCell> getSelectedCells(){
-//        return this.selectedCells.iterator();
-//    }
+    public List<LetterContainer> getSelectedCells(){
+        return this.selectedCells;
+    }
     
 //    public boolean hasLetterUnderCursor() {
 //        return this.grid.getCellAt(x, y).hasLetter();
