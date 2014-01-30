@@ -12,7 +12,7 @@ import sanapuuro.sanapuuro.grid.Grid;
 import java.util.List;
 import java.util.Random;
 import sanapuuro.sanapuuro.grid.LetterContainer;
-import sanapuuro.sanapuuro.letters.LetterPool;
+import sanapuuro.sanapuuro.letters.Letters;
 import sanapuuro.sanapuuro.letters.LetterReader;
 import sanapuuro.sanapuuro.words.WordEvaluator;
 
@@ -24,7 +24,7 @@ public class Game implements GridCursorListener{
     private int score;
     private final Grid grid;
     private final GridCursor cursor;
-    private LetterPool letterPool;
+    private Letters letterPool;
     private WordEvaluator wordEval;
     
     public Game(){

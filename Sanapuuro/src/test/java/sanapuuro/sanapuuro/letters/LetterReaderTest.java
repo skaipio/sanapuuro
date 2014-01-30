@@ -7,7 +7,7 @@
 package sanapuuro.sanapuuro.letters;
 
 import java.util.HashSet;
-import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -37,30 +37,46 @@ public class LetterReaderTest {
     
     @Before
     public void setUp() {
-//        this.letterReader = new LetterReader();
-//        this.englishLetters = new HashSet<>();
-//        String letters = "abcdefghijklmnopqrstuvwxyz";
-//        for(int i = 0; i < letters.length(); i++){
-//            this.englishLetters.add(letters.charAt(i));
-//        }
+        this.letterReader = new LetterReader(new Random(1));
+        this.englishLetters = new HashSet<>();
+        String letters = "abcdefghijklmnopqrstuvwxyz";
+        for(int i = 0; i < letters.length(); i++){
+            this.englishLetters.add(letters.charAt(i));
+        }
     }
     
     @After
     public void tearDown() {
     }
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
-//    @Test
-//     public void allLettersHaveBeenReadIn() {
-//         List<Letter> letters = this.letterReader.getLetters();
-//         for (int i = 0; i < letters.size(); i++){
-//             Letter letter = letters.get(i);
-//             this.englishLetters.remove(letter.character);
-//         }
-//         assertTrue(this.englishLetters.size() + " letters were left out", this.englishLetters.isEmpty());
-//     }
+     
+         
+    @Test
+     public void correctlyMatchesLetters() {
+         Letter letter = this.letterReader.getLetterMatchingCharacter('a');
+         assertEquals('a', letter.character);
+         assertEquals(0.0812f, letter.frequency, 0.0000001f);
+         assertEquals(1, letter.score);
+         letter = this.letterReader.getLetterMatchingCharacter('å');
+         assertNull(letter);
+         letter = this.letterReader.getLetterMatchingCharacter('z');
+         assertEquals('z', letter.character);
+         assertEquals(0.0007f, letter.frequency, 0.0000001f);
+         assertEquals(10, letter.score);
+     }
+    
+     @Test
+     public void allLettersAreProduced() {
+         for (int i = 0; i < 1000; i++){
+             Letter letter = this.letterReader.getRandomLetter();
+             this.englishLetters.remove(letter.character);
+             if (this.englishLetters.isEmpty()) break;
+         }
+         StringBuilder lettersNotProduced = new StringBuilder();
+         if (!this.englishLetters.isEmpty()){
+             for(char c : this.englishLetters){
+                 lettersNotProduced.append(c + " ");
+             }
+         }
+         assertTrue(this.englishLetters.size() + " letters were not produced (" + lettersNotProduced + ")", this.englishLetters.isEmpty());
+     }
 }

@@ -13,7 +13,7 @@ import java.util.Random;
  *
  * @author skaipio
  */
-public interface LetterPool {
+public interface Letters {
     public Letter getLetterMatchingCharacter(char c);
     public Letter getRandomLetter();
 }

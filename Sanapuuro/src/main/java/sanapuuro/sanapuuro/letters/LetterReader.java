@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  *
  * @author skaipio
  */
-public class LetterReader implements LetterPool {
+public class LetterReader implements Letters {
 
     private Pattern linePattern = Pattern.compile("([a-z])\\s(\\d\\d?)\\s(0\\.\\d+)\\D*");
     private String englishLettersPath = "assets/english_letters";
@@ -57,10 +57,8 @@ public class LetterReader implements LetterPool {
         return new Letter(character, score, frequency);
     }
 
+    @Override
     public Letter getLetterMatchingCharacter(char c) {
-        if (this.sortedLetters == null) {
-            throw new NullPointerException("No letters assigned yet.");
-        }
         for (Letter letter : this.sortedLetters) {
             if (letter.character == c) {
                 return letter;
@@ -69,10 +67,8 @@ public class LetterReader implements LetterPool {
         return null;
     }
 
+    @Override
     public Letter getRandomLetter() {
-        if (this.sortedLetters == null) {
-            throw new NullPointerException("No letters assigned yet.");
-        }
         float rnd = (float) random.nextDouble();
         float accumulated = 0;
         int i = 0;
