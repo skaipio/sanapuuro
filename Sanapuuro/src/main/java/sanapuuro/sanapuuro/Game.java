@@ -7,14 +7,11 @@
 package sanapuuro.sanapuuro;
 
 import sanapuuro.sanapuuro.grid.GridCursorListener;
-import java.util.ArrayList;
 import sanapuuro.sanapuuro.grid.GridCursor;
 import sanapuuro.sanapuuro.grid.Grid;
 import java.util.List;
 import java.util.Random;
-import sanapuuro.sanapuuro.grid.LetterCell;
 import sanapuuro.sanapuuro.grid.LetterContainer;
-import sanapuuro.sanapuuro.letters.Letter;
 import sanapuuro.sanapuuro.letters.LetterPool;
 import sanapuuro.sanapuuro.letters.LetterReader;
 import sanapuuro.sanapuuro.words.WordEvaluator;
@@ -40,22 +37,6 @@ public class Game implements GridCursorListener{
         this.grid.clear();  
         this.letterPool = new LetterReader(new Random());
         this.wordEval = new WordEvaluator();
-        
-        List<LetterContainer> validHorizontalWord = new ArrayList<>();
-        LetterCell cell = new LetterCell(0, 0);
-        cell.setLetter(new Letter('c', 1, 1));
-        validHorizontalWord.add(cell);
-        cell = new LetterCell(1, 0);
-        cell.setLetter(new Letter('a', 2, 1));
-        validHorizontalWord.add(cell);
-        cell = new LetterCell(2, 0);
-        cell.setLetter(new Letter('k', 3, 1));
-        validHorizontalWord.add(cell);
-        cell = new LetterCell(3, 0);
-        cell.setLetter(new Letter('e', 4, 1));
-        validHorizontalWord.add(cell);
-        
-        wordEval.isValidWord(validHorizontalWord);
     }
     
     public GridCursor getGridCursor(){
@@ -69,8 +50,8 @@ public class Game implements GridCursorListener{
         return this.grid.height;
     }
     
-    public Letter getLetterAt(int x, int y){
-        return this.grid.getCellAt(x, y).getLetter();
+    public LetterContainer getLetterContainerAt(int x, int y){
+        return this.grid.getCellAt(x, y);
     } 
 
     @Override

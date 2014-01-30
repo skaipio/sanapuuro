@@ -6,17 +6,22 @@
 
 package sanapuuro.sanapuuro.gui;
 
+import java.awt.Dimension;
+import sanapuuro.sanapuuro.Game;
+
 /**
  *
  * @author skaipio
  */
 public class GameWindow extends javax.swing.JFrame {
-
+    private Game game;
+    private GridInputHandler gridInputHandler;
     /**
      * Creates new form GameWindow
      */
     public GameWindow() {
         initComponents();
+        game = new Game();
     }
 
     /**
@@ -31,17 +36,7 @@ public class GameWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sanapuuro");
         setName("gameWindowFrame"); // NOI18N
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 346, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 291, Short.MAX_VALUE)
-        );
+        setResizable(false);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -84,8 +79,16 @@ public class GameWindow extends javax.swing.JFrame {
     }
     
     private void newGame(){
-        CellGrid cells = new CellGrid(12, 12);
-        this.add(new CellGrid(12, 12));     
+        game.newGame();
+        SelectedLettersPanel lettersPanel = new SelectedLettersPanel();
+        lettersPanel.setBounds(0, 0, 100, 16);
+        this.add(lettersPanel);
+        this.gridInputHandler = new GridInputHandler(game.getGridCursor(),lettersPanel);
+        CellGrid cells = new CellGrid(12, 12, gridInputHandler);
+        cells.setLocation(16, 16);
+        this.add(cells);   
+        this.pack();
+        lettersPanel.setVisible(true);
         cells.setVisible(true);
     }
 

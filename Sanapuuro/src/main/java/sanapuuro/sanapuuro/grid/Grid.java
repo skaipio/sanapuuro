@@ -53,7 +53,7 @@ public class Grid {
         this.cells[x][y].setLetter(letter);
     }
 
-    private boolean isWithinGrid(int x, int y) {
+    public boolean isWithinGrid(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 

@@ -22,6 +22,6 @@ public class Letter{
     
     @Override
     public String toString(){
-        return this.character + " : " + this.score;
+        return (this.character + "").toUpperCase();
     }
 }

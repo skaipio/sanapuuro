@@ -7,7 +7,6 @@
 package sanapuuro.sanapuuro.grid;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.junit.After;
@@ -151,7 +150,7 @@ public class GridCursorTest {
          
          this.gridCursor.selectionModeOn();
          this.gridCursor.selectLetterUnderCursor();
-         List<LetterContainer> containers = this.gridCursor.getSelectedCells();
+         List<LetterContainer> containers = this.gridCursor.getSelectedLetters();
          LetterContainer selected = containers.get(0);
          expectedLetters.remove(selected.getLetter());
          assertEquals(0, expectedLetters.size());
@@ -160,6 +159,7 @@ public class GridCursorTest {
          expectedLetters.add(l2);
          this.gridCursor.moveUp();
          this.gridCursor.selectLetterUnderCursor();
+         containers = this.gridCursor.getSelectedLetters();
          for(LetterContainer container : containers){          
              expectedLetters.remove(container.getLetter());
          }
@@ -171,6 +171,7 @@ public class GridCursorTest {
          expectedLetters.add(l3);
          this.gridCursor.moveLeft();
          this.gridCursor.addLetterUnderCursor(l3);
+         containers = this.gridCursor.getSelectedLetters();
          for(LetterContainer container : containers){          
              expectedLetters.remove(container.getLetter());
          }
@@ -185,7 +186,7 @@ public class GridCursorTest {
          this.gridCursor.selectionModeOn();
          this.gridCursor.selectLetterUnderCursor();        
          this.gridCursor.selectionModeOff();
-         List<LetterContainer> containers = this.gridCursor.getSelectedCells();
+         List<LetterContainer> containers = this.gridCursor.getSelectedLetters();
          assertTrue(containers.isEmpty());
      }
 }

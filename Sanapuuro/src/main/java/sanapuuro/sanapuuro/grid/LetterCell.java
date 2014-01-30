@@ -21,6 +21,10 @@ public class LetterCell extends LetterContainer {
     public void setAsUsed(){
         this.used = true;
     }
+    
+    public void setSelected(boolean isSelected){
+        this.isSelected = isSelected;
+    }
 
     public void setLetter(Letter letter){
         this.letter = letter;

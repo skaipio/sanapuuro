@@ -18,8 +18,8 @@ public class GridCursor {
 
     private int x, y;
     private final Grid grid;
-    private final List<LetterContainer> selectedCells = new ArrayList<>();
-    private List<GridCursorListener> listeners = new ArrayList<>();
+    private final List<LetterCell> selectedCells = new ArrayList<>();
+    private final List<GridCursorListener> listeners = new ArrayList<>();
 
     private boolean selectionMode = false;
 
@@ -35,6 +35,13 @@ public class GridCursor {
 
     public int getY() {
         return this.y;
+    }
+    
+    public void setLocation(int x, int y){
+        if (!this.grid.isWithinGrid(x, y))
+            throw new IllegalArgumentException("Given position is not within grid.");
+        this.x = x;
+        this.y = y;
     }
 
     public void moveUp() {
@@ -59,13 +66,21 @@ public class GridCursor {
 
     public List<LetterContainer> selectionModeOff() {
         this.selectionMode = false;
-        List<LetterContainer> letters = this.selectedCells;
+        List<LetterContainer> letters = new ArrayList<>();
+        for(LetterCell cell : this.selectedCells){
+            letters.add(cell);
+            cell.setSelected(false);
+        }
         this.selectedCells.clear();
         return letters;
     }
     
-    public List<LetterContainer> getSelectedCells(){
-        return this.selectedCells;
+    public List<LetterContainer> getSelectedLetters(){
+        List<LetterContainer> letters = new ArrayList<>();
+        for(LetterCell cell : this.selectedCells){
+            letters.add(cell);
+        }
+        return letters;
     }
     
     public void submitLetters(){
@@ -87,6 +102,7 @@ public class GridCursor {
         LetterCell cell = this.grid.getCellAt(x, y);
         if (this.selectionMode && !cell.hasLetter()) {
             cell.setLetter(letter);
+            cell.setSelected(true);
             this.selectedCells.add(cell);
             return true;
         }
@@ -97,6 +113,7 @@ public class GridCursor {
         LetterCell cell = this.grid.getCellAt(x, y);
         if (this.selectionMode && cell.hasLetter()){
             this.selectedCells.add(cell);
+            cell.isSelected = true;
             return true;
         }
         return false;

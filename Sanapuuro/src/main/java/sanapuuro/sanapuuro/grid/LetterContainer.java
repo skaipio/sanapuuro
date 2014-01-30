@@ -15,6 +15,7 @@ import sanapuuro.sanapuuro.letters.Letter;
 public abstract class LetterContainer {
     public final int x, y;
     protected boolean used;
+    protected boolean isSelected;
     protected Letter letter;
     
     public LetterContainer(int x, int y){
@@ -23,6 +24,10 @@ public abstract class LetterContainer {
     }
     
     public boolean hasBeenUsed(){
+        return used;
+    }
+    
+    public boolean isSelected(){
         return used;
     }
     
