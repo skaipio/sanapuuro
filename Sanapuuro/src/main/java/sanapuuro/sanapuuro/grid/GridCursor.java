@@ -6,7 +6,6 @@
 package sanapuuro.sanapuuro.grid;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import sanapuuro.sanapuuro.letters.Letter;
 import sanapuuro.sanapuuro.utils.MathUtils;
@@ -20,6 +19,7 @@ public class GridCursor {
     private int x, y;
     private final Grid grid;
     private final List<LetterContainer> selectedCells = new ArrayList<>();
+    private List<GridCursorListener> listeners = new ArrayList<>();
 
     private boolean selectionMode = false;
 
@@ -59,12 +59,20 @@ public class GridCursor {
 
     public List<LetterContainer> selectionModeOff() {
         this.selectionMode = false;
+        List<LetterContainer> letters = this.selectedCells;
         this.selectedCells.clear();
-        return this.selectedCells;
+        return letters;
     }
     
     public List<LetterContainer> getSelectedCells(){
         return this.selectedCells;
+    }
+    
+    public void submitLetters(){
+        List<LetterContainer> letters = this.selectionModeOff();
+        for(GridCursorListener listener : this.listeners){
+            listener.lettersSubmitted(letters);
+        }
     }
     
 //    public boolean hasLetterUnderCursor() {
@@ -92,6 +100,10 @@ public class GridCursor {
             return true;
         }
         return false;
+    }
+    
+    public void addListener(GridCursorListener listener){
+        this.listeners.add(listener);
     }
 
     //    public void startSelecting() {

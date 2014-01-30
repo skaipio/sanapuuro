@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 
-package sanapuuro.sanapuuro.letters;
+package sanapuuro.sanapuuro.utils;
 
 import java.util.Comparator;
+import sanapuuro.sanapuuro.letters.Letter;
 
 /**
  *

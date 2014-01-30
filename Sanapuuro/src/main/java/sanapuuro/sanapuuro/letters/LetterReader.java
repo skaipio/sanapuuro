@@ -5,6 +5,7 @@
  */
 package sanapuuro.sanapuuro.letters;
 
+import sanapuuro.sanapuuro.utils.LetterFrequencyComparator;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
