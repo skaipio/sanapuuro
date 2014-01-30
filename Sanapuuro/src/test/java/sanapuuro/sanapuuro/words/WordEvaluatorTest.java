@@ -24,11 +24,11 @@ import sanapuuro.sanapuuro.letters.Letter;
  */
 public class WordEvaluatorTest {
     private final WordEvaluator wordEvaluator = new WordEvaluator();
-    private List<LetterContainer> validHorizontalWord = new ArrayList<>();
-    private List<LetterContainer> validVerticalWord = new ArrayList<>();
-    private List<LetterContainer> wordWithGaps = new ArrayList<>();
-    private List<LetterContainer> wordNotOnSameColumn = new ArrayList<>();
-    private List<LetterContainer> wordTooShort = new ArrayList<>();
+    private final List<LetterContainer> validHorizontalWord = new ArrayList<>();
+    private final List<LetterContainer> validVerticalWord = new ArrayList<>();
+    private final List<LetterContainer> wordWithGaps = new ArrayList<>();
+    private final List<LetterContainer> wordNotOnSameColumn = new ArrayList<>();
+    private final List<LetterContainer> wordTooShort = new ArrayList<>();
     
     public WordEvaluatorTest(){
         LetterCell cell = new LetterCell(0, 0);
@@ -131,5 +131,13 @@ public class WordEvaluatorTest {
      @Test
      public void wordsTooShortNotValid() {
          assertFalse(this.wordEvaluator.isValidWord(wordTooShort));
+     }
+     
+     @Test
+     public void returnCorrectScoreForWord() {
+         int score = this.wordEvaluator.evaluteLetters(validHorizontalWord);
+         assertEquals(1+2+3+4, score);
+         score = this.wordEvaluator.evaluteLetters(validVerticalWord);
+         assertEquals(1+1+2+1, score);
      }
 }
