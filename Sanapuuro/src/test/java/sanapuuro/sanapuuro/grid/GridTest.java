@@ -46,16 +46,18 @@ public class GridTest {
         boolean hasNulls = false;
         for (int x = 0; x < this.grid.width; x++) {
             for (int y = 0; y < this.grid.height; y++) {
-                if (this.grid.getCellAt(x, y) == null){
+                if (this.grid.getCellAt(x, y) == null) {
                     hasNulls = true;
                     break;
                 }
             }
-            if (hasNulls) break;
+            if (hasNulls) {
+                break;
+            }
         }
         assertFalse("grid shouldn't have null cells", hasNulls);
     }
-    
+
     @Test
     public void gridIsHasNoLettersAfterClearing() {
         this.grid.setLetterTo(0, 0, new Letter('a', 0, 0));
@@ -64,57 +66,41 @@ public class GridTest {
         this.grid.clear();
         for (int x = 0; x < this.grid.width; x++) {
             for (int y = 0; y < this.grid.height; y++) {
-                if (this.grid.getCellAt(x, y).getLetter() != null){
+                if (this.grid.getCellAt(x, y).getLetter() != null) {
                     hasLetters = true;
                     break;
                 }
             }
-            if (hasLetters) break;
+            if (hasLetters) {
+                break;
+            }
         }
         assertFalse("grid shouldn't have any letters", hasLetters);
     }
 
-    @Test
-    public void throwsExceptionWhenGettingCellOutsideGrid() {
-        boolean thrown = false;
-        try {
-            this.grid.getCellAt(-1, 0);
-        } catch (IllegalArgumentException e) {
-            thrown = true;
-        }
-        assertTrue("x=-1 was not catched as out of bounds", thrown);
-        thrown = false;
-        try {
-            this.grid.getCellAt(0, -1);
-        } catch (IllegalArgumentException e) {
-            thrown = true;
-        }
-        assertTrue("y=-1 was not catched as out of bounds", thrown);
-        thrown = false;
-        try {
-            this.grid.getCellAt(this.grid.width, 0);
-        } catch (IllegalArgumentException e) {
-            thrown = true;
-        }
-        assertTrue("x=gridWidth was not catched as out of bounds", thrown);
-        thrown = false;
-        try {
-            this.grid.getCellAt(0, this.grid.height);
-        } catch (IllegalArgumentException e) {
-            thrown = true;
-        }
-        assertTrue("y=gridHeight was not catched as out of bounds", thrown);
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionWhenGettingCellOutsideGridNegativeX() {
+        this.grid.getCellAt(-1, 0);
     }
-    
-    @Test
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionWhenGettingCellOutsideGridNegativeY() {
+        this.grid.getCellAt(0, -1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionWhenGettingCellOutsideGridXTooBig() {
+        this.grid.getCellAt(this.grid.width, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionWhenGettingCellOutsideGridYTooBig() {
+        this.grid.getCellAt(0, this.grid.height);
+    }
+
+    @Test(expected = IllegalAccessException.class)
     public void throwsExceptionWhenAddingCellOutsideGrid() {
-        boolean thrown = false;
-        try {
-            this.grid.setLetterTo(8, 8, new Letter('a', 0, 0));
-        } catch (IllegalArgumentException e) {
-            thrown = true;
-        }
-        assertTrue("trying to add letter outside grid should throw an exception", thrown); 
+        this.grid.setLetterTo(8, 8, new Letter('a', 0, 0));
     }
 
     @Test
@@ -127,5 +113,5 @@ public class GridTest {
         letter = this.grid.getCellAt(this.grid.width - 1, this.grid.height - 1).getLetter();
         assertTrue("letter was not set into grid", letter != null);
         assertEquals('b', letter.character);
-    } 
+    }
 }

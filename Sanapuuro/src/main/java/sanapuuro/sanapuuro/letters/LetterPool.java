@@ -6,24 +6,31 @@
 
 package sanapuuro.sanapuuro.letters;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  *
  * @author skaipio
  */
-public class LetterPool {
+public class LetterPool{
     private final int poolSize = 8;
     private final Letters letters;
     private final Letter[] pool = new Letter[poolSize];
     private final Set<Integer> pickedLetterIndices = new HashSet(poolSize);
+    private final List<LetterPoolListener> listeners = new ArrayList<>();
             
     public LetterPool(Letters letters){
         this.letters = letters;
         for(int i = 0; i < poolSize; i++){
             this.pool[i] = letters.getRandomLetter();
         }
+    }
+    
+    public void addListener(LetterPoolListener listener){
+        this.listeners.add(listener);
     }
     
     public Letter[] getLetters(){
@@ -43,6 +50,12 @@ public class LetterPool {
     public void removePickedLetters(){
         for(int i : this.pickedLetterIndices){
             this.pool[i] = this.letters.getRandomLetter();
+        }
+    }
+    
+    private void notifyLetterPoolChanged(){
+        for(LetterPoolListener listener : this.listeners){
+            listener.letterPoolChanged(pool);
         }
     }
 }
