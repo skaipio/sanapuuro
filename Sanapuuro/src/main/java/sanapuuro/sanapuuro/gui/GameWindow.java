@@ -90,7 +90,7 @@ public class GameWindow extends javax.swing.JFrame {
         cells.setLocation(16, 16);
         this.add(cells, BorderLayout.CENTER);   
         
-        LetterPoolPanel letterPoolPanel = new LetterPoolPanel(8);
+        LetterPoolPanel letterPoolPanel = new LetterPoolPanel(this.game.getLetterPool());
         game.getLetterPool().addListener(letterPoolPanel);
         this.add(letterPoolPanel, BorderLayout.SOUTH);
         

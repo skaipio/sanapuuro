@@ -20,8 +20,10 @@ public class LetterPoolCell extends JPanel {
     private int fontSize = 24;
     private boolean selected = false;
     private int selecBorderWidth = 3;
+    public final int index;
     
-    public LetterPoolCell(){
+    public LetterPoolCell(int index){
+        this.index = index;
         this.setBackground(Color.BLACK);
         this.setFont(new Font("Arial", Font.PLAIN, this.fontSize));
     }
@@ -38,7 +40,7 @@ public class LetterPoolCell extends JPanel {
             g.fillRect(selecBorderWidth, selecBorderWidth, this.getWidth()-selecBorderWidth*2, this.getHeight()-selecBorderWidth*2);
         }
         g.setColor(Color.WHITE);
-        g.drawString(letter, this.getWidth()/2-6, fontSize+3);
+        g.drawString(letter, this.getWidth()/2-8, fontSize+3);
         
     }
 
