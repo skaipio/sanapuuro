@@ -12,34 +12,14 @@ import sanapuuro.sanapuuro.letters.Letter;
  *
  * @author skaipio
  */
-public abstract class LetterContainer {
+public class LetterContainer {
     public final int x, y;
-    protected boolean used;
-    protected boolean isSelected;
-    protected Letter letter;
+
+    public final Letter letter;
     
-    public LetterContainer(int x, int y){
+    public LetterContainer(Letter letter, int x, int y){
+        this.letter = letter;
         this.x = x;
         this.y = y;
     }
-    
-    public boolean hasBeenUsed(){
-        return used;
-    }
-    
-    public boolean isSelected(){
-        return used;
-    }
-    
-    public Letter getLetter(){
-        return this.letter;
-    }
-    
-    public boolean hasLetter(){
-        return this.letter != null;
-    }
-    
-//    public Powerup getPowerup(){
-//        
-//    }
 }

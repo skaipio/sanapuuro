@@ -6,6 +6,7 @@
 package sanapuuro.sanapuuro.grid;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import sanapuuro.sanapuuro.letters.Letter;
 import sanapuuro.sanapuuro.utils.MathUtils;
@@ -18,7 +19,7 @@ public class GridCursor {
 
     private int x, y;
     private final Grid grid;
-    private final List<LetterCell> selectedCells = new ArrayList<>();
+    private final List<LetterContainer> selectedLetters = new ArrayList<>();
     private final List<GridCursorListener> listeners = new ArrayList<>();
 
     private boolean selectionMode = false;
@@ -66,20 +67,13 @@ public class GridCursor {
 
     public List<LetterContainer> selectionModeOff() {
         this.selectionMode = false;
-        List<LetterContainer> letters = new ArrayList<>();
-        for(LetterCell cell : this.selectedCells){
-            letters.add(cell);
-            cell.setSelected(false);
-        }
-        this.selectedCells.clear();
+        List<LetterContainer> letters = new ArrayList<>(this.selectedLetters);
+        this.selectedLetters.clear();
         return letters;
     }
     
     public List<LetterContainer> getSelectedLetters(){
-        List<LetterContainer> letters = new ArrayList<>();
-        for(LetterCell cell : this.selectedCells){
-            letters.add(cell);
-        }
+        List<LetterContainer> letters = new ArrayList<>(this.selectedLetters);
         return letters;
     }
     
@@ -101,9 +95,7 @@ public class GridCursor {
     public boolean addLetterUnderCursor(Letter letter) {
         LetterCell cell = this.grid.getCellAt(x, y);
         if (this.selectionMode && !cell.hasLetter()) {
-            cell.setLetter(letter);
-            cell.setSelected(true);
-            this.selectedCells.add(cell);
+            this.selectedLetters.add(new LetterContainer(letter, x, y));
             return true;
         }
         return false;
@@ -112,8 +104,7 @@ public class GridCursor {
     public boolean selectLetterUnderCursor(){  
         LetterCell cell = this.grid.getCellAt(x, y);
         if (this.selectionMode && cell.hasLetter()){
-            this.selectedCells.add(cell);
-            cell.isSelected = true;
+            this.selectedLetters.add(new LetterContainer(cell.getLetter(), x, y));
             return true;
         }
         return false;

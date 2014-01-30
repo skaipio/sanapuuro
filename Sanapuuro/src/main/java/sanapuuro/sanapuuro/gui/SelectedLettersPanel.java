@@ -18,7 +18,7 @@ public class SelectedLettersPanel extends JLabel{
     public void setSelectedLetters(List<LetterContainer> letters){
         StringBuilder text = new StringBuilder();
         for (LetterContainer letterContainer : letters) {
-            text.append(letterContainer.getLetter().toString());
+            text.append(letterContainer.letter.toString());
         }
         this.setText(text.toString());
         this.repaint();

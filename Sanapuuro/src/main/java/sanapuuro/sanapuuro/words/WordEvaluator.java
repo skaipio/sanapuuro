@@ -29,12 +29,7 @@ public class WordEvaluator {
         if (allContainersOnSameColumnWithoutGaps(containerCopy) || allContainersOnSameRowWithoutGaps(containerCopy)){
             StringBuilder word = new StringBuilder(letterContainers.size());
             for(LetterContainer container : letterContainers){
-                if (container.hasLetter()){
-                    word.append(container.getLetter().character);
-                }
-                else{
-                    return false;
-                }
+                    word.append(container.letter.character);
             }
             return wordValidator.hasWord(word.toString());
         }
@@ -44,7 +39,7 @@ public class WordEvaluator {
     public int evaluteLetters(List<LetterContainer> letterContainers){
         int score = 0;
         for(LetterContainer container : letterContainers){
-            score+=container.getLetter().score;
+            score+=container.letter.score;
         }
         return score;
     }
