@@ -31,6 +31,7 @@ public class LetterPool{
     
     public void addListener(LetterPoolListener listener){
         this.listeners.add(listener);
+        this.notifyLetterPoolChanged();
     }
     
     public Letter[] getLetters(){
@@ -51,6 +52,7 @@ public class LetterPool{
         for(int i : this.pickedLetterIndices){
             this.pool[i] = this.letters.getRandomLetter();
         }
+        this.notifyLetterPoolChanged();
     }
     
     private void notifyLetterPoolChanged(){

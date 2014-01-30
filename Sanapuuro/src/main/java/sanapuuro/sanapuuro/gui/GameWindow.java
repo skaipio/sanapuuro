@@ -6,6 +6,7 @@
 
 package sanapuuro.sanapuuro.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import sanapuuro.sanapuuro.Game;
 
@@ -80,14 +81,22 @@ public class GameWindow extends javax.swing.JFrame {
     
     private void newGame(){
         game.newGame();
+        
         SelectedLettersPanel lettersPanel = new SelectedLettersPanel();
-        lettersPanel.setBounds(0, 0, 100, 16);
-        this.add(lettersPanel);
+
+        //lettersPanel.setBounds(0, 0, 100, 16);
+        //this.add(lettersPanel);
         this.gridInputHandler = new GridInputHandler(game.getGridCursor(),lettersPanel);
         CellGrid cells = new CellGrid(12, 12, gridInputHandler);
         cells.setLocation(16, 16);
-        this.add(cells);   
+        this.add(cells, BorderLayout.CENTER);   
+        
+        LetterPoolPanel letterPoolPanel = new LetterPoolPanel(8);
+        game.getLetterPool().addListener(letterPoolPanel);
+        this.add(letterPoolPanel, BorderLayout.SOUTH);
+        
         this.pack();
+        letterPoolPanel.setVisible(true);
         lettersPanel.setVisible(true);
         cells.setVisible(true);
     }

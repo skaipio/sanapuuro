@@ -24,10 +24,10 @@ public class CellGrid extends JPanel {
         this.rows = rows;
         this.columns = columns;
         this.setLayout(new GridLayout(rows, columns));
-        this.setSize(columns * cellSize, rows * cellSize);
+        //this.setSize(columns * cellSize, rows * cellSize);
         this.setBackground(Color.BLACK);
         this.initCells(inputHandler);
-        this.setPreferredSize(new Dimension(columns * cellSize, rows * cellSize));
+        this.setPreferredSize(new Dimension(columns * cellSize, rows * cellSize+2));
         //this.setBorder(BorderFactory.createLineBorder(Color.black));
     }
 

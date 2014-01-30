@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 import sanapuuro.sanapuuro.grid.LetterCell;
 import sanapuuro.sanapuuro.grid.LetterContainer;
+import sanapuuro.sanapuuro.letters.LetterPool;
 import sanapuuro.sanapuuro.letters.Letters;
 import sanapuuro.sanapuuro.letters.LetterReader;
 import sanapuuro.sanapuuro.words.WordEvaluator;
@@ -25,23 +26,29 @@ public class Game implements GridCursorListener{
     private int score;
     private final Grid grid;
     private final GridCursor cursor;
-    private Letters letterPool;
+    private LetterPool letterPool;
+    private Letters letters;
     private WordEvaluator wordEval;
     
     public Game(){
         this.grid = new Grid(12, 12);
         this.cursor = this.grid.createGridCursor();
+        
     }
     
     public void newGame() {
         this.score = 0;
         this.grid.clear();  
-        this.letterPool = new LetterReader(new Random());
+        this.letters = new LetterReader(new Random());
         this.wordEval = new WordEvaluator();
+        this.letterPool = new LetterPool(letters);
     }
     
     public GridCursor getGridCursor(){
         return this.cursor;
+    }
+    public LetterPool getLetterPool(){
+        return this.letterPool;
     }
     
     public int getGridWidth(){

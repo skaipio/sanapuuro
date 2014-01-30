@@ -34,7 +34,7 @@ public class Cell extends JPanel{
         super.paintComponent(g);
         g.setColor(fontColor);
         g.drawString(letter, this.getWidth()/2-8, this.getHeight()/2+10);
-        g.drawRect(0, 0, this.getWidth(), this.getHeight());
+        g.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
     }
     
     public boolean isSelected(){
