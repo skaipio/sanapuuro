@@ -29,16 +29,18 @@ public class GameWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Sanapuuro");
+        setName("gameWindowFrame"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 346, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 291, Short.MAX_VALUE)
         );
 
         pack();
@@ -74,9 +76,17 @@ public class GameWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GameWindow().setVisible(true);
+                GameWindow window = new GameWindow();
+                window.setVisible(true);
+                window.newGame();
             }
         });
+    }
+    
+    private void newGame(){
+        CellGrid cells = new CellGrid(12, 12);
+        this.add(new CellGrid(12, 12));     
+        cells.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
