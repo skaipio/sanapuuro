@@ -1,5 +1,7 @@
 package sanapuuro.sanapuuro;
 
+import sanapuuro.sanapuuro.gui.GameWindow;
+
 /**
  * Hello world!
  *
