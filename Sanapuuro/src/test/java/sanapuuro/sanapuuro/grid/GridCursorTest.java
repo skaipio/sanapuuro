@@ -189,4 +189,29 @@ public class GridCursorTest {
          List<LetterContainer> containers = this.gridCursor.getSelectedLetters();
          assertTrue(containers.isEmpty());
      }
+     
+     @Test
+     public void selectedLettersAreSubmittedCorrectly() {
+         Letter l1 = new Letter('a', 0, 0);
+         this.grid.setLetterTo(4, 4, l1);
+         
+         GridCursorTestListener listener = new GridCursorTestListener();
+         this.gridCursor.addListener(listener);
+         
+         this.gridCursor.selectionModeOn();
+         this.gridCursor.selectLetterUnderCursor();        
+         this.gridCursor.submitLetters();
+         assertFalse(listener.letters.isEmpty());
+         assertTrue(this.gridCursor.getSelectedLetters().isEmpty());
+     }
+     
+     private class GridCursorTestListener implements GridCursorListener{
+        public List<LetterContainer> letters;
+
+        @Override
+        public void lettersSubmitted(List<LetterContainer> letters) {
+            this.letters = letters;
+        }
+         
+     }
 }
