@@ -83,9 +83,8 @@ public class GameWindow extends javax.swing.JFrame {
         game.newGame();
         
         SelectedLettersPanel lettersPanel = new SelectedLettersPanel();
-
-        //lettersPanel.setBounds(0, 0, 100, 16);
-        //this.add(lettersPanel);
+        this.add(lettersPanel, BorderLayout.NORTH);
+        
         this.gridInputHandler = new GridInputHandler(game.getGridCursor(),lettersPanel);
         CellGrid cells = new CellGrid(12, 12, gridInputHandler);
         cells.setLocation(16, 16);

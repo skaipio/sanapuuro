@@ -21,6 +21,7 @@ public class LetterPool{
     private final Letter[] pool = new Letter[poolSize];
     private final Set<Integer> pickedLetterIndices = new HashSet(poolSize);
     private final List<LetterPoolListener> listeners = new ArrayList<>();
+    private int currentSelection = 0;
             
     public LetterPool(Letters letters){
         this.letters = letters;
@@ -38,10 +39,16 @@ public class LetterPool{
         return this.pool.clone();
     }
     
-    public Letter pickLetter(int atIndex){
-        if (this.pickedLetterIndices.contains(atIndex)) return null;
-        this.pickedLetterIndices.add(atIndex);
-        return this.pool[atIndex];
+    public void setCurrentSelection(int i){
+        if (i < 0) throw new IllegalArgumentException("Given index is negative, when it should be positive");
+        if (i >= poolSize) throw new IllegalArgumentException("Given index is greater than pool size");
+        this.currentSelection = i;
+    }
+    
+    public Letter pickLetter(){
+        if (this.pickedLetterIndices.contains(this.currentSelection)) return null;
+        this.pickedLetterIndices.add(this.currentSelection);
+        return this.pool[this.currentSelection];
     }
     
     public void clearLetterPicks(){

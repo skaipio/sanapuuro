@@ -7,6 +7,7 @@
 package sanapuuro.sanapuuro.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.JPanel;
@@ -27,6 +28,8 @@ public class Cell extends JPanel{
         this.y = y;
         this.setFont(new Font("Arial", Font.PLAIN, letterSize));
         this.setBackground(Color.BLACK);
+        this.setSize(letterSize+6, letterSize+6);
+        //this.setPreferredSize(new Dimension(letterSize+6, letterSize+6));
     }
     
     @Override

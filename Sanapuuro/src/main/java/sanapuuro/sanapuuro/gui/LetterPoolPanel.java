@@ -20,16 +20,21 @@ import sanapuuro.sanapuuro.letters.LetterPoolListener;
 public class LetterPoolPanel extends JPanel implements LetterPoolListener{
     private final int cellSize = 36;
     private final LetterPoolCell[] letterCells;
+    private int currentSelection = 0;
     public LetterPoolPanel(int letterPoolSize){
-        this.setLayout(new GridLayout(1, letterPoolSize));
+        this.setLayout(null);
         this.letterCells = new LetterPoolCell[letterPoolSize];
+        int poolXOffset = 42*12/2-letterPoolSize*cellSize/2;
         for(int i = 0; i < letterCells.length; i++){
-            this.letterCells[i] = new LetterPoolCell();
-            this.add(this.letterCells[i]);
+            LetterPoolCell cell = new LetterPoolCell();
+            this.letterCells[i] = cell;
+            this.add(cell);
+            cell.setBounds(i*cellSize+poolXOffset, 0, cellSize, cellSize);
         }
-        //this.setSize(cellSize*letterPoolSize, cellSize);
-        this.setPreferredSize(new Dimension(cellSize*letterPoolSize, cellSize));
+        this.letterCells[0].select();
         
+        this.setPreferredSize(new Dimension((cellSize-16)*letterPoolSize, cellSize));   
+        //this.setSize(new Dimension((cellSize-26)*letterPoolSize, cellSize));
     }
 
     @Override
@@ -39,4 +44,11 @@ public class LetterPoolPanel extends JPanel implements LetterPoolListener{
         }
         this.repaint();
     }   
+
+    @Override
+    public void letterPoolSelectionChanged(int i) {
+        this.letterCells[this.currentSelection].deselect();
+        this.currentSelection = i;
+        this.letterCells[this.currentSelection].select();
+    }
 }

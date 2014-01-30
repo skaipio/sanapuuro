@@ -17,18 +17,40 @@ import javax.swing.JPanel;
  */
 public class LetterPoolCell extends JPanel {
     private String letter = "";
-    private int fontSize = 16;
+    private int fontSize = 24;
+    private boolean selected = false;
+    private int selecBorderWidth = 3;
     
-    public void setLetter(String letter){
-        this.letter = letter;
+    public LetterPoolCell(){
         this.setBackground(Color.BLACK);
         this.setFont(new Font("Arial", Font.PLAIN, this.fontSize));
+    }
+    
+    public void setLetter(String letter){
+        this.letter = letter;     
     }
     
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
+        if (this.selected){
+            g.setColor(Color.BLACK);
+            g.fillRect(selecBorderWidth, selecBorderWidth, this.getWidth()-selecBorderWidth*2, this.getHeight()-selecBorderWidth*2);
+        }
         g.setColor(Color.WHITE);
-        g.drawString(letter, 0, fontSize);
+        g.drawString(letter, this.getWidth()/2-6, fontSize+3);
+        
+    }
+
+    void deselect() {
+        this.selected = false;
+        this.setBackground(Color.BLACK);
+        this.repaint();
+    }
+
+    void select() {
+        this.selected = true;
+        this.setBackground(Color.WHITE);
+        this.repaint();
     }
 }
