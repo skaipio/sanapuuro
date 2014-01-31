@@ -27,7 +27,7 @@
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>400</x>
-      <y>510</y>
+      <y>520</y>
       <w>100</w>
       <h>30</h>
     </coordinates>
@@ -49,13 +49,13 @@
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>420</x>
-      <y>510</y>
+      <y>520</y>
       <w>50</w>
-      <h>230</h>
+      <h>220</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m2=144</panel_attributes>
-    <additional_attributes>30;30;30;210</additional_attributes>
+    <additional_attributes>30;30;30;200</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -63,11 +63,12 @@ m2=144</panel_attributes>
       <x>420</x>
       <y>420</y>
       <w>50</w>
-      <h>110</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-m1=   1</panel_attributes>
-    <additional_attributes>30;90;30;30</additional_attributes>
+m1=   1
+m2=   1</panel_attributes>
+    <additional_attributes>30;100;30;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -75,11 +76,11 @@ m1=   1</panel_attributes>
       <x>470</x>
       <y>420</y>
       <w>220</w>
-      <h>120</h>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m2=1</panel_attributes>
-    <additional_attributes>200;30;200;100;30;100</additional_attributes>
+    <additional_attributes>200;30;200;110;30;110</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
@@ -286,14 +287,13 @@ m2=1</panel_attributes>
     <coordinates>
       <x>900</x>
       <y>300</y>
-      <w>144</w>
-      <h>370</h>
+      <w>156</w>
+      <h>150</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
-stores
-addable
-letters</panel_attributes>
-    <additional_attributes>30;350;90;350;90;30;30;30</additional_attributes>
+gets random
+letters from</panel_attributes>
+    <additional_attributes>30;130;90;130;90;30;30;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -304,7 +304,8 @@ letters</panel_attributes>
       <h>360</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-m1= 1</panel_attributes>
+m1= 1
+m2=  *</panel_attributes>
     <additional_attributes>660;250;660;340;30;340;30;30</additional_attributes>
   </element>
   <element>
