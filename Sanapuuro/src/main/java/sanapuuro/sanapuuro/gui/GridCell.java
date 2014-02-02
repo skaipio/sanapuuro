@@ -42,6 +42,7 @@ public class GridCell extends JPanel{
     
     public void setLetter(String letter){
         this.letter = letter;
+        this.repaint();
     }
     
     public boolean isSelected(){

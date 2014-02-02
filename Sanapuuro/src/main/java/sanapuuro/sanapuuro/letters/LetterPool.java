@@ -19,7 +19,7 @@ public class LetterPool{
     public final int poolSize = 8;
     private final Letters letters;
     private final Letter[] pool = new Letter[poolSize];
-    private final Set<Integer> pickedLetterIndices = new HashSet(poolSize);
+    private final Set<Integer> usedLetterIndices = new HashSet(poolSize);
     private final List<LetterPoolListener> listeners = new ArrayList<>();
     private int currentSelection = 0;
             
@@ -39,8 +39,8 @@ public class LetterPool{
         return this.pool.clone();
     }
     
-    public Letter consumeCurrentSelection(){
-        return this.pool[this.currentSelection];
+    public int getCurrentSelection(){
+        return this.currentSelection;
     }
     
     public void setCurrentSelection(int i){
@@ -49,18 +49,18 @@ public class LetterPool{
         this.currentSelection = i;
     }
     
-    public Letter pickLetter(){
-        if (this.pickedLetterIndices.contains(this.currentSelection)) return null;
-        this.pickedLetterIndices.add(this.currentSelection);
+    public Letter useLetter(){
+        if (this.usedLetterIndices.contains(this.currentSelection)) return null;
+        this.usedLetterIndices.add(this.currentSelection);
         return this.pool[this.currentSelection];
     }
     
     public void clearLetterPicks(){
-        this.pickedLetterIndices.clear();
+        this.usedLetterIndices.clear();
     }
     
     public void removePickedLetters(){
-        for(int i : this.pickedLetterIndices){
+        for(int i : this.usedLetterIndices){
             this.pool[i] = this.letters.getRandomLetter();
         }
         this.notifyLetterPoolChanged();

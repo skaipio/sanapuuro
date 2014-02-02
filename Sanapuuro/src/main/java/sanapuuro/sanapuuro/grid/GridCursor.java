@@ -40,10 +40,11 @@ public class GridCursor {
     public int getY() {
         return this.y;
     }
-    
-    public void setLocation(int x, int y){
-        if (!this.grid.isWithinGrid(x, y))
+
+    public void setLocation(int x, int y) {
+        if (!this.grid.isWithinGrid(x, y)) {
             throw new IllegalArgumentException("Given position is not within grid.");
+        }
         this.x = x;
         this.y = y;
     }
@@ -74,23 +75,26 @@ public class GridCursor {
         this.selectedLetters.clear();
         return letters;
     }
-    
-    public List<LetterContainer> getSelectedLetters(){
+
+    public boolean isSelectionModeOn() {
+        return this.selectionMode;
+    }
+
+    public List<LetterContainer> getSelectedLetters() {
         List<LetterContainer> letters = new ArrayList<>(this.selectedLetters);
         return letters;
     }
-    
-    public void submitLetters(){
+
+    public void submitLetters() {
         List<LetterContainer> letters = this.selectionModeOff();
-        for(GridCursorListener listener : this.listeners){
+        for (GridCursorListener listener : this.listeners) {
             listener.lettersSubmitted(letters);
         }
     }
-    
+
 //    public boolean hasLetterUnderCursor() {
 //        return this.grid.getCellAt(x, y).hasLetter();
 //    }
-
     public Letter getLetterUnderCursor() {
         return this.grid.getCellAt(x, y).getLetter();
     }
@@ -98,23 +102,26 @@ public class GridCursor {
     public boolean addLetterUnderCursor() {
         LetterCell cell = this.grid.getCellAt(x, y);
         if (this.selectionMode && !cell.hasLetter()) {
-            Letter letter = this.letterPool.consumeCurrentSelection();
-            this.selectedLetters.add(new LetterContainer(letter, x, y));
-            return true;
+            Letter letter = this.letterPool.useLetter();
+            if (letter != null) {
+                this.selectedLetters.add(new LetterContainer(letter, x, y));
+                return true;
+            }
+            return false;
         }
         return false;
     }
-    
-    public boolean selectLetterUnderCursor(){  
+
+    public boolean selectLetterUnderCursor() {
         LetterCell cell = this.grid.getCellAt(x, y);
-        if (this.selectionMode && cell.hasLetter()){
+        if (this.selectionMode && cell.hasLetter()) {
             this.selectedLetters.add(new LetterContainer(cell.getLetter(), x, y));
             return true;
         }
         return false;
     }
-    
-    public void addListener(GridCursorListener listener){
+
+    public void addListener(GridCursorListener listener) {
         this.listeners.add(listener);
     }
 
