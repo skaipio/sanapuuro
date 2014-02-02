@@ -16,14 +16,14 @@ import javax.swing.JPanel;
  *
  * @author skaipio
  */
-public class Cell extends JPanel{
+public class GridCell extends JPanel{
     private String letter = "";
     private int letterSize = 24;
     private boolean isSelected = false;
     private Color fontColor = Color.WHITE;
     public final int x, y;
     
-    public Cell(int x, int y){
+    public GridCell(int x, int y){
         this.x = x;
         this.y = y;
         this.setFont(new Font("Arial", Font.PLAIN, letterSize));
@@ -38,6 +38,10 @@ public class Cell extends JPanel{
         g.setColor(fontColor);
         g.drawString(letter, this.getWidth()/2-8, this.getHeight()/2+10);
         g.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
+    }
+    
+    public void setLetter(String letter){
+        this.letter = letter;
     }
     
     public boolean isSelected(){

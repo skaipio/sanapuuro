@@ -80,20 +80,24 @@ public class GameWindow extends javax.swing.JFrame {
     }
     
     private void newGame(){
-        game.newGame();
+        LetterPoolPanel letterPoolPanel = new LetterPoolPanel();
+        this.add(letterPoolPanel, BorderLayout.SOUTH);
+        
+        GameController controller = new GameController(this.game);      
+        controller.setLetterPoolPanel(letterPoolPanel);
+        
+        controller.newGame();
         
         SelectedLettersPanel lettersPanel = new SelectedLettersPanel();
         this.add(lettersPanel, BorderLayout.NORTH);
         
         this.gridInputHandler = new GridInputHandler(game.getGridCursor(),lettersPanel);
-        CellGrid cells = new CellGrid(12, 12, gridInputHandler);
+        LetterGrid cells = new LetterGrid(12, 12, gridInputHandler);
         cells.setLocation(16, 16);
         this.add(cells, BorderLayout.CENTER);   
         
-        LetterPoolPanel letterPoolPanel = new LetterPoolPanel(this.game.getLetterPool());
-        game.getLetterPool().addListener(letterPoolPanel);
-        this.add(letterPoolPanel, BorderLayout.SOUTH);
         
+      
         this.pack();
         letterPoolPanel.setVisible(true);
         lettersPanel.setVisible(true);

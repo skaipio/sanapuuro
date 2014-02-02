@@ -25,15 +25,13 @@ import sanapuuro.sanapuuro.words.WordEvaluator;
 public class Game implements GridCursorListener{
     private int score;
     private final Grid grid;
-    private final GridCursor cursor;
+    private GridCursor cursor;
     private LetterPool letterPool;
     private Letters letters;
     private WordEvaluator wordEval;
     
     public Game(){
-        this.grid = new Grid(12, 12);
-        this.cursor = this.grid.createGridCursor();
-        
+        this.grid = new Grid(12, 12);   
     }
     
     public void newGame() {
@@ -42,6 +40,7 @@ public class Game implements GridCursorListener{
         this.letters = new LetterReader(new Random());
         this.wordEval = new WordEvaluator();
         this.letterPool = new LetterPool(letters);
+        this.cursor = new GridCursor(this.grid, this.letterPool);
     }
     
     public GridCursor getGridCursor(){

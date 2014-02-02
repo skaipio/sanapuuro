@@ -6,6 +6,7 @@
 package sanapuuro.sanapuuro.grid;
 
 import sanapuuro.sanapuuro.letters.Letter;
+import sanapuuro.sanapuuro.letters.LetterPool;
 
 /**
  *
@@ -21,10 +22,6 @@ public class Grid {
         this.height = height;
         this.cells = new LetterCell[width][height];
         this.init();
-    }
-
-    public GridCursor createGridCursor() {
-        return new GridCursor(this);
     }
 
     public void clear() {

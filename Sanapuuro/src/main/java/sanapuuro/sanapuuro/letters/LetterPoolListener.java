@@ -12,5 +12,4 @@ package sanapuuro.sanapuuro.letters;
  */
 public interface LetterPoolListener {
     void letterPoolChanged(Letter[] letters);
-    void letterPoolSelectionChanged(int i);
 }

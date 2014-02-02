@@ -30,6 +30,7 @@ public class LetterPoolCell extends JPanel {
     
     public void setLetter(String letter){
         this.letter = letter;     
+        this.repaint();
     }
     
     @Override

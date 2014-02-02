@@ -39,11 +39,14 @@ public class LetterPool{
         return this.pool.clone();
     }
     
+    public Letter consumeCurrentSelection(){
+        return this.pool[this.currentSelection];
+    }
+    
     public void setCurrentSelection(int i){
         if (i < 0) throw new IllegalArgumentException("Given index is negative, when it should be positive");
         if (i >= poolSize) throw new IllegalArgumentException("Given index is greater than pool size");
         this.currentSelection = i;
-        this.notifyLetterPoolSelectionChanged();
     }
     
     public Letter pickLetter(){
@@ -66,11 +69,6 @@ public class LetterPool{
     private void notifyLetterPoolChanged(){
         for(LetterPoolListener listener : this.listeners){
             listener.letterPoolChanged(pool);
-        }
-    }
-    private void notifyLetterPoolSelectionChanged(){
-        for(LetterPoolListener listener : this.listeners){
-            listener.letterPoolSelectionChanged(this.currentSelection);
         }
     }
 }

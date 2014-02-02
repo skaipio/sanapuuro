@@ -16,11 +16,11 @@ import sanapuuro.sanapuuro.Game;
  *
  * @author skaipio
  */
-public class CellGrid extends JPanel {
+public class LetterGrid extends JPanel {
     private final int rows, columns;
     private final int cellSize = 42;
 
-    public CellGrid(int rows, int columns, GridInputHandler inputHandler) {
+    public LetterGrid(int rows, int columns, GridInputHandler inputHandler) {
         this.rows = rows;
         this.columns = columns;
         this.setLayout(new GridLayout(rows, columns));
@@ -34,7 +34,7 @@ public class CellGrid extends JPanel {
     private void initCells(GridInputHandler inputHandler) {
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < rows; x++) {
-                Cell cell = new Cell(x, y);
+                GridCell cell = new GridCell(x, y);
                 cell.addMouseListener(inputHandler);
                 this.add(cell);
             }

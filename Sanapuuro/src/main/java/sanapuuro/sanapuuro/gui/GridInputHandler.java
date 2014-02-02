@@ -26,7 +26,7 @@ public class GridInputHandler implements MouseInputListener, KeyListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        Cell cell = (Cell) e.getComponent();
+        GridCell cell = (GridCell) e.getComponent();
         this.gridCursor.setLocation(cell.x, cell.y);
         boolean selected = this.gridCursor.selectLetterUnderCursor();
         if (selected) {
