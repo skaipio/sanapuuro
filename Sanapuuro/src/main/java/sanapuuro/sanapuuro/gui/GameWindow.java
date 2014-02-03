@@ -6,8 +6,10 @@
 
 package sanapuuro.sanapuuro.gui;
 
+import java.awt.Button;
 import sanapuuro.sanapuuro.GameController;
 import java.awt.GridBagConstraints;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 
 /**
@@ -83,14 +85,21 @@ public class GameWindow extends javax.swing.JFrame {
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.anchor = GridBagConstraints.CENTER;
-        JLabel selectedLettersPanel = new JLabel("    ");
+        constraints.anchor = GridBagConstraints.WEST;
+        JLabel selectedLettersPanel = new SelectedLettersPanel();
         this.add(selectedLettersPanel, constraints);
+        
+        constraints.gridx = 1;
+        constraints.anchor = GridBagConstraints.EAST;
+        JButton submitButton = new SubmitButton();
+        this.add(submitButton, constraints);
         
         LetterGridPanel cells = new LetterGridPanel(12, 12);
         constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridwidth = 2;
         constraints.gridx = 0;
         constraints.gridy = 1;
+        constraints.anchor = GridBagConstraints.CENTER;
         this.add(cells, constraints);   
         
         LetterPoolPanel letterPoolPanel = new LetterPoolPanel();       
@@ -107,6 +116,7 @@ public class GameWindow extends javax.swing.JFrame {
         
         GameController controller = new GameController();   
         controller.setSelectedLettersLabel(selectedLettersPanel);
+        controller.setSubmitButton(submitButton);
         controller.setLetterGridPanel(cells);
         controller.setLetterPoolPanel(letterPoolPanel);
         controller.setStateLabel(stateLabel);
