@@ -9,7 +9,7 @@ package sanapuuro.sanapuuro.words;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import sanapuuro.sanapuuro.grid.LetterContainer;
+import sanapuuro.sanapuuro.letters.LetterContainer;
 import sanapuuro.sanapuuro.utils.LetterCoordinateComparator;
 
 /**
@@ -49,7 +49,7 @@ public class WordEvaluator {
         for(int i = 1; i < letterContainers.size(); i++){
             LetterContainer previous = letterContainers.get(i-1);
             LetterContainer current = letterContainers.get(i);
-            if (current.y != previous.y || (current.x - previous.x) > 1) return false;
+            if (current.getY() != previous.getY()  || (current.getX() - previous.getX()) > 1) return false;
         }
         return true;
     }
@@ -59,7 +59,7 @@ public class WordEvaluator {
         for(int i = 1; i < letterContainers.size(); i++){
             LetterContainer previous = letterContainers.get(i-1);
             LetterContainer current = letterContainers.get(i);
-            if (current.x != previous.x || (current.y - previous.y) > 1) return false;
+            if (current.getX() != previous.getX() || (current.getY()  - previous.getY() ) > 1) return false;
         }
         return true;
     }

@@ -5,9 +5,6 @@
  */
 package sanapuuro.sanapuuro.grid;
 
-import sanapuuro.sanapuuro.letters.Letter;
-import sanapuuro.sanapuuro.letters.LetterPool;
-
 /**
  *
  * @author skaipio
@@ -32,10 +29,6 @@ public class Grid {
         }
     }
 
-//    public boolean hasLetterAt(int x, int y) {
-//        return this.getCellAt(x, y).hasLetter();
-//    }
-
     public LetterCell getCellAt(int x, int y) {
         if (!isWithinGrid(x, y)) {
             throw new IllegalArgumentException("Given coordinates are not within grid.");
@@ -43,12 +36,12 @@ public class Grid {
         return this.cells[x][y];
     }
 
-    public void setLetterTo(int x, int y, Letter letter) {
-        if (!isWithinGrid(x, y)) {
-            throw new IllegalArgumentException("Given arguments are not within grid.");
-        }
-        this.cells[x][y].setLetter(letter);
-    }
+//    public void setLetterContainerTo(int x, int y, Letter letter) {
+//        if (!isWithinGrid(x, y)) {
+//            throw new IllegalArgumentException("Given arguments are not within grid.");
+//        }
+//        this.cells[x][y].setLetter(letter);
+//    }
 
     public boolean isWithinGrid(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;

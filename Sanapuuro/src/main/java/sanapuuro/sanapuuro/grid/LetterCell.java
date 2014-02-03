@@ -5,7 +5,7 @@
  */
 package sanapuuro.sanapuuro.grid;
 
-import sanapuuro.sanapuuro.letters.Letter;
+import sanapuuro.sanapuuro.letters.LetterContainer;
 
 /**
  *
@@ -14,7 +14,7 @@ import sanapuuro.sanapuuro.letters.Letter;
 public class LetterCell {
 
     public final int x, y;
-    private Letter letter;
+    private LetterContainer container;
     protected boolean used;
 
     public LetterCell(int x, int y) {
@@ -34,20 +34,20 @@ public class LetterCell {
         this.used = true;
     }
     
-    public boolean hasLetter(){
-        return this.letter != null;
+    public boolean hasContainer(){
+        return this.container != null;
     }
     
-    public Letter getLetter(){
-        return this.letter;
+    public LetterContainer getContainer(){
+        return this.container;
     }
 
-    public void setLetter(Letter letter) {
-        this.letter = letter;
+    public void setContainer(LetterContainer container) {
+        this.container = container;
     }
 
     public void clear() {
-        this.letter = null;
+        this.container = null;
         this.used = false;
     }
 }

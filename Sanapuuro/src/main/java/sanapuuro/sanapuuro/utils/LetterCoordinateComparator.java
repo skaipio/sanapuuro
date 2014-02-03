@@ -7,7 +7,7 @@
 package sanapuuro.sanapuuro.utils;
 
 import java.util.Comparator;
-import sanapuuro.sanapuuro.grid.LetterContainer;
+import sanapuuro.sanapuuro.letters.LetterContainer;
 
 /**
  *
@@ -22,8 +22,8 @@ public class LetterCoordinateComparator implements Comparator<LetterContainer> {
     @Override
     public int compare(LetterContainer o1, LetterContainer o2) {
         if (byRow){
-            return Integer.compare(o1.y, o2.y);
+            return Integer.compare(o1.getY(), o2.getY());
         }
-        return Integer.compare(o1.x, o2.x);
+        return Integer.compare(o1.getX(), o2.getX());
     }
 }

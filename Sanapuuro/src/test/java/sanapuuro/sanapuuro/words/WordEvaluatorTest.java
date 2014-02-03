@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import sanapuuro.sanapuuro.grid.LetterContainer;
+import sanapuuro.sanapuuro.letters.LetterContainer;
 import sanapuuro.sanapuuro.letters.Letter;
 
 /**

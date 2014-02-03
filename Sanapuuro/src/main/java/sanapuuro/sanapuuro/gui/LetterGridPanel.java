@@ -52,4 +52,8 @@ public class LetterGridPanel extends JPanel {
     public void setLetterToCell(String letter, int x, int y){
         this.cells[y][x].setLetter(letter);
     }
+    
+    public void removeLetterFromCell(int x, int y){
+        this.cells[y][x].removeLetter();
+    }
 }

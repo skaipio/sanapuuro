@@ -18,7 +18,7 @@ import java.util.Set;
 public class LetterPool{
     public final int poolSize = 8;
     private final Letters letters;
-    private final Letter[] pool = new Letter[poolSize];
+    private final LetterContainer[] pool = new LetterContainer[poolSize];
     private final Set<Integer> usedLetterIndices = new HashSet(poolSize);
     private final List<LetterPoolListener> listeners = new ArrayList<>();
     private int currentSelection = 0;
@@ -26,7 +26,7 @@ public class LetterPool{
     public LetterPool(Letters letters){
         this.letters = letters;
         for(int i = 0; i < poolSize; i++){
-            this.pool[i] = letters.getRandomLetter();
+            this.pool[i] = new LetterContainer(letters.getRandomLetter(), true, i);
         }
     }
     
@@ -35,7 +35,7 @@ public class LetterPool{
         this.notifyLetterPoolChanged();
     }
     
-    public Letter[] getLetters(){
+    public LetterContainer[] getLetters(){
         return this.pool.clone();
     }
     
@@ -49,7 +49,7 @@ public class LetterPool{
         this.currentSelection = i;
     }
     
-    public Letter useLetter(){
+    public LetterContainer useLetter(){
         if (this.usedLetterIndices.contains(this.currentSelection)) return null;
         this.usedLetterIndices.add(this.currentSelection);
         return this.pool[this.currentSelection];
@@ -61,9 +61,13 @@ public class LetterPool{
     
     public void removePickedLetters(){
         for(int i : this.usedLetterIndices){
-            this.pool[i] = this.letters.getRandomLetter();
+            this.pool[i] = new LetterContainer(letters.getRandomLetter(), true, i);
         }
         this.notifyLetterPoolChanged();
+    }
+    
+    public void returnPickedLetter(int i){
+        this.usedLetterIndices.remove(i);
     }
     
     private void notifyLetterPoolChanged(){

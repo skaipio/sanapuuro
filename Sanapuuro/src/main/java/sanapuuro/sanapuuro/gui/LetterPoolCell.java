@@ -33,9 +33,13 @@ public class LetterPoolCell extends JPanel {
         this.letter = letter;
         this.repaint();
     }
-
-    public void grayOut() {
-        this.isGreyedOut = true;
+    
+    public void setEnabled(boolean enabled) {
+        if (enabled){
+            this.isGreyedOut = false;
+        }else{
+            this.isGreyedOut = true;
+        }
         this.repaint();
     }
 

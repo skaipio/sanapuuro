@@ -7,24 +7,19 @@
 package sanapuuro.sanapuuro.gui;
 
 import sanapuuro.sanapuuro.GameController;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
-import sanapuuro.sanapuuro.Game;
 
 /**
  *
  * @author skaipio
  */
 public class GameWindow extends javax.swing.JFrame {
-    private Game game;
     /**
      * Creates new form GameWindow
      */
     public GameWindow() {
         initComponents();
-        game = new Game();
     }
 
     /**
@@ -84,40 +79,48 @@ public class GameWindow extends javax.swing.JFrame {
     
     private void newGame(){
         GridBagConstraints constraints = new GridBagConstraints();
-        LetterGridPanel cells = new LetterGridPanel(12, 12);
-        //cells.setLocation(16, 16);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
+        
+        constraints.fill = GridBagConstraints.NONE;
         constraints.gridx = 0;
         constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.CENTER;
+        JLabel selectedLettersPanel = new JLabel("    ");
+        this.add(selectedLettersPanel, constraints);
+        
+        LetterGridPanel cells = new LetterGridPanel(12, 12);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 0;
+        constraints.gridy = 1;
         this.add(cells, constraints);   
         
         LetterPoolPanel letterPoolPanel = new LetterPoolPanel();       
         constraints.gridx = 0;
-        constraints.gridy = 1;
+        constraints.gridy = 2;
         this.add(letterPoolPanel, constraints);
         
         JLabel stateLabel = new JLabel("Press left mouse button to add letters to or select letters from grid.");
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridx = 0;
-        constraints.gridy = 2;
+        constraints.gridy = 3;
         constraints.anchor = GridBagConstraints.CENTER;
         this.add(stateLabel, constraints);
         
-        GameController controller = new GameController(this.game);   
+        GameController controller = new GameController();   
+        controller.setSelectedLettersLabel(selectedLettersPanel);
         controller.setLetterGridPanel(cells);
         controller.setLetterPoolPanel(letterPoolPanel);
         controller.setStateLabel(stateLabel);
         
         controller.newGame();
         
-        SelectedLettersPanel lettersPanel = new SelectedLettersPanel();
-        //this.add(lettersPanel, BorderLayout.NORTH);
+        
+        //
         
         //this.gridInputHandler = new GridInputHandler(game.getGridCursor(),lettersPanel);
       
         this.pack();
         letterPoolPanel.setVisible(true);
-        lettersPanel.setVisible(true);
+        selectedLettersPanel.setVisible(true);
         cells.setVisible(true);
     }
 

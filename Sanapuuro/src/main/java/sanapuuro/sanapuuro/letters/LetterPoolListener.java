@@ -11,5 +11,5 @@ package sanapuuro.sanapuuro.letters;
  * @author skaipio
  */
 public interface LetterPoolListener {
-    void letterPoolChanged(Letter[] letters);
+    void letterPoolChanged(LetterContainer[] letters);
 }

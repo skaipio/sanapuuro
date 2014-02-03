@@ -5,8 +5,8 @@
  */
 package sanapuuro.sanapuuro.grid;
 
+import sanapuuro.sanapuuro.letters.LetterContainer;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import sanapuuro.sanapuuro.letters.Letter;
 import sanapuuro.sanapuuro.letters.LetterPool;
@@ -23,8 +23,6 @@ public class GridCursor {
     private final LetterPool letterPool;
     private final List<LetterContainer> selectedLetters = new ArrayList<>();
     private final List<GridCursorListener> listeners = new ArrayList<>();
-
-    private boolean selectionMode = false;
 
     public GridCursor(Grid grid, LetterPool letterPool) {
         this.grid = grid;
@@ -65,19 +63,10 @@ public class GridCursor {
         this.x = MathUtils.clamp(0, this.grid.width - 1, x + 1);
     }
 
-    public void selectionModeOn() {
-        this.selectionMode = true;
-    }
-
-    public List<LetterContainer> selectionModeOff() {
-        this.selectionMode = false;
+    public List<LetterContainer> clearSelectedLetters() {
         List<LetterContainer> letters = new ArrayList<>(this.selectedLetters);
         this.selectedLetters.clear();
         return letters;
-    }
-
-    public boolean isSelectionModeOn() {
-        return this.selectionMode;
     }
 
     public List<LetterContainer> getSelectedLetters() {
@@ -86,64 +75,56 @@ public class GridCursor {
     }
 
     public void submitLetters() {
-        List<LetterContainer> letters = this.selectionModeOff();
+        List<LetterContainer> letters = this.clearSelectedLetters();
         for (GridCursorListener listener : this.listeners) {
             listener.lettersSubmitted(letters);
         }
     }
 
-//    public boolean hasLetterUnderCursor() {
-//        return this.grid.getCellAt(x, y).hasLetter();
-//    }
     public Letter getLetterUnderCursor() {
-        return this.grid.getCellAt(x, y).getLetter();
+        return this.grid.getCellAt(x, y).getContainer().letter;
     }
 
     public boolean addLetterUnderCursor() {
         LetterCell cell = this.grid.getCellAt(x, y);
-        if (this.selectionMode && !cell.hasLetter()) {
-            Letter letter = this.letterPool.useLetter();
-            if (letter != null) {
-                this.selectedLetters.add(new LetterContainer(letter, x, y));
+        if (!cell.hasContainer()) {
+            LetterContainer container = this.letterPool.useLetter();
+            if (container != null) {
+                container.setX(x);
+                container.setY(y);
+                this.grid.getCellAt(x, y).setContainer(container);
+                this.selectedLetters.add(container);
                 return true;
             }
-            return false;
         }
         return false;
     }
 
     public boolean selectLetterUnderCursor() {
         LetterCell cell = this.grid.getCellAt(x, y);
-        if (this.selectionMode && cell.hasLetter()) {
-            this.selectedLetters.add(new LetterContainer(cell.getLetter(), x, y));
+        if (cell.hasContainer() && !cell.getContainer().isFromLetterPool()) {
+            this.selectedLetters.add(cell.getContainer());
             return true;
         }
         return false;
     }
 
+    public LetterContainer removeSelectionUnderCursor() {
+        LetterCell cell = this.grid.getCellAt(x, y);
+        if (cell.hasContainer()) {
+            LetterContainer container = cell.getContainer();
+            if (this.selectedLetters.remove(cell.getContainer())){
+                this.grid.getCellAt(x, y).clear();
+                if (container.isFromLetterPool()){
+                    this.letterPool.returnPickedLetter(container.letterPoolIndex());
+                }
+                return container;
+            }
+        }
+        return null;
+    }
+
     public void addListener(GridCursorListener listener) {
         this.listeners.add(listener);
     }
-
-    //    public void startSelecting() {
-//        this.inSelectionMode = true;
-//        this.currentSelection = this.gridCursor.getCellAtCursor();
-//    }
-//
-//    public void stopSelecting() {
-//        this.selectedLetters.clear();
-//        this.inSelectionMode = false;
-//    }
-//
-//    public boolean putCharAtCursor(char letter) {
-//        if (this.gridCursor.getCellAtCursor().hasLetter()) {
-//            return false;
-//        }
-//        if (!this.inSelectionMode) {
-//            this.startSelecting();
-//        }
-//        this.game.setLetterTo(currentSelection.x, currentSelection.y, charToAdd);
-//        this.selectedLetters.put(this.currentSelection.coordinate, letter);
-//        return true;
-//    }
 }

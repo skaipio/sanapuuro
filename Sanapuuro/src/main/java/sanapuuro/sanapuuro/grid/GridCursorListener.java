@@ -6,6 +6,7 @@
 
 package sanapuuro.sanapuuro.grid;
 
+import sanapuuro.sanapuuro.letters.LetterContainer;
 import java.util.List;
 
 /**

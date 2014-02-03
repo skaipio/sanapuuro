@@ -49,7 +49,11 @@ public class LetterPoolPanel extends JPanel {
     }
     
     public void grayOutLetter(int i){
-        this.letterCells[i].grayOut();
+        this.letterCells[i].setEnabled(false);
+    }
+    
+    public void letterReturnedToPool(int i){
+        this.letterCells[i].setEnabled(true);
     }
     
     public void changeCurrentSelectionTo(int i){
