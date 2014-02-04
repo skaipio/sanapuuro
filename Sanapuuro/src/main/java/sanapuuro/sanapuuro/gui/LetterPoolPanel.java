@@ -25,14 +25,15 @@ public class LetterPoolPanel extends JPanel {
     
     public void init(int size){
         this.letterCells = new LetterPoolCell[size];
-        int poolXOffset = 42*12/2-size*cellSize/2;
+        //int poolXOffset = 42*12/2-size*cellSize/2;
+        int poolXOffset = 0;
         for(int i = 0; i < letterCells.length; i++){
             LetterPoolCell cell = new LetterPoolCell(i);
             this.letterCells[i] = cell;
             this.add(cell);
             cell.setBounds(i*cellSize+poolXOffset, 0, cellSize, cellSize);
         }
-        this.setPreferredSize(new Dimension((cellSize-16)*size, cellSize));  
+        this.setPreferredSize(new Dimension(36*size,36));
         this.letterCells[0].select();
         this.currentSelection = this.letterCells[0];
         this.repaint();
@@ -44,16 +45,17 @@ public class LetterPoolPanel extends JPanel {
         }
     }
     
-    public void setLetterToCell(String letter, int i){
+    public void setLetterToCell(String letter, int i, boolean isInUse){
         this.letterCells[i].setLetter(letter);
+        this.letterCells[i].setInUse(isInUse);
     }
     
     public void grayOutLetter(int i){
-        this.letterCells[i].setEnabled(false);
+        this.letterCells[i].setInUse(true);
     }
     
     public void letterReturnedToPool(int i){
-        this.letterCells[i].setEnabled(true);
+        this.letterCells[i].setInUse(false);
     }
     
     public void changeCurrentSelectionTo(int i){

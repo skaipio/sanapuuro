@@ -62,6 +62,7 @@ public class GridCell extends JPanel{
     }
     
     public void deselect(){
+        System.out.println("Deselecting cell at " + this.x + ", " + this.y);
         this.isSelected = false;
         this.fontColor = Color.WHITE;
         this.setBackground(Color.BLACK);

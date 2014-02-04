@@ -6,9 +6,8 @@
 
 package sanapuuro.sanapuuro.letters;
 
-import java.util.ArrayList;
+import sanapuuro.sanapuuro.grid.LetterContainer;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,7 +19,6 @@ public class LetterPool{
     private final Letters letters;
     private final LetterContainer[] pool = new LetterContainer[poolSize];
     private final Set<Integer> usedLetterIndices = new HashSet(poolSize);
-    private final List<LetterPoolListener> listeners = new ArrayList<>();
     private int currentSelection = 0;
             
     public LetterPool(Letters letters){
@@ -30,17 +28,16 @@ public class LetterPool{
         }
     }
     
-    public void addListener(LetterPoolListener listener){
-        this.listeners.add(listener);
-        this.notifyLetterPoolChanged();
-    }
-    
     public LetterContainer[] getLetters(){
         return this.pool.clone();
     }
     
-    public int getCurrentSelection(){
+    public int getCurrentSelectedIndex(){
         return this.currentSelection;
+    }
+    
+    public LetterContainer getCurrentSelection(){
+        return this.pool[this.currentSelection];
     }
     
     public void setCurrentSelection(int i){
@@ -63,16 +60,10 @@ public class LetterPool{
         for(int i : this.usedLetterIndices){
             this.pool[i] = new LetterContainer(letters.getRandomLetter(), true, i);
         }
-        this.notifyLetterPoolChanged();
+        this.usedLetterIndices.clear();
     }
     
-    public void returnPickedLetter(int i){
+    public void unpickLetterAtIndex(int i){
         this.usedLetterIndices.remove(i);
-    }
-    
-    private void notifyLetterPoolChanged(){
-        for(LetterPoolListener listener : this.listeners){
-            listener.letterPoolChanged(pool);
-        }
     }
 }

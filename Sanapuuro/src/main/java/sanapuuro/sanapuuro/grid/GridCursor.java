@@ -5,7 +5,6 @@
  */
 package sanapuuro.sanapuuro.grid;
 
-import sanapuuro.sanapuuro.letters.LetterContainer;
 import java.util.ArrayList;
 import java.util.List;
 import sanapuuro.sanapuuro.letters.Letter;
@@ -40,11 +39,10 @@ public class GridCursor {
     }
 
     public void setLocation(int x, int y) {
-        if (!this.grid.isWithinGrid(x, y)) {
-            throw new IllegalArgumentException("Given position is not within grid.");
+        if (this.grid.isWithinGrid(x, y)) {
+            this.x = x;
+            this.y = y;
         }
-        this.x = x;
-        this.y = y;
     }
 
     public void moveUp() {
@@ -63,22 +61,27 @@ public class GridCursor {
         this.x = MathUtils.clamp(0, this.grid.width - 1, x + 1);
     }
 
-    public List<LetterContainer> clearSelectedLetters() {
+    public List<LetterContainer> clearSelectedContainers() {
         List<LetterContainer> letters = new ArrayList<>(this.selectedLetters);
         this.selectedLetters.clear();
         return letters;
     }
 
-    public List<LetterContainer> getSelectedLetters() {
+    public List<LetterContainer> getSelectedContainers() {
         List<LetterContainer> letters = new ArrayList<>(this.selectedLetters);
         return letters;
     }
 
-    public void submitLetters() {
-        List<LetterContainer> letters = this.clearSelectedLetters();
+    public boolean submitLetters() {
+        boolean successfullSubmission = false;
+
         for (GridCursorListener listener : this.listeners) {
-            listener.lettersSubmitted(letters);
+            successfullSubmission = listener.lettersSubmitted(this.getSelectedContainers());
         }
+        if(successfullSubmission){
+            this.clearSelectedContainers();
+        }
+        return successfullSubmission;
     }
 
     public Letter getLetterUnderCursor() {
@@ -113,10 +116,10 @@ public class GridCursor {
         LetterCell cell = this.grid.getCellAt(x, y);
         if (cell.hasContainer()) {
             LetterContainer container = cell.getContainer();
-            if (this.selectedLetters.remove(cell.getContainer())){
+            if (this.selectedLetters.remove(cell.getContainer())) {
                 this.grid.getCellAt(x, y).clear();
-                if (container.isFromLetterPool()){
-                    this.letterPool.returnPickedLetter(container.letterPoolIndex());
+                if (container.isFromLetterPool()) {
+                    this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
                 }
                 return container;
             }

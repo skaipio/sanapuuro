@@ -7,7 +7,7 @@
 package sanapuuro.sanapuuro.utils;
 
 import java.util.Comparator;
-import sanapuuro.sanapuuro.letters.LetterContainer;
+import sanapuuro.sanapuuro.grid.LetterContainer;
 
 /**
  *

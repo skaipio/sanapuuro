@@ -9,7 +9,7 @@ package sanapuuro.sanapuuro.words;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import sanapuuro.sanapuuro.letters.LetterContainer;
+import sanapuuro.sanapuuro.grid.LetterContainer;
 import sanapuuro.sanapuuro.utils.LetterCoordinateComparator;
 
 /**

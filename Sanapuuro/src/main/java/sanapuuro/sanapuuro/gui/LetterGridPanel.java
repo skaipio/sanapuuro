@@ -49,6 +49,15 @@ public class LetterGridPanel extends JPanel {
         }
     }
     
+    public void setCellSelectionAt(boolean selected, int x, int y){
+        if(selected){
+            this.cells[y][x].select();
+        }else{
+            this.cells[y][x].deselect();
+        }
+        
+    }
+    
     public void setLetterToCell(String letter, int x, int y){
         this.cells[y][x].setLetter(letter);
     }

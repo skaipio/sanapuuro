@@ -14,27 +14,28 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import sanapuuro.sanapuuro.grid.GridCursor;
-import sanapuuro.sanapuuro.letters.LetterContainer;
+import sanapuuro.sanapuuro.grid.LetterContainer;
 import sanapuuro.sanapuuro.gui.GridCell;
 import sanapuuro.sanapuuro.gui.LetterGridPanel;
 import sanapuuro.sanapuuro.gui.LetterPoolCell;
 import sanapuuro.sanapuuro.gui.LetterPoolPanel;
 import sanapuuro.sanapuuro.gui.SubmitButton;
 import sanapuuro.sanapuuro.letters.LetterPool;
-import sanapuuro.sanapuuro.letters.LetterPoolListener;
 
 /**
  *
  * @author skaipio
  */
-public class GameController implements MouseListener, ActionListener, LetterPoolListener {
+public class GameController implements MouseListener, ActionListener {
 
     private final Game game = new Game();
     private JLabel selectedLettersLabel;
     private JButton submitButton;
     private LetterGridPanel letterGridPanel;
     private LetterPoolPanel letterPoolPanel;
+    private JLabel scoreLabel;
     private JLabel stateLabel;
+
     private GridCursor gridCursor;
     private LetterPool letterPool;
 
@@ -43,8 +44,8 @@ public class GameController implements MouseListener, ActionListener, LetterPool
         this.gridCursor = this.game.getGridCursor();
         this.letterPool = this.game.getLetterPool();
         this.letterPoolPanel.init(this.letterPool.poolSize);
-        this.letterPool.addListener(this);
         this.letterPoolPanel.addListenerToCells(this);
+        this.updateLetterPoolPanel();
     }
 
     public void setSelectedLettersLabel(JLabel label) {
@@ -65,26 +66,28 @@ public class GameController implements MouseListener, ActionListener, LetterPool
         this.letterGridPanel.addListenerToCells(this);
     }
 
+    public void setScoreLabel(JLabel scoreLabel) {
+        this.scoreLabel = scoreLabel;
+    }
+
     public void setStateLabel(JLabel label) {
         this.stateLabel = label;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println(e.getComponent().getClass());
+        
         if (e.getComponent() instanceof LetterPoolCell) {
             LetterPoolCell cell = (LetterPoolCell) e.getComponent();
-            this.letterPool.setCurrentSelection(cell.index);
-            this.letterPoolPanel.changeCurrentSelectionTo(cell.index);
-        } else if (SwingUtilities.isLeftMouseButton(e) && e.getComponent() instanceof GridCell) {
+            this.leftClickLetterPoolCell(cell);
+        } else if (SwingUtilities.isLeftMouseButton(e) && e.getComponent() instanceof GridCell) {           
             GridCell cell = (GridCell) e.getComponent();
+            System.out.println(e.getComponent().getClass() + " clicked at " + cell.x + "," + cell.y);
             this.leftClickGridCell(cell);
         } else if (SwingUtilities.isRightMouseButton(e)) {
-            LetterContainer container = this.gridCursor.removeSelectionUnderCursor();
-            if (container != null) {
-                this.letterGridPanel.removeLetterFromCell(this.gridCursor.getX(), this.gridCursor.getY());
-                this.letterPoolPanel.letterReturnedToPool(container.letterPoolIndex());
-            }
+            GridCell cell = (GridCell) e.getComponent();
+            System.out.println(e.getComponent().getClass() + " clicked at " + cell.x + "," + cell.y);
+            this.rightClickGridCell(cell);
         }
     }
 
@@ -111,23 +114,42 @@ public class GameController implements MouseListener, ActionListener, LetterPool
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof SubmitButton) {
-            this.gridCursor.submitLetters();
+            List<LetterContainer> selectedContainers = this.gridCursor.getSelectedContainers();
+            if (this.gridCursor.submitLetters()) {
+                this.scoreLabel.setText(this.game.getScore() + "");
+                this.updateLetterPoolPanel();
+                this.deselectCells(selectedContainers);
+                this.selectedLettersLabel.setText("");
+            } else {
+                this.stateLabel.setText("Word is not valid.");
+            }
         }
     }
 
-    @Override
-    public void letterPoolChanged(LetterContainer[] letters) {
-        for (int i = 0; i < letters.length; i++) {
-            this.letterPoolPanel.setLetterToCell(letters[i].letter.toString(), i);
-            this.letterPoolPanel.repaint();
+    private void updateLetterPoolPanel() {
+        for (LetterContainer container : this.letterPool.getLetters()) {
+            this.letterPoolPanel.setLetterToCell(container.letter.toString(), container.letterPoolIndex(), container.isSelected());
         }
     }
 
-    private void setSelectedLettersToGrid(List<LetterContainer> letterContainers) {
-        System.out.println("Setting selected letters to grid");
-        for (LetterContainer lc : letterContainers) {
-            this.letterGridPanel.setLetterToCell(lc.letter.toString(), lc.getX(), lc.getY());
+    private void deselectCells(List<LetterContainer> selectedContainers) {
+        System.out.print("Deselecting: ");
+        for (LetterContainer container : selectedContainers) {
+            System.out.print(container.letter + " ");
+            this.letterGridPanel.setCellSelectionAt(false, container.getX(), container.getY());
         }
+    }
+
+//    private void setSelectedLettersToGrid(List<LetterContainer> letterContainers) {
+//        System.out.println("Setting selected letters to grid");
+//        for (LetterContainer lc : letterContainers) {
+//            this.letterGridPanel.setLetterToCell(lc.letter.toString(), lc.getX(), lc.getY());
+//        }
+//    }
+
+    private void leftClickLetterPoolCell(LetterPoolCell cell) {
+        this.letterPool.setCurrentSelection(cell.index);
+        this.letterPoolPanel.changeCurrentSelectionTo(cell.index);
     }
 
     private void leftClickGridCell(GridCell cell) {
@@ -136,7 +158,8 @@ public class GameController implements MouseListener, ActionListener, LetterPool
             cell.select();
             this.updateSelectedLettersLabel();
         } else if (this.gridCursor.addLetterUnderCursor()) {
-            this.letterPoolPanel.grayOutLetter(this.letterPool.getCurrentSelection());
+            cell.select();
+            this.letterPoolPanel.grayOutLetter(this.letterPool.getCurrentSelectedIndex());
             String letter = this.gridCursor.getLetterUnderCursor().toString();
             this.letterGridPanel.setLetterToCell(letter, this.gridCursor.getX(), this.gridCursor.getY());
             //this.setSelectedLettersToGrid(this.gridCursor.getSelectedLetters());
@@ -144,12 +167,27 @@ public class GameController implements MouseListener, ActionListener, LetterPool
         }
     }
 
+    private void rightClickGridCell(GridCell cell) {
+        this.gridCursor.setLocation(cell.x, cell.y);
+        LetterContainer container = this.gridCursor.removeSelectionUnderCursor();
+        if (container != null) {
+            if(container.isFromLetterPool()){
+                cell.removeLetter();
+                //this.letterGridPanel.removeLetterFromCell(this.gridCursor.getX(), this.gridCursor.getY());
+                this.letterPoolPanel.letterReturnedToPool(container.letterPoolIndex());
+            }          
+            cell.deselect();
+            this.updateSelectedLettersLabel();
+        }
+    }
+
     private void updateSelectedLettersLabel() {
-        List<LetterContainer> selectedLetters = this.gridCursor.getSelectedLetters();
+        List<LetterContainer> selectedLetters = this.gridCursor.getSelectedContainers();
         StringBuilder letters = new StringBuilder(selectedLetters.size());
         for (LetterContainer lc : selectedLetters) {
             letters.append(lc.letter.character);
         }
         this.selectedLettersLabel.setText(letters.toString());
     }
+
 }

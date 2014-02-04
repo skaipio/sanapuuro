@@ -6,7 +6,6 @@
 
 package sanapuuro.sanapuuro.grid;
 
-import sanapuuro.sanapuuro.letters.LetterContainer;
 import java.util.List;
 
 /**
@@ -14,5 +13,5 @@ import java.util.List;
  * @author skaipio
  */
 public interface GridCursorListener {
-    void lettersSubmitted(List<LetterContainer> letters);
+    boolean lettersSubmitted(List<LetterContainer> letters);
 }

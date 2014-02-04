@@ -13,8 +13,8 @@ import javax.swing.JLabel;
  *
  * @author skaipio
  */
-public class SelectedLettersLabel extends JLabel{
-    public SelectedLettersLabel(){
+public class ScoreLabel extends JLabel {
+     public ScoreLabel(){
         super();
         this.setFont(new Font("Arial", Font.PLAIN, 24));
         this.setText("");
@@ -23,9 +23,9 @@ public class SelectedLettersLabel extends JLabel{
     @Override
     public void setText(String text){
         if (text.isEmpty()){
-            super.setText("Selected letters:");
+            super.setText("Score:");
         }else{
-            super.setText("Selected letters: " + text.toUpperCase());
+            super.setText("Score: " + text);
         }
     }
 }

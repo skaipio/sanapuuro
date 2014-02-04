@@ -5,8 +5,6 @@
  */
 package sanapuuro.sanapuuro.grid;
 
-import sanapuuro.sanapuuro.letters.LetterContainer;
-
 /**
  *
  * @author skaipio
@@ -44,6 +42,8 @@ public class LetterCell {
 
     public void setContainer(LetterContainer container) {
         this.container = container;
+        this.container.setX(x);
+        this.container.setY(y);
     }
 
     public void clear() {

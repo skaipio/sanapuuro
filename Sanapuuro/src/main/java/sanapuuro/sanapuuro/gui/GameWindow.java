@@ -3,20 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sanapuuro.sanapuuro.gui;
 
 import java.awt.Button;
+import java.awt.FlowLayout;
 import sanapuuro.sanapuuro.GameController;
 import java.awt.GridBagConstraints;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
  * @author skaipio
  */
 public class GameWindow extends javax.swing.JFrame {
+
     /**
      * Creates new form GameWindow
      */
@@ -78,60 +81,60 @@ public class GameWindow extends javax.swing.JFrame {
             }
         });
     }
-    
-    private void newGame(){
+
+    private void newGame() {
         GridBagConstraints constraints = new GridBagConstraints();
-        
+
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.WEST;
-        JLabel selectedLettersPanel = new SelectedLettersPanel();
+        JLabel selectedLettersPanel = new SelectedLettersLabel();
         this.add(selectedLettersPanel, constraints);
-        
+
         constraints.gridx = 1;
         constraints.anchor = GridBagConstraints.EAST;
         JButton submitButton = new SubmitButton();
         this.add(submitButton, constraints);
-        
+
         LetterGridPanel cells = new LetterGridPanel(12, 12);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridwidth = 2;
         constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.anchor = GridBagConstraints.CENTER;
-        this.add(cells, constraints);   
+        this.add(cells, constraints);
         
-        LetterPoolPanel letterPoolPanel = new LetterPoolPanel();       
-        constraints.gridx = 0;
+        JPanel poolAndScorePanel = new JPanel();
+        poolAndScorePanel.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 5));
+
+        LetterPoolPanel letterPoolPanel = new LetterPoolPanel();
+        poolAndScorePanel.add(letterPoolPanel);
+
+        JLabel scoreLabel = new ScoreLabel();
+        scoreLabel.setText(letterPoolPanel.getWidth() + "");
+        poolAndScorePanel.add(scoreLabel);
         constraints.gridy = 2;
-        this.add(letterPoolPanel, constraints);
-        
+        this.add(poolAndScorePanel, constraints);
+
         JLabel stateLabel = new JLabel("Press left mouse button to add letters to or select letters from grid.");
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridx = 0;
         constraints.gridy = 3;
         constraints.anchor = GridBagConstraints.CENTER;
         this.add(stateLabel, constraints);
-        
-        GameController controller = new GameController();   
+
+        GameController controller = new GameController();
         controller.setSelectedLettersLabel(selectedLettersPanel);
         controller.setSubmitButton(submitButton);
         controller.setLetterGridPanel(cells);
         controller.setLetterPoolPanel(letterPoolPanel);
+        controller.setScoreLabel(scoreLabel);
         controller.setStateLabel(stateLabel);
-        
+
         controller.newGame();
-        
-        
-        //
-        
-        //this.gridInputHandler = new GridInputHandler(game.getGridCursor(),lettersPanel);
-      
+
         this.pack();
-        letterPoolPanel.setVisible(true);
-        selectedLettersPanel.setVisible(true);
-        cells.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

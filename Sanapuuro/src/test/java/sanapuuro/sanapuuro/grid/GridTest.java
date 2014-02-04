@@ -59,9 +59,11 @@ public class GridTest {
     }
 
     @Test
-    public void gridIsHasNoLettersAfterClearing() {
-        this.grid.setLetterContainerTo(0, 0, new Letter('a', 0, 0));
-        this.grid.setLetterContainerTo(7, 7, new Letter('b', 0, 0));
+    public void gridHasNoLettersAfterClearing() {
+        LetterCell cell = this.grid.getCellAt(0, 0);
+        cell.setContainer(new LetterContainer(new Letter('a', 0, 0)));
+        cell = this.grid.getCellAt(7, 7);
+        cell.setContainer(new LetterContainer(new Letter('b', 0, 0)));
         boolean hasLetters = false;
         this.grid.clear();
         for (int x = 0; x < this.grid.width; x++) {
@@ -96,22 +98,5 @@ public class GridTest {
     @Test(expected = IllegalArgumentException.class)
     public void throwsExceptionWhenGettingCellOutsideGridYTooBig() {
         this.grid.getCellAt(0, this.grid.height);
-    }
-
-    @Test(expected = IllegalAccessException.class)
-    public void throwsExceptionWhenAddingCellOutsideGrid() {
-        this.grid.setLetterContainerTo(8, 8, new Letter('a', 0, 0));
-    }
-
-    @Test
-    public void setsAndGetsLettersAndCorrectly() {
-        this.grid.setLetterContainerTo(0, 0, new Letter('a', 0, 0));
-        Letter letter = this.grid.getCellAt(0, 0).getContainer();
-        assertTrue("letter was not set into grid", letter != null);
-        assertEquals('a', letter.character);
-        this.grid.setLetterContainerTo(this.grid.width - 1, this.grid.height - 1, new Letter('b', 0, 0));
-        letter = this.grid.getCellAt(this.grid.width - 1, this.grid.height - 1).getContainer();
-        assertTrue("letter was not set into grid", letter != null);
-        assertEquals('b', letter.character);
     }
 }
