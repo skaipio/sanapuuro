@@ -59,8 +59,8 @@ public class GridCursorTest {
         int x = this.gridCursor.getX();
         int y = this.gridCursor.getY();
         Letter expected = new Letter('a', 0, 0);
-        this.grid.getCellAt(x, y).setContainer(new LetterContainer(expected));
-        Letter actual = this.gridCursor.getLetterUnderCursor();
+        this.grid.setContainerAt(new LetterContainer(expected), x, y);
+        Letter actual = this.gridCursor.getContainerUnderCursor().letter;
         assertEquals(expected, actual);
     }
 
@@ -138,7 +138,7 @@ public class GridCursorTest {
         Letter letter = new Letter('a', 0, 0);
         boolean letterWasSet = this.gridCursor.addLetterUnderCursor();
         assertTrue(letterWasSet);
-        assertTrue(this.grid.getCellAt(this.gridCursor.getX(), this.gridCursor.getY()).hasContainer());
+        assertTrue(this.grid.hasContainerAt(this.gridCursor.getX(), this.gridCursor.getY()));
     }
 
     @Test

@@ -10,7 +10,6 @@ import java.util.Random;
 import sanapuuro.sanapuuro.grid.Grid;
 import sanapuuro.sanapuuro.grid.GridCursor;
 import sanapuuro.sanapuuro.grid.GridCursorListener;
-import sanapuuro.sanapuuro.grid.LetterCell;
 import sanapuuro.sanapuuro.grid.LetterContainer;
 import sanapuuro.sanapuuro.letters.LetterPool;
 import sanapuuro.sanapuuro.letters.LetterReader;
@@ -74,7 +73,7 @@ class Game implements GridCursorListener {
     }
 
     public LetterContainer getLetterContainerAt(int x, int y) {
-        return this.grid.getCellAt(x, y).getContainer();
+        return this.grid.getContainerAt(x, y);
     }
 
     /**
@@ -94,11 +93,9 @@ class Game implements GridCursorListener {
         if (result.succeeded) {
             this.score += result.getScore();
             for (LetterContainer container : letterContainers) {
-                LetterCell cell = this.grid.getCellAt(container.getX(), container.getY());
-                cell.getContainer().setToGridPermanently();
+                container.setToGridPermanently();
             }
             letterPool.removePickedLetters();
-            
             return true;
         }
         return false;

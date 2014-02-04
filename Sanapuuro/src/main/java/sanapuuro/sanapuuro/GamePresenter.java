@@ -23,8 +23,9 @@ import sanapuuro.sanapuuro.gui.SubmitButton;
 import sanapuuro.sanapuuro.letters.LetterPool;
 
 /**
- * Updates game logic instances and GUI instances according to input.
- * Resembles the presenter in MVP pattern.
+ * Updates game logic instances and GUI instances according to input. Resembles
+ * the presenter in MVP pattern.
+ *
  * @author skaipio
  */
 public class GamePresenter implements MouseListener, ActionListener {
@@ -80,15 +81,16 @@ public class GamePresenter implements MouseListener, ActionListener {
 
     /**
      * Handles mouse click events from views.
+     *
      * @param e Event from one of the controller's views.
      */
     @Override
     public void mouseClicked(MouseEvent e) {
-        
+
         if (e.getComponent() instanceof LetterPoolCell) {
             LetterPoolCell cell = (LetterPoolCell) e.getComponent();
             this.leftClickLetterPoolCell(cell);
-        } else if (SwingUtilities.isLeftMouseButton(e) && e.getComponent() instanceof GridCell) {           
+        } else if (SwingUtilities.isLeftMouseButton(e) && e.getComponent() instanceof GridCell) {
             GridCell cell = (GridCell) e.getComponent();
             System.out.println(e.getComponent().getClass() + " clicked at " + cell.x + "," + cell.y);
             this.leftClickGridCell(cell);
@@ -121,6 +123,7 @@ public class GamePresenter implements MouseListener, ActionListener {
 
     /**
      * Handles only the submit button event.
+     *
      * @param e Button event
      */
     @Override
@@ -164,7 +167,7 @@ public class GamePresenter implements MouseListener, ActionListener {
         } else if (this.gridCursor.addLetterUnderCursor()) {
             cell.select();
             this.letterPoolPanel.grayOutLetter(this.letterPool.getCurrentSelectedIndex());
-            String letter = this.gridCursor.getLetterUnderCursor().toString();
+            String letter = this.gridCursor.getContainerUnderCursor().letter.toString();
             this.letterGridPanel.setLetterToCell(letter, this.gridCursor.getX(), this.gridCursor.getY());
             this.updateSelectedLettersLabel();
         }
@@ -172,12 +175,14 @@ public class GamePresenter implements MouseListener, ActionListener {
 
     private void rightClickGridCell(GridCell cell) {
         this.gridCursor.setLocation(cell.x, cell.y);
-        LetterContainer container = this.gridCursor.removeSelectionUnderCursor();
-        if (container != null) {
-            if(container.isFromLetterPool()){
+        if (this.gridCursor.hasContainerUnderCursor()) {
+            LetterContainer containerUnderCursor = this.gridCursor.getContainerUnderCursor();
+            this.gridCursor.removeSelectionUnderCursor();
+
+            if (containerUnderCursor.isFromLetterPool()) {
                 cell.removeLetter();
-                this.letterPoolPanel.letterReturnedToPool(container.letterPoolIndex());
-            }          
+                this.letterPoolPanel.letterReturnedToPool(containerUnderCursor.letterPoolIndex());
+            }
             cell.deselect();
             this.updateSelectedLettersLabel();
         }

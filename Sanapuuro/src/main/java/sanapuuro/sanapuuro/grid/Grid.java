@@ -11,41 +11,59 @@ package sanapuuro.sanapuuro.grid;
  */
 public class Grid {
 
-    public int width, height;
-    private final LetterCell[][] cells;
+    public final int width, height;
+    private final LetterContainer[][] containers;
 
     public Grid(int width, int height) {
         this.width = width;
         this.height = height;
-        this.cells = new LetterCell[width][height];
-        this.init();
+        this.containers = new LetterContainer[width][height];
     }
 
     public void clear() {
-        for (LetterCell[] row : this.cells) {
-            for (LetterCell cell : row) {
-                cell.clear();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                this.containers[x][y] = null;
             }
         }
     }
-
-    public LetterCell getCellAt(int x, int y) {
+    
+    public boolean hasContainerAt(int x, int y) {
         if (!isWithinGrid(x, y)) {
             throw new IllegalArgumentException("Given coordinates are not within grid.");
         }
-        return this.cells[x][y];
+        return this.containers[x][y] != null;
+    }
+
+    public LetterContainer getContainerAt(int x, int y) {
+        if (!isWithinGrid(x, y)) {
+            throw new IllegalArgumentException("Given coordinates are not within grid.");
+        }
+        return this.containers[x][y];
+    }
+    
+    public boolean setContainerAt(LetterContainer container, int x, int y) {
+        if (!isWithinGrid(x, y)) {
+            throw new IllegalArgumentException("Given coordinates are not within grid.");
+        }
+        if (!this.hasContainerAt(x, y)){
+            this.containers[x][y] = container;
+            container.setX(x);
+            container.setY(y);
+            return true;
+        }
+        return false;
+    }
+    
+    public void removeContainerAt(int x, int y) {
+        if (!isWithinGrid(x, y)) {
+            throw new IllegalArgumentException("Given coordinates are not within grid.");
+        }
+        this.containers[x][y] = null;
     }
 
     public boolean isWithinGrid(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
-    }
-
-    private void init() {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < width; y++) {
-                this.cells[x][y] = new LetterCell(x, y);
-            }
-        }
     }
 
 //     public enum Size {

@@ -83,19 +83,20 @@ public class GridCursor {
         }
         return successfullSubmission;
     }
+    
+    public boolean hasContainerUnderCursor(){
+        return this.grid.hasContainerAt(x, y);
+    }
 
-    public Letter getLetterUnderCursor() {
-        return this.grid.getCellAt(x, y).getContainer().letter;
+    public LetterContainer getContainerUnderCursor() {
+        return this.grid.getContainerAt(x, y);
     }
 
     public boolean addLetterUnderCursor() {
-        LetterCell cell = this.grid.getCellAt(x, y);
-        if (!cell.hasContainer()) {
+        if (!this.grid.hasContainerAt(x, y)) {
             LetterContainer container = this.letterPool.useLetter();
             if (container != null) {
-                container.setX(x);
-                container.setY(y);
-                this.grid.getCellAt(x, y).setContainer(container);
+                this.grid.setContainerAt(container,x,y);
                 this.selectedLetters.add(container);
                 return true;
             }
@@ -104,27 +105,23 @@ public class GridCursor {
     }
 
     public boolean selectLetterUnderCursor() {
-        LetterCell cell = this.grid.getCellAt(x, y);
-        if (cell.hasContainer() && !cell.getContainer().isFromLetterPool()) {
-            this.selectedLetters.add(cell.getContainer());
+        if (this.grid.hasContainerAt(x, y) && !this.grid.getContainerAt(x, y).isFromLetterPool()) {
+            this.selectedLetters.add(this.grid.getContainerAt(x, y));
             return true;
         }
         return false;
     }
 
-    public LetterContainer removeSelectionUnderCursor() {
-        LetterCell cell = this.grid.getCellAt(x, y);
-        if (cell.hasContainer()) {
-            LetterContainer container = cell.getContainer();
-            if (this.selectedLetters.remove(cell.getContainer())) {
-                this.grid.getCellAt(x, y).clear();
+    public void removeSelectionUnderCursor() {
+        if (this.grid.hasContainerAt(x, y)) {
+            LetterContainer container = this.grid.getContainerAt(x, y);
+            if (this.selectedLetters.remove(container)) {              
                 if (container.isFromLetterPool()) {
+                    this.grid.removeContainerAt(x, y);
                     this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
                 }
-                return container;
             }
         }
-        return null;
     }
 
     public void addListener(GridCursorListener listener) {
