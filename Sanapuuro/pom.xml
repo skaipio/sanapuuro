@@ -39,6 +39,7 @@
                 <configuration>
                     <instrumentation>
                         <includes>
+                            <include>sanapuuro.sanapuuro/*.class</include>
                             <include>sanapuuro.sanapuuro.grid/*.class</include>
                             <include>sanapuuro.sanapuuro.words/*.class</include>
                             <include>sanapuuro.sanapuuro.letters/*.class</include>
@@ -53,17 +54,24 @@
                 <version>0.30</version>
                 <configuration>
                     <targetClasses>
+                        <param>sanapuuro.sanapuuro.*</param>
                         <param>sanapuuro.sanapuuro.grid.*</param>
                         <param>sanapuuro.sanapuuro.words.*</param>
                         <param>sanapuuro.sanapuuro.letters.*</param>
                     </targetClasses>
                     <targetTests>
+                        <param>sanapuuro.sanapuuro.*</param>
                         <param>sanapuuro.sanapuuro.grid.*</param>
                         <param>sanapuuro.sanapuuro.words.*</param>
                         <param>sanapuuro.sanapuuro.letters.*</param>
                     </targetTests>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+            </plugin> 
         </plugins>
     </build>
 </project>

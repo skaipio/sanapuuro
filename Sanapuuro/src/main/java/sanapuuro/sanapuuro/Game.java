@@ -18,7 +18,8 @@ import sanapuuro.sanapuuro.letters.Letters;
 import sanapuuro.sanapuuro.words.WordEvaluator;
 
 /**
- *
+ * The main game logic class that is used to start a new game and
+ * retrieve the grid cursor and letter pool for input.
  * @author skaipio
  */
 class Game implements GridCursorListener {
@@ -29,11 +30,15 @@ class Game implements GridCursorListener {
     private LetterPool letterPool;
     private Letters letters;
     private WordEvaluator wordEval;
+    private String status;
 
     public Game() {
         this.grid = new Grid(12, 12);
     }
 
+    /**
+     * Starts a new game and loads in valid letters and words.
+     */
     public void newGame() {
         this.score = 0;
         this.grid.clear();
@@ -63,29 +68,38 @@ class Game implements GridCursorListener {
     public int getScore() {
         return this.score;
     }
+    
+    public String getStatus(){
+        return this.status;
+    }
 
     public LetterContainer getLetterContainerAt(int x, int y) {
         return this.grid.getCellAt(x, y).getContainer();
     }
 
+    /**
+     * Listens to letter submission. These submissions come only from the grid cursor.
+     * @param letterContainers Containers holding the letters to evaluate.
+     * @return True if letters formed a valid word, false otherwise.
+     */
     @Override
     public boolean lettersSubmitted(List<LetterContainer> letterContainers) {
         System.out.print("Submitting letters: ");
-        for(LetterContainer letter : letterContainers){
+        for (LetterContainer letter : letterContainers) {
             System.out.print(letter.letter);
         }
         System.out.println("");
-        if (this.wordEval.isValidWord(letterContainers)) {
-            int wordScore = this.wordEval.evaluteLetters(letterContainers);
-            if (wordScore != 0) {
-                this.score += wordScore;
-                for (LetterContainer container : letterContainers) {
-                    LetterCell cell = this.grid.getCellAt(container.getX(), container.getY());
-                    cell.getContainer().setToGridPermanently();
-                }
-                letterPool.removePickedLetters();
-                return true;
+        WordEvaluator.EvaluationResult result = this.wordEval.evalute(letterContainers);
+        this.status = result.reason;
+        if (result.succeeded) {
+            this.score += result.getScore();
+            for (LetterContainer container : letterContainers) {
+                LetterCell cell = this.grid.getCellAt(container.getX(), container.getY());
+                cell.getContainer().setToGridPermanently();
             }
+            letterPool.removePickedLetters();
+            
+            return true;
         }
         return false;
     }

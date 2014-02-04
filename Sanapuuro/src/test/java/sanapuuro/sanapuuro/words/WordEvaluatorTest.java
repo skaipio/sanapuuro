@@ -65,7 +65,7 @@ public class WordEvaluatorTest {
         container = new LetterContainer(new Letter('y', 4, 1));
         this.grid.getCellAt(3, 0).setContainer(container);
         this.validHorizontalWord.add(container);
-        assertTrue(this.wordEvaluator.isValidWord(validHorizontalWord));
+        assertTrue(this.wordEvaluator.evalute(validHorizontalWord).succeeded);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class WordEvaluatorTest {
         container = new LetterContainer(new Letter('y', 1, 1));
         this.grid.getCellAt(0, 3).setContainer(container);
         this.validVerticalWord.add(container);
-        assertTrue(this.wordEvaluator.isValidWord(validVerticalWord));
+        assertTrue(this.wordEvaluator.evalute(validVerticalWord).succeeded);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class WordEvaluatorTest {
         container = new LetterContainer(new Letter('y', 1, 1));
         this.grid.getCellAt(0, 4).setContainer(container);
         this.wordWithGaps.add(container);
-        assertFalse(this.wordEvaluator.isValidWord(wordWithGaps));
+        assertFalse(this.wordEvaluator.evalute(wordWithGaps).succeeded);
     }
 
     @Test
@@ -116,7 +116,7 @@ public class WordEvaluatorTest {
         container = new LetterContainer(new Letter('y', 1, 1));
         this.grid.getCellAt(0, 3).setContainer(container);
         this.wordNotOnSameRow.add(container);
-        assertFalse(this.wordEvaluator.isValidWord(wordNotOnSameRow));
+        assertFalse(this.wordEvaluator.evalute(wordNotOnSameRow).succeeded);
     }
 
     @Test
@@ -127,7 +127,7 @@ public class WordEvaluatorTest {
         container = new LetterContainer(new Letter('u', 1, 1));
         this.grid.getCellAt(0, 1).setContainer(container);
         this.wordTooShort.add(container);
-        assertFalse(this.wordEvaluator.isValidWord(wordTooShort));
+        assertFalse(this.wordEvaluator.evalute(wordTooShort).succeeded);
     }
 
     @Test
@@ -144,7 +144,7 @@ public class WordEvaluatorTest {
         container = new LetterContainer(new Letter('y', 4, 1));
         this.grid.getCellAt(3, 0).setContainer(container);
         this.validHorizontalWord.add(container);
-        int score = this.wordEvaluator.evaluteLetters(validHorizontalWord);
+        int score = this.wordEvaluator.evalute(validHorizontalWord).getScore();
         assertEquals(1 + 2 + 3 + 4, score);
     }
 }

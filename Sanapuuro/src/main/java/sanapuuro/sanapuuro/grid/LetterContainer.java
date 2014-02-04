@@ -15,7 +15,7 @@ import sanapuuro.sanapuuro.letters.Letter;
 public class LetterContainer {
     public final Letter letter;
     private boolean fromLetterPool;
-    private boolean isSelected;
+    private boolean hasBeenUsed = false;
     private int letterPoolIndex;
     private int x, y;
     
@@ -45,8 +45,8 @@ public class LetterContainer {
         this.y = y;
     }
     
-    public boolean isSelected(){
-        return this.isSelected;
+    public boolean hasBeenUsed(){
+        return this.hasBeenUsed;
     }
     
     public boolean isFromLetterPool(){
@@ -55,6 +55,7 @@ public class LetterContainer {
     
     public void setToGridPermanently(){
         this.fromLetterPool = false;
+        this.hasBeenUsed = true;
     }
     
     public int letterPoolIndex(){

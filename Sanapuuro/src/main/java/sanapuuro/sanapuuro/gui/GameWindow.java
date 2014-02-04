@@ -7,7 +7,7 @@ package sanapuuro.sanapuuro.gui;
 
 import java.awt.Button;
 import java.awt.FlowLayout;
-import sanapuuro.sanapuuro.GameController;
+import sanapuuro.sanapuuro.GamePresenter;
 import java.awt.GridBagConstraints;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -124,7 +124,7 @@ public class GameWindow extends javax.swing.JFrame {
         constraints.anchor = GridBagConstraints.CENTER;
         this.add(stateLabel, constraints);
 
-        GameController controller = new GameController();
+        GamePresenter controller = new GamePresenter();
         controller.setSelectedLettersLabel(selectedLettersPanel);
         controller.setSubmitButton(submitButton);
         controller.setLetterGridPanel(cells);

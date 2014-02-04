@@ -13,23 +13,10 @@ public class LetterCell {
 
     public final int x, y;
     private LetterContainer container;
-    protected boolean used;
 
     public LetterCell(int x, int y) {
         this.x = x;
         this.y = y;
-    }
-
-    public boolean hasBeenUsed() {
-        return used;
-    }
-
-    public boolean isSelected() {
-        return used;
-    }
-
-    public void setAsUsed() {
-        this.used = true;
     }
     
     public boolean hasContainer(){
@@ -48,6 +35,5 @@ public class LetterCell {
 
     public void clear() {
         this.container = null;
-        this.used = false;
     }
 }

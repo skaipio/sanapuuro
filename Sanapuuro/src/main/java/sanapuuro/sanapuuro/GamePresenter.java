@@ -23,10 +23,11 @@ import sanapuuro.sanapuuro.gui.SubmitButton;
 import sanapuuro.sanapuuro.letters.LetterPool;
 
 /**
- *
+ * Updates game logic instances and GUI instances according to input.
+ * Resembles the presenter in MVP pattern.
  * @author skaipio
  */
-public class GameController implements MouseListener, ActionListener {
+public class GamePresenter implements MouseListener, ActionListener {
 
     private final Game game = new Game();
     private JLabel selectedLettersLabel;
@@ -39,6 +40,9 @@ public class GameController implements MouseListener, ActionListener {
     private GridCursor gridCursor;
     private LetterPool letterPool;
 
+    /**
+     * Starts a new game and prepares the views.
+     */
     public void newGame() {
         this.game.newGame();
         this.gridCursor = this.game.getGridCursor();
@@ -74,6 +78,10 @@ public class GameController implements MouseListener, ActionListener {
         this.stateLabel = label;
     }
 
+    /**
+     * Handles mouse click events from views.
+     * @param e Event from one of the controller's views.
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         
@@ -111,6 +119,10 @@ public class GameController implements MouseListener, ActionListener {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Handles only the submit button event.
+     * @param e Button event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof SubmitButton) {
@@ -120,15 +132,14 @@ public class GameController implements MouseListener, ActionListener {
                 this.updateLetterPoolPanel();
                 this.deselectCells(selectedContainers);
                 this.selectedLettersLabel.setText("");
-            } else {
-                this.stateLabel.setText("Word is not valid.");
             }
+            this.stateLabel.setText(this.game.getStatus());
         }
     }
 
     private void updateLetterPoolPanel() {
         for (LetterContainer container : this.letterPool.getLetters()) {
-            this.letterPoolPanel.setLetterToCell(container.letter.toString(), container.letterPoolIndex(), container.isSelected());
+            this.letterPoolPanel.setLetterToCell(container.letter.toString(), container.letterPoolIndex());
         }
     }
 
@@ -139,13 +150,6 @@ public class GameController implements MouseListener, ActionListener {
             this.letterGridPanel.setCellSelectionAt(false, container.getX(), container.getY());
         }
     }
-
-//    private void setSelectedLettersToGrid(List<LetterContainer> letterContainers) {
-//        System.out.println("Setting selected letters to grid");
-//        for (LetterContainer lc : letterContainers) {
-//            this.letterGridPanel.setLetterToCell(lc.letter.toString(), lc.getX(), lc.getY());
-//        }
-//    }
 
     private void leftClickLetterPoolCell(LetterPoolCell cell) {
         this.letterPool.setCurrentSelection(cell.index);
@@ -162,7 +166,6 @@ public class GameController implements MouseListener, ActionListener {
             this.letterPoolPanel.grayOutLetter(this.letterPool.getCurrentSelectedIndex());
             String letter = this.gridCursor.getLetterUnderCursor().toString();
             this.letterGridPanel.setLetterToCell(letter, this.gridCursor.getX(), this.gridCursor.getY());
-            //this.setSelectedLettersToGrid(this.gridCursor.getSelectedLetters());
             this.updateSelectedLettersLabel();
         }
     }
@@ -173,7 +176,6 @@ public class GameController implements MouseListener, ActionListener {
         if (container != null) {
             if(container.isFromLetterPool()){
                 cell.removeLetter();
-                //this.letterGridPanel.removeLetterFromCell(this.gridCursor.getX(), this.gridCursor.getY());
                 this.letterPoolPanel.letterReturnedToPool(container.letterPoolIndex());
             }          
             cell.deselect();
