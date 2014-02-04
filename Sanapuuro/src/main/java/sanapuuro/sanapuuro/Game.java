@@ -77,7 +77,7 @@ class Game implements GridCursorListener {
     }
 
     /**
-     * Listens to letter submission. These submissions come only from the grid cursor.
+     * Evaluates the given letters and raises the score if evaluation was successful.
      * @param letterContainers Containers holding the letters to evaluate.
      * @return True if letters formed a valid word, false otherwise.
      */
