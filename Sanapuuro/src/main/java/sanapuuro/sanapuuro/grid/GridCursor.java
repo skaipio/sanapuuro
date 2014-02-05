@@ -92,9 +92,11 @@ public class GridCursor {
         List<LetterContainer> containers = new ArrayList<>(this.selectedLetters);
         for (LetterContainer container : containers) {
             if (container.isFromLetterPool()) {
+                this.grid.removeContainerAt(container.getX(), container.getY());
                 this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
             }
         }
+        this.selectionDirection = null;
         this.selectedLetters.clear();
         return containers;
     }

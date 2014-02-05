@@ -54,13 +54,15 @@
                 <version>0.30</version>
                 <configuration>
                     <targetClasses>
-                        <param>sanapuuro.sanapuuro.*</param>
+                        <param>sanapuuro.sanapuuro.Game</param>
+                        <param>sanapuuro.sanapuuro.Player</param>
                         <param>sanapuuro.sanapuuro.grid.*</param>
                         <param>sanapuuro.sanapuuro.words.*</param>
                         <param>sanapuuro.sanapuuro.letters.*</param>
                     </targetClasses>
                     <targetTests>
-                        <param>sanapuuro.sanapuuro.*</param>
+                        <param>sanapuuro.sanapuuro.GameTest</param>
+                        <param>sanapuuro.sanapuuro.PlayerTest</param>
                         <param>sanapuuro.sanapuuro.grid.*</param>
                         <param>sanapuuro.sanapuuro.words.*</param>
                         <param>sanapuuro.sanapuuro.letters.*</param>

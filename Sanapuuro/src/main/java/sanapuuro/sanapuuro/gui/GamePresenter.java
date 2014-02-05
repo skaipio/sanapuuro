@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sanapuuro.sanapuuro;
+package sanapuuro.sanapuuro.gui;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -16,6 +16,8 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import sanapuuro.sanapuuro.Game;
+import sanapuuro.sanapuuro.Player;
 import sanapuuro.sanapuuro.grid.GridCursor;
 import sanapuuro.sanapuuro.grid.LetterContainer;
 import sanapuuro.sanapuuro.gui.GridCell;

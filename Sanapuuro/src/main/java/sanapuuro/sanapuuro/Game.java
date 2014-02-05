@@ -18,7 +18,7 @@ import sanapuuro.sanapuuro.words.WordEvaluator;
  * retrieve the grid cursor and letter pool for input.
  * @author skaipio
  */
-class Game {
+public class Game {
     private final Grid grid;
     private Letters letters;
     private Player player;

@@ -11,7 +11,7 @@ import sanapuuro.sanapuuro.words.WordEvaluator;
  */
 public class Player {
 
-    private String status;
+    private String status = "";
     private GridCursor cursor;
     private int score = 0;
     private WordEvaluator wordEval;
@@ -31,6 +31,10 @@ public class Player {
     
     public int getScore(){
         return this.score;
+    }
+    
+    public void resetScore(){
+        this.score = 0;
     }
 
     /**

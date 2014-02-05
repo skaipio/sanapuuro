@@ -7,7 +7,6 @@ package sanapuuro.sanapuuro.gui;
 
 import java.awt.Button;
 import java.awt.FlowLayout;
-import sanapuuro.sanapuuro.GamePresenter;
 import java.awt.GridBagConstraints;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;

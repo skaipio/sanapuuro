@@ -19,6 +19,7 @@ import sanapuuro.sanapuuro.letters.Letter;
 import sanapuuro.sanapuuro.letters.LetterPool;
 import sanapuuro.sanapuuro.letters.LetterReader;
 import sanapuuro.sanapuuro.letters.Letters;
+import sanapuuro.sanapuuro.words.WordEvaluator;
 
 /**
  *
@@ -144,17 +145,17 @@ public class GridCursorTest {
     @Test
     public void cursorDoesNotAddPickedLetterToCellIfCellNotEmpty() {
         Letter letter = new Letter('a', 0, 0);
-        LetterCell cell = this.grid.getCellAt(this.gridCursor.getX(), this.gridCursor.getY());
-        cell.setContainer(new LetterContainer(letter));
+        LetterContainer cell = this.gridCursor.getContainerUnderCursor();
+        this.grid.setContainerAt(new LetterContainer(letter), this.gridCursor.getX(), this.gridCursor.getY());
         boolean letterWasSet = this.gridCursor.addLetterUnderCursor();
-        assertNotSame(this.letterPool.getCurrentSelection(), cell.getContainer());
+        assertFalse(letterWasSet);
+        assertNotSame(this.letterPool.getCurrentSelection(), this.gridCursor.getContainerUnderCursor());
     }
 
     @Test
     public void cursorSelectsLetterWhenCellHasLetter() {
         Letter letter = new Letter('a', 0, 0);
-        LetterCell cell = this.grid.getCellAt(this.gridCursor.getX(), this.gridCursor.getY());
-        cell.setContainer(new LetterContainer(letter));
+        this.grid.setContainerAt(new LetterContainer(letter), this.gridCursor.getX(), this.gridCursor.getY());
         boolean letterWasSelected = this.gridCursor.selectLetterUnderCursor();
         assertTrue(letterWasSelected);
     }
@@ -162,11 +163,9 @@ public class GridCursorTest {
     @Test
     public void cursorAddsSelectedAndAddedLettersToSelectionList() {
         Letter l1 = new Letter('a', 0, 0);
-        LetterCell cell = this.grid.getCellAt(4, 4);
-        cell.setContainer(new LetterContainer(l1));
+        this.grid.setContainerAt(new LetterContainer(l1), 4, 4);
         Letter l2 = new Letter('b', 0, 0);
-        cell = this.grid.getCellAt(4, 5);
-        cell.setContainer(new LetterContainer(l2));
+        this.grid.setContainerAt(new LetterContainer(l2), 4, 5);
         Letter l3 = this.letterPool.getCurrentSelection().letter;
         Set<Letter> expectedLetters = new HashSet<>();
         expectedLetters.add(l1);
@@ -190,7 +189,7 @@ public class GridCursorTest {
         expectedLetters.add(l1);
         expectedLetters.add(l2);
         expectedLetters.add(l3);
-        this.gridCursor.moveLeft();
+        this.gridCursor.moveUp();
         this.gridCursor.addLetterUnderCursor();
         containers = this.gridCursor.getSelectedContainers();
         for (LetterContainer container : containers) {
@@ -198,43 +197,43 @@ public class GridCursorTest {
         }
         assertEquals(0, expectedLetters.size());
     }
+    
+    @Test
+    public void cursorDoesNotAddLettersThatAreNotAllOnSameRowOrColumn() {
+        boolean added = this.gridCursor.addLetterUnderCursor();
+        assertTrue(added);
+        this.letterPool.setCurrentSelection(1);
+        this.gridCursor.moveRight();
+        added = this.gridCursor.addLetterUnderCursor();
+        this.letterPool.setCurrentSelection(2);
+        assertTrue(added);
+        this.gridCursor.moveUp();
+        added = this.gridCursor.addLetterUnderCursor();
+        assertFalse(added);
+        
+        this.gridCursor.clearSelectedContainers();
+        
+        added = this.gridCursor.addLetterUnderCursor();      
+        assertTrue(added);
+        this.letterPool.setCurrentSelection(3);
+        this.gridCursor.moveDown();
+        added = this.gridCursor.addLetterUnderCursor(); 
+        assertTrue(added);
+        this.gridCursor.moveLeft();
+        this.letterPool.setCurrentSelection(4);
+        added = this.gridCursor.addLetterUnderCursor();
+        assertFalse(added);
+    }
 
     @Test
     public void cursorClearsSelectionListOnClearAndReturnsTheClearedLetters() {
         Letter l1 = new Letter('a', 0, 0);
-        LetterCell cell = this.grid.getCellAt(4, 4);
-        cell.setContainer(new LetterContainer(l1));
+        this.grid.setContainerAt(new LetterContainer(l1), 4, 4);
 
         this.gridCursor.selectLetterUnderCursor();
         List<LetterContainer> clearedLetters = this.gridCursor.clearSelectedContainers();
         List<LetterContainer> containers = this.gridCursor.getSelectedContainers();
         assertTrue(containers.isEmpty());
         assertEquals(1, clearedLetters.size());
-    }
-
-    @Test
-    public void selectedLettersAreSubmittedCorrectly() {
-        Letter l1 = new Letter('a', 0, 0);
-        LetterCell cell = this.grid.getCellAt(4, 4);
-        cell.setContainer(new LetterContainer(l1));
-
-        GridCursorTestListener listener = new GridCursorTestListener();
-        this.gridCursor.addListener(listener);
-
-        this.gridCursor.selectLetterUnderCursor();
-        this.gridCursor.submitLetters();
-        assertFalse(listener.letters.isEmpty());
-        assertTrue(this.gridCursor.getSelectedContainers().isEmpty());
-    }
-
-    private class GridCursorTestListener implements GridCursorListener {
-
-        public List<LetterContainer> letters;
-
-        @Override
-        public boolean lettersSubmitted(List<LetterContainer> letters) {
-            this.letters = letters;
-            return true;
-        }
     }
 }

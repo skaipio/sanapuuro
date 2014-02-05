@@ -42,61 +42,43 @@ public class GridTest {
     }
 
     @Test
-    public void gridIsFilledWithCellsAfterCreation() {
-        boolean hasNulls = false;
-        for (int x = 0; x < this.grid.width; x++) {
-            for (int y = 0; y < this.grid.height; y++) {
-                if (this.grid.getCellAt(x, y) == null) {
-                    hasNulls = true;
-                    break;
-                }
-            }
-            if (hasNulls) {
-                break;
-            }
-        }
-        assertFalse("grid shouldn't have null cells", hasNulls);
-    }
-
-    @Test
-    public void gridHasNoLettersAfterClearing() {
-        LetterCell cell = this.grid.getCellAt(0, 0);
-        cell.setContainer(new LetterContainer(new Letter('a', 0, 0)));
-        cell = this.grid.getCellAt(7, 7);
-        cell.setContainer(new LetterContainer(new Letter('b', 0, 0)));
-        boolean hasLetters = false;
+    public void gridHasNoLetterContainersAfterClearing() {
+        LetterContainer container = this.grid.getContainerAt(0, 0);
+        this.grid.setContainerAt(new LetterContainer(new Letter('a', 0, 0)), 0, 0);
+        this.grid.setContainerAt(new LetterContainer(new Letter('b', 0, 0)), 7, 7);
+        boolean hasContainers = false;
         this.grid.clear();
         for (int x = 0; x < this.grid.width; x++) {
             for (int y = 0; y < this.grid.height; y++) {
-                if (this.grid.getCellAt(x, y).getContainer() != null) {
-                    hasLetters = true;
+                if (this.grid.getContainerAt(x, y) != null) {
+                    hasContainers = true;
                     break;
                 }
             }
-            if (hasLetters) {
+            if (hasContainers) {
                 break;
             }
         }
-        assertFalse("grid shouldn't have any letters", hasLetters);
+        assertFalse("grid shouldn't have any letters", hasContainers);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsExceptionWhenGettingCellOutsideGridNegativeX() {
-        this.grid.getCellAt(-1, 0);
+        this.grid.getContainerAt(-1, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsExceptionWhenGettingCellOutsideGridNegativeY() {
-        this.grid.getCellAt(0, -1);
+        this.grid.getContainerAt(0, -1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsExceptionWhenGettingCellOutsideGridXTooBig() {
-        this.grid.getCellAt(this.grid.width, 0);
+        this.grid.getContainerAt(this.grid.width, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsExceptionWhenGettingCellOutsideGridYTooBig() {
-        this.grid.getCellAt(0, this.grid.height);
+        this.grid.getContainerAt(0, this.grid.height);
     }
 }

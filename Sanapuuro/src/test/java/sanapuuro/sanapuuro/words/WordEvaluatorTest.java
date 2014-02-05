@@ -54,16 +54,16 @@ public class WordEvaluatorTest {
     @Test
     public void correctValidationOfHorizontalWords() {
         LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
-        this.grid.getCellAt(0, 0).setContainer(container);
+        this.grid.setContainerAt(container, 0, 0);
         this.validHorizontalWord.add(container);
         container = new LetterContainer(new Letter('u', 2, 1));
-        this.grid.getCellAt(1, 0).setContainer(container);
+        this.grid.setContainerAt(container, 1, 0);
         this.validHorizontalWord.add(container);
         container = new LetterContainer(new Letter('b', 3, 1));
-        this.grid.getCellAt(2, 0).setContainer(container);
+        this.grid.setContainerAt(container, 2, 0);
         this.validHorizontalWord.add(container);
         container = new LetterContainer(new Letter('y', 4, 1));
-        this.grid.getCellAt(3, 0).setContainer(container);
+        this.grid.setContainerAt(container, 3, 0);
         this.validHorizontalWord.add(container);
         assertTrue(this.wordEvaluator.evalute(validHorizontalWord).succeeded);
     }
@@ -71,16 +71,16 @@ public class WordEvaluatorTest {
     @Test
     public void correctValidationOfVerticalWords() {
         LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
-        this.grid.getCellAt(0, 0).setContainer(container);
+        this.grid.setContainerAt(container, 0, 0);
         this.validVerticalWord.add(container);
         container = new LetterContainer(new Letter('u', 1, 1));
-        this.grid.getCellAt(0, 1).setContainer(container);
+        this.grid.setContainerAt(container, 0, 1);
         this.validVerticalWord.add(container);
         container = new LetterContainer(new Letter('b', 2, 1));
-        this.grid.getCellAt(0, 2).setContainer(container);
+        this.grid.setContainerAt(container, 0, 2);
         this.validVerticalWord.add(container);
         container = new LetterContainer(new Letter('y', 1, 1));
-        this.grid.getCellAt(0, 3).setContainer(container);
+        this.grid.setContainerAt(container, 0, 3);
         this.validVerticalWord.add(container);
         assertTrue(this.wordEvaluator.evalute(validVerticalWord).succeeded);
     }
@@ -88,16 +88,16 @@ public class WordEvaluatorTest {
     @Test
     public void doesNotValidateWordWithGaps() {
         LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
-        this.grid.getCellAt(0, 0).setContainer(container);
+        this.grid.setContainerAt(container, 0, 0);
         this.wordWithGaps.add(container);
         container = new LetterContainer(new Letter('u', 1, 1));
-        this.grid.getCellAt(0, 1).setContainer(container);
+        this.grid.setContainerAt(container, 0, 1);
         this.wordWithGaps.add(container);
         container = new LetterContainer(new Letter('b', 2, 1));
-        this.grid.getCellAt(0, 2).setContainer(container);
+        this.grid.setContainerAt(container, 0, 2);
         this.wordWithGaps.add(container);
         container = new LetterContainer(new Letter('y', 1, 1));
-        this.grid.getCellAt(0, 4).setContainer(container);
+        this.grid.setContainerAt(container, 0, 4);
         this.wordWithGaps.add(container);
         assertFalse(this.wordEvaluator.evalute(wordWithGaps).succeeded);
     }
@@ -105,16 +105,16 @@ public class WordEvaluatorTest {
     @Test
     public void doesNotValidateWordNotOnSameRowOrColumn() {
         LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
-        this.grid.getCellAt(0, 0).setContainer(container);
+        this.grid.setContainerAt(container, 0, 0);
         this.wordNotOnSameRow.add(container);
         container = new LetterContainer(new Letter('u', 1, 1));
-        this.grid.getCellAt(1, 1).setContainer(container);
+        this.grid.setContainerAt(container, 1, 1);
         this.wordNotOnSameRow.add(container);
         container = new LetterContainer(new Letter('b', 2, 1));
-        this.grid.getCellAt(0, 2).setContainer(container);
+        this.grid.setContainerAt(container, 0, 2);
         this.wordNotOnSameRow.add(container);
         container = new LetterContainer(new Letter('y', 1, 1));
-        this.grid.getCellAt(0, 3).setContainer(container);
+        this.grid.setContainerAt(container, 0, 3);
         this.wordNotOnSameRow.add(container);
         assertFalse(this.wordEvaluator.evalute(wordNotOnSameRow).succeeded);
     }
@@ -122,10 +122,10 @@ public class WordEvaluatorTest {
     @Test
     public void wordsTooShortNotValid() {
         LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
-        this.grid.getCellAt(0, 0).setContainer(container);
+        this.grid.setContainerAt(container, 0, 0);
         this.wordTooShort.add(container);
         container = new LetterContainer(new Letter('u', 1, 1));
-        this.grid.getCellAt(0, 1).setContainer(container);
+        this.grid.setContainerAt(container, 0, 1);
         this.wordTooShort.add(container);
         assertFalse(this.wordEvaluator.evalute(wordTooShort).succeeded);
     }
@@ -133,16 +133,16 @@ public class WordEvaluatorTest {
     @Test
     public void returnCorrectScoreForLetters() {
         LetterContainer container = new LetterContainer(new Letter('r', 1, 1));
-        this.grid.getCellAt(0, 0).setContainer(container);
+        this.grid.setContainerAt(container, 0, 0);
         this.validHorizontalWord.add(container);
         container = new LetterContainer(new Letter('u', 2, 1));
-        this.grid.getCellAt(1, 0).setContainer(container);
+        this.grid.setContainerAt(container, 1, 0);
         this.validHorizontalWord.add(container);
         container = new LetterContainer(new Letter('b', 3, 1));
-        this.grid.getCellAt(2, 0).setContainer(container);
+        this.grid.setContainerAt(container, 2, 0);
         this.validHorizontalWord.add(container);
         container = new LetterContainer(new Letter('y', 4, 1));
-        this.grid.getCellAt(3, 0).setContainer(container);
+        this.grid.setContainerAt(container, 3, 0);
         this.validHorizontalWord.add(container);
         int score = this.wordEvaluator.evalute(validHorizontalWord).getScore();
         assertEquals(1 + 2 + 3 + 4, score);
