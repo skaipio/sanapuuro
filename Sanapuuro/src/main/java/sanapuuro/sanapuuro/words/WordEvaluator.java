@@ -38,15 +38,18 @@ public class WordEvaluator {
                 }
                 word.append(container.letter.character);
             }
-            if (!allUsed && wordValidator.hasWord(word.toString())) {
-                int score = this.evaluteLetters(letterContainers);
-                return new EvaluationResult(true, "Score for word " + word.toString().toUpperCase() + ": " + score, score);
-                
-            }else{
+            if (!allUsed) {
+                if (wordValidator.hasWord(word.toString())) {
+                    int score = this.evaluteLetters(letterContainers);
+                    return new EvaluationResult(true, "Score for word " + word.toString().toUpperCase() + ": " + score, score);
+                }else{
+                    return new EvaluationResult(false, word.toString().toUpperCase() + " is not a valid English word.");
+                }
+            } else {
                 return new EvaluationResult(false, "Word must have at least one letter not used before.");
             }
         }
-        return new EvaluationResult(false, "All letters must be on the same column or row.");
+        return new EvaluationResult(false, "Word must be on the same column or row and should not have gaps.");
     }
 
     private int evaluteLetters(List<LetterContainer> letterContainers) {
@@ -81,22 +84,23 @@ public class WordEvaluator {
         return true;
     }
 
-    public static class EvaluationResult{
+    public static class EvaluationResult {
+
         public final boolean succeeded;
         public final String reason;
         private int score;
-        
-        EvaluationResult(boolean succeeded, String reason, int score){
+
+        EvaluationResult(boolean succeeded, String reason, int score) {
             this(succeeded, reason);
             this.score = score;
         }
-        
-        EvaluationResult(boolean succeeded, String reason){
+
+        EvaluationResult(boolean succeeded, String reason) {
             this.succeeded = succeeded;
             this.reason = reason;
         }
-        
-        public int getScore(){
+
+        public int getScore() {
             return this.score;
         }
     }

@@ -21,15 +21,10 @@ import sanapuuro.sanapuuro.words.WordEvaluator;
  * retrieve the grid cursor and letter pool for input.
  * @author skaipio
  */
-class Game implements GridCursorListener {
-
-    private int score;
+class Game {
     private final Grid grid;
-    private GridCursor cursor;
-    private LetterPool letterPool;
     private Letters letters;
-    private WordEvaluator wordEval;
-    private String status;
+    private Player player;
 
     public Game() {
         this.grid = new Grid(12, 12);
@@ -39,21 +34,18 @@ class Game implements GridCursorListener {
      * Starts a new game and loads in valid letters and words.
      */
     public void newGame() {
-        this.score = 0;
         this.grid.clear();
         this.letters = new LetterReader(new Random());
-        this.wordEval = new WordEvaluator();
-        this.letterPool = new LetterPool(letters);
-        this.cursor = new GridCursor(this.grid, this.letterPool);
-        this.cursor.addListener(this);
+        
+        LetterPool pool = new LetterPool(letters);
+        GridCursor cursor = new GridCursor(this.grid, pool);
+        WordEvaluator wordEval = new WordEvaluator();
+        
+        this.player = new Player(cursor, wordEval);
     }
 
-    public GridCursor getGridCursor() {
-        return this.cursor;
-    }
-
-    public LetterPool getLetterPool() {
-        return this.letterPool;
+    public Player getPlayer(){
+        return this.player;
     }
 
     public int getGridWidth() {
@@ -64,40 +56,7 @@ class Game implements GridCursorListener {
         return this.grid.height;
     }
 
-    public int getScore() {
-        return this.score;
-    }
-    
-    public String getStatus(){
-        return this.status;
-    }
-
-    public LetterContainer getLetterContainerAt(int x, int y) {
-        return this.grid.getContainerAt(x, y);
-    }
-
-    /**
-     * Evaluates the given letters and raises the score if evaluation was successful.
-     * @param letterContainers Containers holding the letters to evaluate.
-     * @return True if letters formed a valid word, false otherwise.
-     */
-    @Override
-    public boolean lettersSubmitted(List<LetterContainer> letterContainers) {
-        System.out.print("Submitting letters: ");
-        for (LetterContainer letter : letterContainers) {
-            System.out.print(letter.letter);
-        }
-        System.out.println("");
-        WordEvaluator.EvaluationResult result = this.wordEval.evalute(letterContainers);
-        this.status = result.reason;
-        if (result.succeeded) {
-            this.score += result.getScore();
-            for (LetterContainer container : letterContainers) {
-                container.setToGridPermanently();
-            }
-            letterPool.removePickedLetters();
-            return true;
-        }
-        return false;
-    }
+//    public LetterContainer getLetterContainerAt(int x, int y) {
+//        return this.grid.getContainerAt(x, y);
+//    }
 }

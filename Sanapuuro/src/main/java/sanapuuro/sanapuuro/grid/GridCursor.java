@@ -7,7 +7,6 @@ package sanapuuro.sanapuuro.grid;
 
 import java.util.ArrayList;
 import java.util.List;
-import sanapuuro.sanapuuro.letters.Letter;
 import sanapuuro.sanapuuro.letters.LetterPool;
 import sanapuuro.sanapuuro.utils.MathUtils;
 
@@ -21,7 +20,6 @@ public class GridCursor {
     private final Grid grid;
     private final LetterPool letterPool;
     private final List<LetterContainer> selectedLetters = new ArrayList<>();
-    private final List<GridCursorListener> listeners = new ArrayList<>();
 
     public GridCursor(Grid grid, LetterPool letterPool) {
         this.grid = grid;
@@ -38,8 +36,13 @@ public class GridCursor {
         return this.y;
     }
 
+    public LetterPool getLetterPool() {
+        return this.letterPool;
+    }
+
     /**
      * Sets the grid cursors to point at the given coordinates.
+     *
      * @param x coordinate
      * @param y coordinate
      */
@@ -80,41 +83,41 @@ public class GridCursor {
 
     /**
      * Clears all selections.
-     * @return The list of selected letters if there were any and empty list otherwise.
+     *
+     * @return The list of selected letters if there were any and empty list
+     * otherwise.
      */
     public List<LetterContainer> clearSelectedContainers() {
-        List<LetterContainer> letters = new ArrayList<>(this.selectedLetters);
+        List<LetterContainer> containers = new ArrayList<>(this.selectedLetters);
+        for (LetterContainer container : containers) {
+            if (container.isFromLetterPool()) {
+                this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
+            }
+        }
         this.selectedLetters.clear();
-        return letters;
+        return containers;
     }
 
     /**
      * Returns a list of selected letters.
-     * @return The list of selected letters if there are any and empty list otherwise.
+     *
+     * @return The list of selected letters if there are any and empty list
+     * otherwise.
      */
     public List<LetterContainer> getSelectedContainers() {
         List<LetterContainer> letters = new ArrayList<>(this.selectedLetters);
         return letters;
     }
 
-    /**
-     * Submits the currently selected letters to any listeners listening to the submission event
-     * and clears letter selections.
-     * @return 
-     */
-    public boolean submitLetters() {
-        boolean successfullSubmission = false;
-
-        for (GridCursorListener listener : this.listeners) {
-            successfullSubmission = listener.lettersSubmitted(this.getSelectedContainers());
+    public void setSelectedLettersToGridPermanently() {
+        for (LetterContainer container : this.selectedLetters) {
+            container.setToGridPermanently();
         }
-        if(successfullSubmission){
-            this.clearSelectedContainers();
-        }
-        return successfullSubmission;
+        this.letterPool.removePickedLetters();
+        this.selectedLetters.clear();
     }
-    
-    public boolean hasContainerUnderCursor(){
+
+    public boolean hasContainerUnderCursor() {
         return this.grid.hasContainerAt(x, y);
     }
 
@@ -123,15 +126,17 @@ public class GridCursor {
     }
 
     /**
-     * Adds a letter container from the letter pool on the current cursor location if
-     * there is no other container already present and adds it to selected containers.
-     * @return 
+     * Adds a letter container from the letter pool on the current cursor
+     * location if there is no other container already present and adds it to
+     * selected containers.
+     *
+     * @return
      */
     public boolean addLetterUnderCursor() {
         if (!this.grid.hasContainerAt(x, y)) {
             LetterContainer container = this.letterPool.useLetter();
             if (container != null) {
-                this.grid.setContainerAt(container,x,y);
+                this.grid.setContainerAt(container, x, y);
                 this.selectedLetters.add(container);
                 return true;
             }
@@ -140,11 +145,13 @@ public class GridCursor {
     }
 
     /**
-     * Adds the letter under the cursor to selected letter containers if there is any.
+     * Adds the letter under the cursor to selected letter containers if there
+     * is any.
+     *
      * @return True if there was a container to select, false otherwise.
      */
     public boolean selectLetterUnderCursor() {
-        if (this.grid.hasContainerAt(x, y) && !this.grid.getContainerAt(x, y).isFromLetterPool()) {
+        if (this.grid.hasContainerAt(x, y) && !this.selectedLetters.contains(this.getContainerUnderCursor())) {
             this.selectedLetters.add(this.grid.getContainerAt(x, y));
             return true;
         }
@@ -158,20 +165,12 @@ public class GridCursor {
     public void removeSelectionUnderCursor() {
         if (this.grid.hasContainerAt(x, y)) {
             LetterContainer container = this.grid.getContainerAt(x, y);
-            if (this.selectedLetters.remove(container)) {              
+            if (this.selectedLetters.remove(container)) {
                 if (container.isFromLetterPool()) {
                     this.grid.removeContainerAt(x, y);
                     this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
                 }
             }
         }
-    }
-
-    /**
-     * Adds a listener.
-     * @param listener Listener to listen to submission events.
-     */
-    public void addListener(GridCursorListener listener) {
-        this.listeners.add(listener);
     }
 }
