@@ -41,11 +41,6 @@ public class Player {
      */
     public boolean submitSelectedLetters() {
         List<LetterContainer> letterContainers = this.cursor.getSelectedContainers();
-        System.out.print("Submitting letters: ");
-        for (LetterContainer letter : letterContainers) {
-            System.out.print(letter.letter);
-        }
-        System.out.println("");
         WordEvaluator.EvaluationResult result = this.wordEval.evalute(letterContainers);
         this.status = result.reason;
         if (result.succeeded) {
