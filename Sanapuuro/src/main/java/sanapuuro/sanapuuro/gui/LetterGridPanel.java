@@ -17,7 +17,7 @@ import javax.swing.JPanel;
  */
 public class LetterGridPanel extends JPanel {
     private final int rows, columns;
-    private final int cellSize = 42;
+    private final int cellSize = 30;
     private final GridCell[][] cells;
 
     public LetterGridPanel(int rows, int columns) {
@@ -26,15 +26,19 @@ public class LetterGridPanel extends JPanel {
         this.cells = new GridCell[rows][columns];
         this.setLayout(new GridLayout(rows, columns));
         this.setBackground(Color.BLACK);
-        this.setPreferredSize(new Dimension(columns * cellSize, rows * cellSize+2));
+        //this.setBounds(0,0, columns * cellSize, rows * cellSize+2);
         this.initCells();
         //this.setBorder(BorderFactory.createLineBorder(Color.black));
+        //this.setMinimumSize(new Dimension(columns*cellSize, rows*cellSize));
+        this.setPreferredSize(new Dimension(columns*cellSize, rows*cellSize));
+        System.out.println(this.getSize());
+        
     }
     
     private void initCells(){
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < rows; x++) {
-                GridCell cell = new GridCell(x, y);
+                GridCell cell = new GridCell(x, y, this.cellSize);
                 this.cells[y][x] = cell;
                 this.add(cell);
             }

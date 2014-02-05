@@ -7,6 +7,7 @@
 package sanapuuro.sanapuuro.gui;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
@@ -15,25 +16,24 @@ import javax.swing.JPanel;
  * @author skaipio
  */
 public class LetterPoolPanel extends JPanel {
-    private final int cellSize = 36;
+    private final int cellSize = 32;
     private LetterPoolCell[] letterCells;
     private LetterPoolCell currentSelection;
     
     public LetterPoolPanel(){
-        this.setLayout(null);     
+        this.setLayout(new FlowLayout(FlowLayout.LEADING, 0,0));
+        this.setPreferredSize(new Dimension(8*cellSize, cellSize)); 
     }
     
     public void init(int size){
         this.letterCells = new LetterPoolCell[size];
-        //int poolXOffset = 42*12/2-size*cellSize/2;
-        int poolXOffset = 0;
         for(int i = 0; i < letterCells.length; i++){
             LetterPoolCell cell = new LetterPoolCell(i);
             this.letterCells[i] = cell;
-            this.add(cell);
-            cell.setBounds(i*cellSize+poolXOffset, 0, cellSize, cellSize);
+            this.add(cell);           
+            //cell.setBounds(i*cellSize, 0, cellSize, cellSize);
         }
-        this.setPreferredSize(new Dimension(36*size,36));
+        //this.setPreferredSize(new Dimension(cellSize*size,cellSize));
         this.letterCells[0].select();
         this.currentSelection = this.letterCells[0];
         this.repaint();

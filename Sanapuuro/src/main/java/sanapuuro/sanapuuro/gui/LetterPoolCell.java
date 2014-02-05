@@ -6,6 +6,7 @@
 package sanapuuro.sanapuuro.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.JPanel;
@@ -18,6 +19,7 @@ public class LetterPoolCell extends JPanel {
 
     private String letter = "";
     private int fontSize = 24;
+    private int cellSize = 32;
     private boolean selected = false;
     private int selecBorderWidth = 3;
     public final int index;
@@ -27,6 +29,7 @@ public class LetterPoolCell extends JPanel {
         this.index = index;
         this.setBackground(Color.BLACK);
         this.setFont(new Font("Arial", Font.PLAIN, this.fontSize));
+        this.setPreferredSize(new Dimension(cellSize, cellSize));
     }
 
     public void setLetter(String letter) {

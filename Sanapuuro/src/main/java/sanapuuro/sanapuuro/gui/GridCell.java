@@ -18,18 +18,21 @@ import javax.swing.JPanel;
  */
 public class GridCell extends JPanel{
     private String letter = "";
+    private int cellSize;
     private int letterSize = 24;
     private boolean isSelected = false;
     private Color fontColor = Color.WHITE;
     public final int x, y;
     
-    public GridCell(int x, int y){
+    public GridCell(int x, int y, int cellSize){
+        this.cellSize = cellSize;
         this.x = x;
         this.y = y;
         this.setFont(new Font("Arial", Font.PLAIN, letterSize));
         this.setBackground(Color.BLACK);
-        this.setSize(letterSize+6, letterSize+6);
-        //this.setPreferredSize(new Dimension(letterSize+6, letterSize+6));
+        //this.setSize(letterSize+6, letterSize+6);
+        //this.setBounds(0,0,cellSize, cellSize);
+        this.setPreferredSize(new Dimension(cellSize, cellSize));
     }
     
     @Override

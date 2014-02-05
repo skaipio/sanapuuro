@@ -5,10 +5,8 @@
  */
 package sanapuuro.sanapuuro.gui;
 
-import java.awt.Button;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -73,6 +71,7 @@ public class GameWindow extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 GameWindow window = new GameWindow();
                 window.setVisible(true);
@@ -82,6 +81,7 @@ public class GameWindow extends javax.swing.JFrame {
     }
 
     private void newGame() {
+        this.setBounds(0, 0, 500, 500);
         GridBagConstraints constraints = new GridBagConstraints();
 
         constraints.fill = GridBagConstraints.NONE;
@@ -97,7 +97,6 @@ public class GameWindow extends javax.swing.JFrame {
         this.add(submitButton, constraints);
 
         LetterGridPanel cells = new LetterGridPanel(12, 12);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridwidth = 2;
         constraints.gridx = 0;
         constraints.gridy = 1;
@@ -105,7 +104,7 @@ public class GameWindow extends javax.swing.JFrame {
         this.add(cells, constraints);
         
         JPanel poolAndScorePanel = new JPanel();
-        poolAndScorePanel.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 5));
+        poolAndScorePanel.setLayout(new FlowLayout(FlowLayout.LEADING, 5, 5));
 
         LetterPoolPanel letterPoolPanel = new LetterPoolPanel();
         poolAndScorePanel.add(letterPoolPanel);
@@ -113,7 +112,9 @@ public class GameWindow extends javax.swing.JFrame {
         JLabel scoreLabel = new ScoreLabel();
         scoreLabel.setText(letterPoolPanel.getWidth() + "");
         poolAndScorePanel.add(scoreLabel);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridy = 2;
+        constraints.anchor = GridBagConstraints.WEST;
         this.add(poolAndScorePanel, constraints);
 
         JLabel stateLabel = new JLabel("Press left mouse button to add letters to or select letters from grid.");

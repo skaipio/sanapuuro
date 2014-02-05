@@ -1,27 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
-    <action>
-        <actionName>CUSTOM-cobertura</actionName>
-        <displayName>cobertura</displayName>
-        <goals>
-            <goal>cobertura:cobertura</goal>
-        </goals>
-    </action>
-    <action>
-        <actionName>CUSTOM-pit</actionName>
-        <displayName>pit</displayName>
-        <goals>
-            <goal>org.pitest:pitest-maven:mutationCoverage</goal>
-        </goals>
-    </action>
-    <action>
-        <actionName>CUSTOM-Javadoc</actionName>
-        <displayName>Javadoc</displayName>
-        <goals>
-            <goal>javadoc:javadoc</goal>
-        </goals>
-    </action>
-    <action>
+        <action>
             <actionName>run</actionName>
             <packagings>
                 <packaging>jar</packaging>
@@ -33,9 +12,10 @@
             <properties>
                 <exec.args>-classpath %classpath sanapuuro.sanapuuro.gui.GameWindow</exec.args>
                 <exec.executable>java</exec.executable>
+                <exec.workingdir></exec.workingdir>
             </properties>
         </action>
-    <action>
+        <action>
             <actionName>debug</actionName>
             <packagings>
                 <packaging>jar</packaging>
@@ -48,9 +28,10 @@
                 <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath sanapuuro.sanapuuro.gui.GameWindow</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
+                <exec.workingdir></exec.workingdir>
             </properties>
         </action>
-    <action>
+        <action>
             <actionName>profile</actionName>
             <packagings>
                 <packaging>jar</packaging>
@@ -62,6 +43,7 @@
             <properties>
                 <exec.args>-classpath %classpath sanapuuro.sanapuuro.gui.GameWindow</exec.args>
                 <exec.executable>java</exec.executable>
+                <exec.workingdir></exec.workingdir>
             </properties>
         </action>
-</actions>
+    </actions>
