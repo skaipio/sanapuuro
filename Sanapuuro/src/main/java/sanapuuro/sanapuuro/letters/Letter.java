@@ -7,7 +7,7 @@
 package sanapuuro.sanapuuro.letters;
 
 /**
- *
+ * Used to store the character, score and spawn frequency associated with the letter.
  * @author skaipio
  */
 public class Letter{

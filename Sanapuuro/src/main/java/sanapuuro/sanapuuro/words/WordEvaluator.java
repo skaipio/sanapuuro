@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import sanapuuro.sanapuuro.grid.LetterContainer;
-import sanapuuro.sanapuuro.utils.LetterCoordinateComparator;
+import sanapuuro.sanapuuro.utils.LetterContainerCoordinateComparator;
 
 /**
- *
+ * Used for checking if letters form a word and the score for the word.
  * @author skaipio
  */
 public class WordEvaluator {
@@ -20,6 +20,11 @@ public class WordEvaluator {
     private final int wordLengthMinimum = 3;
     private final WordList wordValidator = new WordReader();
 
+    /**
+     * Evalutes the letters in the letter containers, checking if they form a word.
+     * @param letterContainers Containers to evaluate.
+     * @return An evaluation result that holds whether the word was valid and a positive score if it was.
+     */
     public EvaluationResult evalute(List<LetterContainer> letterContainers) {
         if (letterContainers == null || letterContainers.isEmpty()) {
             throw new IllegalArgumentException("No letters were given for validation.");
@@ -33,7 +38,7 @@ public class WordEvaluator {
             StringBuilder word = new StringBuilder(letterContainers.size());
             boolean allUsed = true;
             for (LetterContainer container : letterContainers) {
-                if (!container.hasBeenUsed()) {
+                if (!container.isPermanent()) {
                     allUsed = false;
                 }
                 word.append(container.letter.character);
@@ -61,7 +66,7 @@ public class WordEvaluator {
     }
 
     private boolean allContainersOnSameRowWithoutGaps(List<LetterContainer> letterContainers) {
-        Collections.sort(letterContainers, new LetterCoordinateComparator(false));
+        Collections.sort(letterContainers, new LetterContainerCoordinateComparator(false));
         for (int i = 1; i < letterContainers.size(); i++) {
             LetterContainer previous = letterContainers.get(i - 1);
             LetterContainer current = letterContainers.get(i);
@@ -73,7 +78,7 @@ public class WordEvaluator {
     }
 
     private boolean allContainersOnSameColumnWithoutGaps(List<LetterContainer> letterContainers) {
-        Collections.sort(letterContainers, new LetterCoordinateComparator(true));
+        Collections.sort(letterContainers, new LetterContainerCoordinateComparator(true));
         for (int i = 1; i < letterContainers.size(); i++) {
             LetterContainer previous = letterContainers.get(i - 1);
             LetterContainer current = letterContainers.get(i);
@@ -84,18 +89,21 @@ public class WordEvaluator {
         return true;
     }
 
+    /**
+     * A class to hold the evaluation result from word evaluation.
+     */
     public static class EvaluationResult {
 
         public final boolean succeeded;
         public final String reason;
         private int score;
 
-        EvaluationResult(boolean succeeded, String reason, int score) {
+        private EvaluationResult(boolean succeeded, String reason, int score) {
             this(succeeded, reason);
             this.score = score;
         }
 
-        EvaluationResult(boolean succeeded, String reason) {
+        private EvaluationResult(boolean succeeded, String reason) {
             this.succeeded = succeeded;
             this.reason = reason;
         }

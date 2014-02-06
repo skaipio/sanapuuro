@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- *
+ * Holds and reads valid English words from a file.
  * @author skaipio
  */
 public class WordReader implements WordList {
@@ -22,6 +22,9 @@ public class WordReader implements WordList {
         this.words = this.getWords();
     }
 
+    /**
+     * @return All valid English words given by a file.
+     */
     public List<String> getWords() {
         try {
             Scanner reader = new Scanner(new File(englishWordListPath));
@@ -38,6 +41,10 @@ public class WordReader implements WordList {
         return new ArrayList<>();
     }
 
+    /**
+     * @param word Word to check.
+     * @return True, if the word was found in the English word list, false otherwise.
+     */
     @Override
     public boolean hasWord(String word) {
         return word.length() >= 2 && words.contains(word);

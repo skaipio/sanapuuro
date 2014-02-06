@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * Used for reading in valid English letters from a file.
  * @author skaipio
  */
 public class LetterReader implements Letters {
@@ -32,6 +32,39 @@ public class LetterReader implements Letters {
         this.sortedLetters = this.readAndSortLetters();
     }
 
+    /**
+     * Builds a letter matching the given character.
+     * @param c Character to match with letter.
+     * @return A letter based on the given character.
+     */
+    @Override
+    public Letter getLetterMatchingCharacter(char c) {
+        for (Letter letter : this.sortedLetters) {
+            if (letter.character == c) {
+                return letter;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets a random letter based on its frequency value.
+     * @return A random letter.
+     */
+    @Override
+    public Letter getRandomLetter() {
+        float rnd = (float) random.nextDouble();
+        float accumulated = 0;
+        int i = 0;
+        Letter letter;
+        do {
+            letter = this.sortedLetters.get(i);
+            accumulated += letter.frequency;
+            i++;
+        } while (accumulated < rnd && i < this.sortedLetters.size());
+        return letter;
+    }
+    
     private List<Letter> readAndSortLetters() {
         List<Letter> letters = new ArrayList<>();
         try {
@@ -55,29 +88,5 @@ public class LetterReader implements Letters {
         int score = Integer.parseInt(matcher.group(2));
         float frequency = Float.parseFloat(matcher.group(3));
         return new Letter(character, score, frequency);
-    }
-
-    @Override
-    public Letter getLetterMatchingCharacter(char c) {
-        for (Letter letter : this.sortedLetters) {
-            if (letter.character == c) {
-                return letter;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Letter getRandomLetter() {
-        float rnd = (float) random.nextDouble();
-        float accumulated = 0;
-        int i = 0;
-        Letter letter;
-        do {
-            letter = this.sortedLetters.get(i);
-            accumulated += letter.frequency;
-            i++;
-        } while (accumulated < rnd && i < this.sortedLetters.size());
-        return letter;
     }
 }

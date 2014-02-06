@@ -10,12 +10,13 @@ import java.util.Comparator;
 import sanapuuro.sanapuuro.grid.LetterContainer;
 
 /**
- *
+ * Used to compare the x and y coordinate values of letter containers.
+ * Compares y values if byRow is true, x otherwise.
  * @author skaipio
  */
-public class LetterCoordinateComparator implements Comparator<LetterContainer> {
+public class LetterContainerCoordinateComparator implements Comparator<LetterContainer> {
     private final boolean byRow;
-    public LetterCoordinateComparator(boolean byRow){
+    public LetterContainerCoordinateComparator(boolean byRow){
         this.byRow = byRow;
     }
 

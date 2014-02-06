@@ -9,13 +9,14 @@ package sanapuuro.sanapuuro.grid;
 import sanapuuro.sanapuuro.letters.Letter;
 
 /**
- *
+ * Holds a letter and keeps track of whether it is from a letter pool or
+ * if it has been permanently set to the grid.
  * @author skaipio
  */
 public class LetterContainer {
     public final Letter letter;
     private boolean fromLetterPool;
-    private boolean hasBeenUsed = false;
+    private boolean isPermanent = false;
     private int letterPoolIndex;
     private int x, y;
     
@@ -45,19 +46,34 @@ public class LetterContainer {
         this.y = y;
     }
     
-    public boolean hasBeenUsed(){
-        return this.hasBeenUsed;
+    /**
+     * True if container is in grid permanently.
+     * @return 
+     */
+    public boolean isPermanent(){
+        return this.isPermanent;
     }
     
+    /**
+     * True if container has been placed on the grid from a letter pool.
+     * @return 
+     */
     public boolean isFromLetterPool(){
         return this.fromLetterPool;
     }
     
+    /**
+     * Sets the container to the grid permanently so that it can no longer be removed.
+     */
     public void setToGridPermanently(){
         this.fromLetterPool = false;
-        this.hasBeenUsed = true;
+        this.isPermanent = true;
     }
     
+    /**
+     * This is only valid if the letter has not been set permanently.
+     * @return Letter's letter pool index.
+     */
     public int letterPoolIndex(){
         return this.letterPoolIndex;
     }

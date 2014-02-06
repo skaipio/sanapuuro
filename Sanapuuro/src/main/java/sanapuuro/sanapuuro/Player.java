@@ -6,7 +6,7 @@ import sanapuuro.sanapuuro.grid.LetterContainer;
 import sanapuuro.sanapuuro.words.WordEvaluator;
 
 /**
- *
+ * Keeps track of score and gives access to a controllable letter grid cursor.
  * @author skaipio@cs
  */
 public class Player {
@@ -34,7 +34,7 @@ public class Player {
     }
 
     /**
-     * Evaluates the given letters and raises the score if evaluation was
+     * Evaluates currently selected letters and raises the score if evaluation was
      * successful.
      *
      * @return True if letters formed a valid word, false otherwise.

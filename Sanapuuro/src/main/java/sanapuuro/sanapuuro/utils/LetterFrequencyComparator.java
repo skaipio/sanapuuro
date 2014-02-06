@@ -10,7 +10,7 @@ import java.util.Comparator;
 import sanapuuro.sanapuuro.letters.Letter;
 
 /**
- *
+ * Used to compare the frequencies of letters.
  * @author skaipio
  */
 public class LetterFrequencyComparator implements Comparator<Letter> {

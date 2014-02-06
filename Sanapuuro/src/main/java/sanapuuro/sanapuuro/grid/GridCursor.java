@@ -118,7 +118,7 @@ public class GridCursor {
         for (LetterContainer container : this.selectedLetters) {
             container.setToGridPermanently();
         }
-        this.letterPool.removePickedLetters();
+        this.letterPool.replacePickedLetters();
         this.selectedLetters.clear();
     }
 
@@ -135,7 +135,7 @@ public class GridCursor {
      * location if there is no other container already present and adds it to
      * selected containers.
      *
-     * @return
+     * @return True if adding letter from the letter pool was successful, false otherwise.
      */
     public boolean addLetterUnderCursor() {
         if (!this.hasContainerUnderCursor() && this.canSelectContainerUnderCursor()) {

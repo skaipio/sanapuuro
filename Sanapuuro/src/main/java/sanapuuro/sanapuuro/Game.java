@@ -52,8 +52,4 @@ class Game {
     public int getGridHeight() {
         return this.grid.height;
     }
-
-//    public LetterContainer getLetterContainerAt(int x, int y) {
-//        return this.grid.getContainerAt(x, y);
-//    }
 }
