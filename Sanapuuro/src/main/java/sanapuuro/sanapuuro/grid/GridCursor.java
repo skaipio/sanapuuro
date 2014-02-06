@@ -20,6 +20,7 @@ public class GridCursor {
     private final Grid grid;
     private final LetterPool letterPool;
     private final List<LetterContainer> selectedLetters = new ArrayList<>();
+    private Direction selectionDirection;
 
     public GridCursor(Grid grid, LetterPool letterPool) {
         this.grid = grid;
@@ -109,6 +110,10 @@ public class GridCursor {
         return letters;
     }
 
+    /**
+     * Sets the currently selected letters to the grid permanently and
+     * also removes them from the player's letter pool.
+     */
     public void setSelectedLettersToGridPermanently() {
         for (LetterContainer container : this.selectedLetters) {
             container.setToGridPermanently();
@@ -133,9 +138,15 @@ public class GridCursor {
      * @return
      */
     public boolean addLetterUnderCursor() {
-        if (!this.grid.hasContainerAt(x, y)) {
+        if (!this.hasContainerUnderCursor() && this.canSelectContainerUnderCursor()) {
             LetterContainer container = this.letterPool.useLetter();
             if (container != null) {
+                if (!this.selectedLetters.isEmpty()) {
+                    LetterContainer previous = this.selectedLetters.get(this.selectedLetters.size() - 1);
+                    
+                    this.selectionDirection = Direction.getDirection(previous.getX(), previous.getY(), x, y);
+                    System.out.println("direction: " + this.selectionDirection.toString());
+                }
                 this.grid.setContainerAt(container, x, y);
                 this.selectedLetters.add(container);
                 return true;
@@ -151,8 +162,13 @@ public class GridCursor {
      * @return True if there was a container to select, false otherwise.
      */
     public boolean selectLetterUnderCursor() {
-        if (this.grid.hasContainerAt(x, y) && !this.selectedLetters.contains(this.getContainerUnderCursor())) {
-            this.selectedLetters.add(this.grid.getContainerAt(x, y));
+        if (this.hasContainerUnderCursor() && this.canSelectContainerUnderCursor()) {
+            LetterContainer selection = this.getContainerUnderCursor();
+            if (!this.selectedLetters.isEmpty()) {
+                LetterContainer previous = this.selectedLetters.get(this.selectedLetters.size() - 1);
+                this.selectionDirection = Direction.getDirection(previous.getX(), previous.getY(), x, y);
+            }
+            this.selectedLetters.add(selection);
             return true;
         }
         return false;
@@ -161,16 +177,94 @@ public class GridCursor {
     /**
      * Removes letter container under cursor from selected containers if it was
      * there to begin with.
+     *
+     * @return True, if there was a letter container from a letter pool to remove, false otherwise.
      */
-    public void removeSelectionUnderCursor() {
+    public boolean removeSelectionUnderCursor() {
         if (this.grid.hasContainerAt(x, y)) {
             LetterContainer container = this.grid.getContainerAt(x, y);
-            if (this.selectedLetters.remove(container)) {
+            if ((container == this.selectedLetters.get(0)
+                    || container == this.selectedLetters.get(this.selectedLetters.size() - 1))
+                    && this.selectedLetters.remove(container)) {
                 if (container.isFromLetterPool()) {
                     this.grid.removeContainerAt(x, y);
                     this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
                 }
+                if (this.selectedLetters.size() == 1){
+                    this.selectionDirection = null;
+                }
+                return true;
             }
+        }
+        return false;
+    }
+
+    private boolean canSelectContainerUnderCursor() {
+
+        if (this.selectedLetters.isEmpty()) {
+            return true;
+        }
+        if (this.selectedLetters.size() == 1) {
+            return this.selectionIsNextToPreviouslySelectedContainer();
+        }
+
+        if (this.selectionDirection != null) {
+            return this.selectionIsAligned();
+        }
+        return false;
+    }
+
+    private boolean selectionIsNextToPreviouslySelectedContainer() {
+        LetterContainer previouslySelected = this.selectedLetters.get(this.selectedLetters.size() - 1);
+        int deltaX = Math.abs(x - previouslySelected.getX());
+        int deltaY = Math.abs(y - previouslySelected.getY());
+        return (!(deltaX >= 1 && deltaY >= 1) && (deltaX == 1 || deltaY == 1));
+    }
+
+    private boolean selectionIsAligned() {
+        LetterContainer previous = this.selectedLetters.get(this.selectedLetters.size() - 1);
+        switch (this.selectionDirection) {
+            case Left:
+                return previous.getX() + Direction.Left.deltaX == x && previous.getY() == y;
+            case Right:
+                return previous.getX() + Direction.Right.deltaX == x && previous.getY() == y;
+            case Up:
+                return previous.getY() + Direction.Up.deltaY == y && previous.getX() == x;
+            case Down:
+                return previous.getY() + Direction.Down.deltaY == y && previous.getX() == x;
+        }
+        return false;
+    }
+
+    /**
+     * A utility class used in determining whether selected letter containers
+     * are aligned.
+     */
+    private static enum Direction {
+
+        Left(-1, 0), Right(1, 0), Up(0, -1), Down(0, 1);
+
+        public final int deltaX, deltaY;
+
+        public static Direction getDirection(int fromX, int fromY, int toX, int toY) {
+            int dX = toX - fromX;
+            if (dX > 0) {
+                return Right;
+            }
+            if (dX < 0) {
+                return Left;
+            }
+            int dY = toY - fromY;
+            if (dY > 0) {
+                return Down;
+            } else {
+                return Up;
+            }
+        }
+
+        private Direction(int deltaX, int deltaY) {
+            this.deltaX = deltaX;
+            this.deltaY = deltaY;
         }
     }
 }

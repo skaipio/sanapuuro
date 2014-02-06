@@ -5,12 +5,9 @@
  */
 package sanapuuro.sanapuuro;
 
-import java.util.List;
 import java.util.Random;
 import sanapuuro.sanapuuro.grid.Grid;
 import sanapuuro.sanapuuro.grid.GridCursor;
-import sanapuuro.sanapuuro.grid.GridCursorListener;
-import sanapuuro.sanapuuro.grid.LetterContainer;
 import sanapuuro.sanapuuro.letters.LetterPool;
 import sanapuuro.sanapuuro.letters.LetterReader;
 import sanapuuro.sanapuuro.letters.Letters;

@@ -58,7 +58,7 @@ public class LetterPoolPanel extends JPanel {
         this.letterCells[i].setInUse(false);
     }
     
-    public void changeCurrentSelectionTo(int i){
+    public void setCurrentSelectionTo(int i){
         this.currentSelection.deselect();
         this.currentSelection = this.letterCells[i];
         this.currentSelection.select();

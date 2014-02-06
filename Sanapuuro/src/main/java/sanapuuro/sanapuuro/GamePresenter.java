@@ -5,8 +5,11 @@
  */
 package sanapuuro.sanapuuro;
 
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
@@ -28,10 +31,11 @@ import sanapuuro.sanapuuro.letters.LetterPool;
  *
  * @author skaipio
  */
-public class GamePresenter implements MouseListener, ActionListener {
+public class GamePresenter implements MouseListener, KeyListener, ActionListener {
 
     private final Game game = new Game();
     private Player player;
+    private final Container contentPane;
     private JLabel selectedLettersLabel;
     private JButton submitButton;
     private LetterGridPanel letterGridPanel;
@@ -41,6 +45,10 @@ public class GamePresenter implements MouseListener, ActionListener {
 
     private GridCursor gridCursor;
     private LetterPool letterPool;
+
+    public GamePresenter(Container contentPane) {
+        this.contentPane = contentPane;
+    }
 
     /**
      * Starts a new game and prepares the views.
@@ -140,6 +148,37 @@ public class GamePresenter implements MouseListener, ActionListener {
             }
             this.stateLabel.setText(this.player.getStatus());
         }
+        System.out.println(this.contentPane.isFocusOwner());
+        this.contentPane.requestFocusInWindow();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        System.out.println("key typed");
+        if (e.getKeyChar() == 'a') {
+            int selection = this.letterPool.getCurrentSelectedIndex();
+            int newSelection = selection - 1;
+            newSelection = newSelection < 0 ? 8 + newSelection : newSelection;
+            System.out.println(newSelection);
+            this.letterPool.setCurrentSelection(newSelection);
+            this.letterPoolPanel.setCurrentSelectionTo(newSelection);
+        } else if (e.getKeyChar() == 'd') {
+            int selection = this.letterPool.getCurrentSelectedIndex();
+            int newSelection = (selection + 1) % 8;
+            System.out.println("d: " + newSelection);
+            this.letterPool.setCurrentSelection(newSelection);
+            this.letterPoolPanel.setCurrentSelectionTo(newSelection);
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private void updateLetterPoolPanel() {
@@ -150,14 +189,14 @@ public class GamePresenter implements MouseListener, ActionListener {
 
     private void deselectCells(List<LetterContainer> selectedContainers) {
         for (LetterContainer container : selectedContainers) {
-            System.out.print(container.letter + " ");
+            //System.out.print(container.letter + " ");
             this.letterGridPanel.setCellSelectionAt(false, container.getX(), container.getY());
         }
     }
 
     private void leftClickLetterPoolCell(LetterPoolCell cell) {
         this.letterPool.setCurrentSelection(cell.index);
-        this.letterPoolPanel.changeCurrentSelectionTo(cell.index);
+        this.letterPoolPanel.setCurrentSelectionTo(cell.index);
     }
 
     private void leftClickGridCell(GridCell cell) {
@@ -172,20 +211,22 @@ public class GamePresenter implements MouseListener, ActionListener {
             this.letterGridPanel.setLetterToCell(letter, this.gridCursor.getX(), this.gridCursor.getY());
             this.updateSelectedLettersLabel();
         }
+
     }
 
     private void rightClickGridCell(GridCell cell) {
         this.gridCursor.setLocation(cell.x, cell.y);
         if (this.gridCursor.hasContainerUnderCursor()) {
             LetterContainer containerUnderCursor = this.gridCursor.getContainerUnderCursor();
-            this.gridCursor.removeSelectionUnderCursor();
+            if (this.gridCursor.removeSelectionUnderCursor()) {
 
-            if (containerUnderCursor.isFromLetterPool()) {
-                cell.removeLetter();
-                this.letterPoolPanel.letterReturnedToPool(containerUnderCursor.letterPoolIndex());
+                if (containerUnderCursor.isFromLetterPool()) {
+                    cell.removeLetter();
+                    this.letterPoolPanel.letterReturnedToPool(containerUnderCursor.letterPoolIndex());
+                }
+                cell.deselect();
+                this.updateSelectedLettersLabel();
             }
-            cell.deselect();
-            this.updateSelectedLettersLabel();
         }
     }
 
@@ -197,5 +238,4 @@ public class GamePresenter implements MouseListener, ActionListener {
         }
         this.selectedLettersLabel.setText(letters.toString());
     }
-
 }

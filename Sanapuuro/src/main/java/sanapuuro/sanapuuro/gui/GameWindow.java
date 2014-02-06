@@ -124,7 +124,7 @@ public class GameWindow extends javax.swing.JFrame {
         constraints.anchor = GridBagConstraints.CENTER;
         this.add(stateLabel, constraints);
 
-        GamePresenter controller = new GamePresenter();
+        GamePresenter controller = new GamePresenter(this.getContentPane());
         controller.setSelectedLettersLabel(selectedLettersPanel);
         controller.setSubmitButton(submitButton);
         controller.setLetterGridPanel(cells);
@@ -132,6 +132,10 @@ public class GameWindow extends javax.swing.JFrame {
         controller.setScoreLabel(scoreLabel);
         controller.setStateLabel(stateLabel);
 
+        this.getContentPane().setFocusable(true);
+        
+        this.getContentPane().addKeyListener(controller);
+        
         controller.newGame();
 
         this.pack();
