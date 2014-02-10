@@ -5,6 +5,9 @@
  */
 package sanapuuro.sanapuuro.grid;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Grid that is used to get and set letter containers to it.
  * @author skaipio
@@ -87,6 +90,24 @@ public class Grid {
             throw new IllegalArgumentException("Given coordinates are not within grid.");
         }
         this.containers[x][y] = null;
+    }
+    
+    public void removeLetterPoolContainersFromGrid(List<LetterContainer> containers) {
+        for (LetterContainer container : containers) {
+            if (container.isFromLetterPool()) {
+                this.removeContainerAt(container.getX(), container.getY());
+            }
+        }
+    }
+    
+    /**
+     * Sets the currently selected letters to the grid permanently and also
+     * removes them from the player's letter pool.
+     */
+    public void setLettersToGridPermanently(List<LetterContainer> containers) {
+        for (LetterContainer container : containers) {
+            container.setToGridPermanently();
+        }
     }
 
     /**

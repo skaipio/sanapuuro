@@ -22,9 +22,10 @@ public class Game {
     private final Grid grid;
     private Letters letters;
     private Player player;
+    private int gridSize = 8;
 
     public Game() {
-        this.grid = new Grid(12, 12);
+        this.grid = new Grid(gridSize, gridSize);
     }
 
     /**
@@ -34,15 +35,17 @@ public class Game {
         this.grid.clear();
         this.letters = new LetterReader(new Random());
         
-        LetterPool pool = new LetterPool(letters);
-        GridCursor cursor = new GridCursor(this.grid, pool);
         WordEvaluator wordEval = new WordEvaluator();
         
-        this.player = new Player(cursor, wordEval);
+        this.player = new Player(grid, wordEval, letters);
     }
 
     public Player getPlayer(){
         return this.player;
+    }
+    
+    public Grid getGrid(){
+        return this.grid;
     }
 
     public int getGridWidth() {

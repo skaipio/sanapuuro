@@ -5,11 +5,20 @@
  */
 package sanapuuro.sanapuuro.gui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 
 /**
  *
@@ -35,8 +44,9 @@ public class GameWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sanapuuro");
+        setBackground(new java.awt.Color(47, 41, 35));
+        setMinimumSize(new java.awt.Dimension(400, 400));
         setName("gameWindowFrame"); // NOI18N
-        setResizable(false);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         pack();
@@ -73,6 +83,7 @@ public class GameWindow extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+                GUISettings.initGUISettings();
                 GameWindow window = new GameWindow();
                 window.setVisible(true);
                 window.newGame();
@@ -81,51 +92,92 @@ public class GameWindow extends javax.swing.JFrame {
     }
 
     private void newGame() {
-        this.setBounds(0, 0, 500, 500);
+        //this.setPreferredSize(new Dimension(500, 500));
+        int hex = 16;
+        this.getContentPane().setBackground(GUISettings.getColorBackground1());
+        this.getContentPane().setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
-        constraints.fill = GridBagConstraints.NONE;
+        JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
+        statusPanel.setBackground(GUISettings.getColorBackground1());
+        statusPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+
+        JLabel timeLabel = new TimeLabel();
+        timeLabel.setPreferredSize(new Dimension(this.getWidth() / 2, 30));
+        statusPanel.add(timeLabel, BorderLayout.WEST);
+
+        JLabel scoreLabel = new ScoreLabel();
+        scoreLabel.setText("");
+        statusPanel.add(scoreLabel, BorderLayout.EAST);
+
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.anchor = GridBagConstraints.WEST;
-        JLabel selectedLettersPanel = new SelectedLettersLabel();
-        this.add(selectedLettersPanel, constraints);
-
-        constraints.gridx = 1;
-        constraints.anchor = GridBagConstraints.EAST;
-        JButton submitButton = new SubmitButton();
-        this.add(submitButton, constraints);
-
-        LetterGridPanel cells = new LetterGridPanel(12, 12);
-        constraints.gridwidth = 2;
+        constraints.gridwidth = 3;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        this.add(statusPanel, constraints);
+        
         constraints.gridx = 0;
         constraints.gridy = 1;
+        this.add(Box.createVerticalStrut(5), constraints);
+
+        JPanel submissionPanel = new JPanel();
+        submissionPanel.setLayout(new BoxLayout(submissionPanel, BoxLayout.LINE_AXIS));
+        submissionPanel.setBackground(GUISettings.getColorBackground1());
+
+        JLabel selectedLettersLabel = new SelectedLettersLabel();
+        JPanel selectedLettersPanel = new JPanel();
+        selectedLettersPanel.setBorder(BorderFactory.createLineBorder(GUISettings.getColorBorder()));
+        selectedLettersPanel.setBackground(GUISettings.getColorBackground2());
+        int width=200, height=40;
+        selectedLettersPanel.setPreferredSize(new Dimension(width, height));
+        selectedLettersPanel.add(selectedLettersLabel);
+        submissionPanel.add(selectedLettersPanel);
+        
+        submissionPanel.add(Box.createHorizontalGlue());
+
+        JButton submitButton = new SubmitButton();
+        submissionPanel.add(submitButton);
+        
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        this.add(submissionPanel, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 3;
+        int fillerWidth = 50;
+        this.add(Box.createHorizontalStrut(fillerWidth), constraints);
+        
+        LetterGridPanel cells = new LetterGridPanel(8, 8);
+        constraints.gridx = 1;
         constraints.anchor = GridBagConstraints.CENTER;
         this.add(cells, constraints);
         
-        JPanel poolAndScorePanel = new JPanel();
-        poolAndScorePanel.setLayout(new FlowLayout(FlowLayout.LEADING, 5, 5));
+        constraints.gridx = 2;
+        this.add(Box.createHorizontalStrut(fillerWidth), constraints);
+        
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        constraints.gridwidth = 3;
+        constraints.fill = GridBagConstraints.NONE;
+        this.add(Box.createVerticalStrut(5), constraints);
 
-        LetterPoolPanel letterPoolPanel = new LetterPoolPanel();
-        poolAndScorePanel.add(letterPoolPanel);
-
-        JLabel scoreLabel = new ScoreLabel();
-        scoreLabel.setText(letterPoolPanel.getWidth() + "");
-        poolAndScorePanel.add(scoreLabel);
+        constraints.gridx = 1;
+        constraints.gridy = 5;
+        constraints.gridwidth = 1;
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridy = 2;
-        constraints.anchor = GridBagConstraints.WEST;
-        this.add(poolAndScorePanel, constraints);
+        LetterPoolPanel letterPoolPanel = new LetterPoolPanel();
+        this.add(letterPoolPanel, constraints);
 
         JLabel stateLabel = new JLabel("Press left mouse button to add letters to or select letters from grid.");
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridx = 0;
-        constraints.gridy = 3;
-        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.gridy = 6;
+        constraints.gridwidth = 3;
         this.add(stateLabel, constraints);
 
         GamePresenter controller = new GamePresenter(this.getContentPane());
-        controller.setSelectedLettersLabel(selectedLettersPanel);
+        controller.setSelectedLettersLabel(selectedLettersLabel);
         controller.setSubmitButton(submitButton);
         controller.setLetterGridPanel(cells);
         controller.setLetterPoolPanel(letterPoolPanel);
@@ -133,9 +185,9 @@ public class GameWindow extends javax.swing.JFrame {
         controller.setStateLabel(stateLabel);
 
         this.getContentPane().setFocusable(true);
-        
+
         this.getContentPane().addKeyListener(controller);
-        
+
         controller.newGame();
 
         this.pack();

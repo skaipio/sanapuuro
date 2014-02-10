@@ -14,21 +14,11 @@ import javax.swing.JLabel;
  *
  * @author skaipio
  */
-public class ScoreLabel extends JLabel {
-    private String prefix = "SCORE: ";
-     public ScoreLabel(){
+public class TimeLabel extends JLabel{
+    public TimeLabel(){
         super();
         this.setFont(GUISettings.getMediumFont());
         this.setForeground(GUISettings.getColorDefaultFont());
-        this.setText("");
-    }
-    
-    @Override
-    public void setText(String text){
-        if (text.isEmpty()){
-            super.setText(prefix);
-        }else{
-            super.setText(prefix + text);
-        }
+        this.setText("TIME LEFT: ");
     }
 }

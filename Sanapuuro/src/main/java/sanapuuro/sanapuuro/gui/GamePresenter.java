@@ -18,13 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import sanapuuro.sanapuuro.Game;
 import sanapuuro.sanapuuro.Player;
-import sanapuuro.sanapuuro.grid.GridCursor;
+import sanapuuro.sanapuuro.grid.Grid;
 import sanapuuro.sanapuuro.grid.LetterContainer;
-import sanapuuro.sanapuuro.gui.GridCell;
-import sanapuuro.sanapuuro.gui.LetterGridPanel;
-import sanapuuro.sanapuuro.gui.LetterPoolCell;
-import sanapuuro.sanapuuro.gui.LetterPoolPanel;
-import sanapuuro.sanapuuro.gui.SubmitButton;
 import sanapuuro.sanapuuro.letters.LetterPool;
 
 /**
@@ -37,6 +32,7 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
 
     private final Game game = new Game();
     private Player player;
+    private Grid grid;
     private final Container contentPane;
     private JLabel selectedLettersLabel;
     private JButton submitButton;
@@ -45,7 +41,10 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
     private JLabel scoreLabel;
     private JLabel stateLabel;
 
-    private GridCursor gridCursor;
+    private boolean selectionMode = false;
+    private GridCellPanel rootSelection;
+    private GridCellPanel tailSelection;
+
     private LetterPool letterPool;
 
     public GamePresenter(Container contentPane) {
@@ -57,9 +56,9 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
      */
     public void newGame() {
         this.game.newGame();
+        this.grid = this.game.getGrid();
         this.player = this.game.getPlayer();
-        this.gridCursor = this.player.getControlledCursor();
-        this.letterPool = this.gridCursor.getLetterPool();
+        this.letterPool = this.player.getLetterPool();
         this.letterPoolPanel.init(this.letterPool.poolSize);
         this.letterPoolPanel.addListenerToCells(this);
         this.updateLetterPoolPanel();
@@ -80,6 +79,7 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
 
     public void setLetterGridPanel(LetterGridPanel letterGridPanel) {
         this.letterGridPanel = letterGridPanel;
+        this.letterGridPanel.addMouseListener(this);
         this.letterGridPanel.addListenerToCells(this);
     }
 
@@ -102,14 +102,16 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
         if (e.getComponent() instanceof LetterPoolCell) {
             LetterPoolCell cell = (LetterPoolCell) e.getComponent();
             this.leftClickLetterPoolCell(cell);
-        } else if (SwingUtilities.isLeftMouseButton(e) && e.getComponent() instanceof GridCell) {
-            GridCell cell = (GridCell) e.getComponent();
-            //System.out.println(e.getComponent().getClass() + " clicked at " + cell.x + "," + cell.y);
+        } else if (SwingUtilities.isLeftMouseButton(e) && e.getSource() instanceof GridCellPanel) {
+            GridCellPanel cell = (GridCellPanel) e.getSource();
             this.leftClickGridCell(cell);
         } else if (SwingUtilities.isRightMouseButton(e)) {
-            GridCell cell = (GridCell) e.getComponent();
-            //System.out.println(e.getComponent().getClass() + " clicked at " + cell.x + "," + cell.y);
-            this.rightClickGridCell(cell);
+            if (!this.selectionMode && e.getComponent() instanceof GridCellPanel) {
+                GridCellPanel cell = (GridCellPanel) e.getComponent();
+                this.returnAddedLetter(cell);
+            } else if (this.selectionMode) {
+                this.rightClick();
+            }
         }
     }
 
@@ -125,12 +127,25 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (e.getSource() instanceof GridCellPanel) {
+            GridCellPanel cell = (GridCellPanel) e.getSource();
+            if (!this.selectionMode) {
+                cell.hoverOn();
+            } else if (this.canSelectCell(cell)) {
+                System.out.println("can select");
+                this.selectCell(cell);
+            }
+        }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (e.getSource() instanceof GridCellPanel) {
+            if (!this.selectionMode) {
+                GridCellPanel cell = (GridCellPanel) e.getSource();
+                cell.hoverOff();
+            }
+        }
     }
 
     /**
@@ -141,7 +156,7 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof SubmitButton) {
-            List<LetterContainer> selectedContainers = this.gridCursor.getSelectedContainers();
+            List<LetterContainer> selectedContainers = this.player.getSelectedContainers();
             if (this.player.submitSelectedLetters()) {
                 this.scoreLabel.setText(this.player.getScore() + "");
                 this.updateLetterPoolPanel();
@@ -201,43 +216,86 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
         this.letterPoolPanel.setCurrentSelectionTo(cell.index);
     }
 
-    private void leftClickGridCell(GridCell cell) {
-        this.gridCursor.setLocation(cell.x, cell.y);
-        if (this.gridCursor.selectLetterUnderCursor()) {
-            cell.select();
-            this.updateSelectedLettersLabel();
-        } else if (this.gridCursor.addLetterUnderCursor()) {
-            cell.select();
-            this.letterPoolPanel.grayOutLetter(this.letterPool.getCurrentSelectedIndex());
-            String letter = this.gridCursor.getContainerUnderCursor().letter.toString();
-            this.letterGridPanel.setLetterToCell(letter, this.gridCursor.getX(), this.gridCursor.getY());
-            this.updateSelectedLettersLabel();
-        }
-
-    }
-
-    private void rightClickGridCell(GridCell cell) {
-        this.gridCursor.setLocation(cell.x, cell.y);
-        if (this.gridCursor.hasContainerUnderCursor()) {
-            LetterContainer containerUnderCursor = this.gridCursor.getContainerUnderCursor();
-            if (this.gridCursor.removeSelectionUnderCursor()) {
-
-                if (containerUnderCursor.isFromLetterPool()) {
-                    cell.removeLetter();
-                    this.letterPoolPanel.letterReturnedToPool(containerUnderCursor.letterPoolIndex());
-                }
-                cell.deselect();
+    private void leftClickGridCell(GridCellPanel cell) {
+        if (!this.selectionMode) {
+            if (this.player.selectLetterAt(cell.x, cell.y)) {
+                this.rootSelection = cell;
+                this.selectionMode = true;
+                this.selectCell(cell);
+            } else if (this.player.addLetterTo(cell.x, cell.y)) {
+                cell.highlight();
+                this.letterPoolPanel.grayOutLetter(this.letterPool.getCurrentSelectedIndex());
+                LetterContainer container = this.grid.getContainerAt(cell.x, cell.y);
+                String letter = container.letter.toString();
+                this.letterGridPanel.setLetterToCell(letter, cell.x, cell.y);
                 this.updateSelectedLettersLabel();
+            }
+        } else {
+            this.selectionMode =false;
+            List<LetterContainer> selectedContainers = this.player.getSelectedContainers();
+            if (this.player.submitSelectedLetters()) {
+                this.scoreLabel.setText(this.player.getScore() + "");
+                this.updateLetterPoolPanel();
+                this.deselectCells(selectedContainers);
+                this.selectedLettersLabel.setText("");
             }
         }
     }
 
+    private boolean canSelectCell(GridCellPanel cell) {
+        if (this.selectionMode && !cell.isSelected() && this.player.selectLetterAt(cell.x, cell.y)) {
+            if (cellOnSameRowWithRootAndTail(cell)) {
+                int diff = Math.abs(cell.x - tailSelection.x);
+                return diff == 1;
+            } else if (cellOnSameColumnWithRootAndTail(cell)) {
+                int diff = Math.abs(cell.y - tailSelection.y);
+                return diff == 1;
+            }
+        }
+        return false;
+    }
+
+    private boolean cellOnSameRowWithRootAndTail(GridCellPanel cell) {
+        return cell.y == this.tailSelection.y && cell.y == this.rootSelection.y;
+    }
+
+    private boolean cellOnSameColumnWithRootAndTail(GridCellPanel cell) {
+        return cell.x == this.tailSelection.x && cell.x == this.rootSelection.x;
+    }
+
+    private void selectCell(GridCellPanel cell) {
+        cell.select();
+        this.updateSelectedLettersLabel();
+        this.tailSelection = cell;
+    }
+
+    private void rightClick() {
+        this.selectionMode = false;
+        List<LetterContainer> containers = this.player.getSelectedContainers();
+        for (LetterContainer container : containers) {
+            GridCellPanel cell = this.letterGridPanel.getCellAt(container.getX(), container.getY());
+            cell.deselect();
+        }
+        this.player.clearSelections();
+        this.updateSelectedLettersLabel();
+    }
+
+    private void returnAddedLetter(GridCellPanel cell) {
+        LetterContainer containerUnderCursor = this.grid.getContainerAt(cell.x, cell.y);
+        if (this.player.returnContainerToLetterPoolAt(cell.x, cell.y)) {
+            cell.removeLetter();
+            this.letterPoolPanel.letterReturnedToPool(containerUnderCursor.letterPoolIndex());
+            cell.removeHighlight();
+        }
+    }
+
     private void updateSelectedLettersLabel() {
-        List<LetterContainer> selectedLetters = this.gridCursor.getSelectedContainers();
+        List<LetterContainer> selectedLetters = this.player.getSelectedContainers();
         StringBuilder letters = new StringBuilder(selectedLetters.size());
         for (LetterContainer lc : selectedLetters) {
             letters.append(lc.letter.character);
         }
         this.selectedLettersLabel.setText(letters.toString());
     }
+
 }

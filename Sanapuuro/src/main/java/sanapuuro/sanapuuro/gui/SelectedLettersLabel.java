@@ -6,7 +6,6 @@
 
 package sanapuuro.sanapuuro.gui;
 
-import java.awt.Font;
 import javax.swing.JLabel;
 
 /**
@@ -16,16 +15,12 @@ import javax.swing.JLabel;
 public class SelectedLettersLabel extends JLabel{
     public SelectedLettersLabel(){
         super();
-        this.setFont(new Font("Arial", Font.PLAIN, 24));
+        this.setFont(GUISettings.getMediumFont());
         this.setText("");
     }
     
     @Override
     public void setText(String text){
-        if (text.isEmpty()){
-            super.setText("Selected letters:");
-        }else{
-            super.setText("Selected letters: " + text.toUpperCase());
-        }
+        super.setText(text.toUpperCase());
     }
 }

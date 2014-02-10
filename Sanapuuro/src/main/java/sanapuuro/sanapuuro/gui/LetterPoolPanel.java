@@ -45,6 +45,8 @@ public class LetterPoolPanel extends JPanel {
         }
     }
     
+    
+    
     public void setLetterToCell(String letter, int i){
         this.letterCells[i].setLetter(letter);
         this.letterCells[i].setInUse(false);
