@@ -15,14 +15,14 @@ import sanapuuro.sanapuuro.words.WordEvaluator;
  */
 public class Player {
 
-    private String status = "";
     private final Grid grid;
     private final LetterPool letterPool;
+    private final WordEvaluator wordEval;
     private final List<LetterContainer> selectedContainers = new ArrayList<>();
     private final List<LetterContainer> addedContainers = new ArrayList<>();
 
+    private String status = "";
     private int score = 0;
-    private final WordEvaluator wordEval;
 
     public Player(Grid grid, WordEvaluator wordEvaluator, Letters letters) {
         this.grid = grid;
@@ -49,12 +49,19 @@ public class Player {
     public List<LetterContainer> getAddedContainers() {
         return new ArrayList<>(this.addedContainers);
     }
+    
+    public LetterContainer getLastSelection(){
+        if (!this.selectedContainers.isEmpty()){
+            return this.selectedContainers.get(this.selectedContainers.size()-1);
+        }
+        return null;
+    }
 
     public void resetScore() {
         this.score = 0;
     }
-    
-    public void clearSelections(){
+
+    public void clearSelections() {
         this.returnAllAddedLettersBackToLetterPool();
         this.addedContainers.clear();
         this.selectedContainers.clear();
@@ -109,9 +116,9 @@ public class Player {
     public boolean selectLetterAt(int x, int y) {
         if (this.grid.hasContainerAt(x, y)) {
             LetterContainer selection = this.grid.getContainerAt(x, y);
-            if (!this.selectedContainers.contains(selection)){
+            if (!this.selectedContainers.contains(selection)) {
                 this.selectedContainers.add(selection);
-            return true;
+                return true;
             }
         }
         return false;
@@ -124,10 +131,24 @@ public class Player {
      * @return True, if there was a letter container from a letter pool to
      * remove, false otherwise.
      */
-    public boolean removeSelectionAt(int x, int y) {
-        if (this.grid.hasContainerAt(x, y)) {
-            LetterContainer container = this.grid.getContainerAt(x, y);
-            return this.selectedContainers.remove(container);
+//    public boolean removeSelectionAndAdditionAt(int x, int y) {
+//        if (this.grid.hasContainerAt(x, y)) {
+//            LetterContainer container = this.grid.getContainerAt(x, y);
+//            return this.selectedContainers.remove(container);
+//        }
+//        return false;
+//    }
+    
+    public boolean removeLastSelection() {
+        if (!this.selectedContainers.isEmpty()){
+            int index = this.selectedContainers.size()-1;
+            LetterContainer container = this.selectedContainers.get(index);           
+            if (this.addedContainers.contains(container)){
+                this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
+                this.addedContainers.remove(container);
+            }
+            this.selectedContainers.remove(index);
+            return true;
         }
         return false;
     }
@@ -152,14 +173,13 @@ public class Player {
 
             this.setSelectedLettersToGridPermanently();
             this.letterPool.replacePickedLetters();
-            this.addedContainers.clear();
-            this.selectedContainers.clear();
+
+            this.clearSelectionsAndAdditions();
             return true;
         }
+        
         this.returnAllAddedLettersBackToLetterPool();
-        this.addedContainers.clear();
-        this.selectedContainers.clear();
-
+        this.clearSelectionsAndAdditions();
         return false;
     }
 
@@ -171,5 +191,10 @@ public class Player {
         this.grid.setLettersToGridPermanently(this.selectedContainers);
         //this.addedContainers.removeAll(this.selectedContainers);
         this.letterPool.replacePickedLetters();
+    }
+
+    private void clearSelectionsAndAdditions() {
+        this.addedContainers.clear();
+        this.selectedContainers.clear();
     }
 }
