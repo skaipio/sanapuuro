@@ -17,18 +17,18 @@ import javax.swing.JPanel;
  */
 public class LetterPoolPanel extends JPanel {
     private final int cellSize = 32;
-    private LetterPoolCell[] letterCells;
-    private LetterPoolCell currentSelection;
+    private LetterPoolCellButton[] letterCells;
+    private LetterPoolCellButton currentSelection;
     
     public LetterPoolPanel(){
         this.setLayout(new FlowLayout(FlowLayout.LEADING, 0,0));
-        this.setPreferredSize(new Dimension(8*cellSize, cellSize)); 
+        this.setBackground(GUISettings.getColorBackground1());
     }
     
     public void init(int size){
-        this.letterCells = new LetterPoolCell[size];
+        this.letterCells = new LetterPoolCellButton[size];
         for(int i = 0; i < letterCells.length; i++){
-            LetterPoolCell cell = new LetterPoolCell(i);
+            LetterPoolCellButton cell = new LetterPoolCellButton(i);
             this.letterCells[i] = cell;
             this.add(cell);           
             //cell.setBounds(i*cellSize, 0, cellSize, cellSize);
@@ -40,12 +40,10 @@ public class LetterPoolPanel extends JPanel {
     }
     
     public void addListenerToCells(MouseListener listener){
-        for (LetterPoolCell letterCell : letterCells) {
+        for (LetterPoolCellButton letterCell : letterCells) {
             letterCell.addMouseListener(listener);
         }
-    }
-    
-    
+    }   
     
     public void setLetterToCell(String letter, int i){
         this.letterCells[i].setLetter(letter);

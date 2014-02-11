@@ -56,6 +56,13 @@ public class Player {
         }
         return null;
     }
+    
+    public LetterContainer getFirstSelection(){
+        if (!this.selectedContainers.isEmpty()){
+            return this.selectedContainers.get(0);
+        }
+        return null;
+    }
 
     public void resetScore() {
         this.score = 0;

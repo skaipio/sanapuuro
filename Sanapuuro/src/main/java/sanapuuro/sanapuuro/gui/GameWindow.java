@@ -127,7 +127,7 @@ public class GameWindow extends javax.swing.JFrame {
         JLabel selectedLettersLabel = new SelectedLettersLabel();
         JPanel selectedLettersPanel = new JPanel();
         selectedLettersPanel.setBorder(BorderFactory.createLineBorder(GUISettings.getColorBorder()));
-        selectedLettersPanel.setBackground(GUISettings.getColorBackground2());
+        selectedLettersPanel.setBackground(GUISettings.getColorSelectedCell());
         int width=200, height=40;
         selectedLettersPanel.setPreferredSize(new Dimension(width, height));
         selectedLettersPanel.add(selectedLettersLabel);
@@ -165,7 +165,8 @@ public class GameWindow extends javax.swing.JFrame {
         constraints.gridx = 1;
         constraints.gridy = 5;
         constraints.gridwidth = 1;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
+        //constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.anchor = GridBagConstraints.CENTER;
         LetterPoolPanel letterPoolPanel = new LetterPoolPanel();
         this.add(letterPoolPanel, constraints);
 

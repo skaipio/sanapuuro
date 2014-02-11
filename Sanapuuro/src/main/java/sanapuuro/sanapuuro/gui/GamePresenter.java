@@ -42,8 +42,6 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
     private JLabel stateLabel;
 
     private boolean selectionMode = false;
-    private GridCellPanel rootSelection;
-    private GridCellPanel tailSelection;
 
     private LetterPool letterPool;
 
@@ -99,8 +97,8 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
     @Override
     public void mouseClicked(MouseEvent e) {
 
-        if (e.getComponent() instanceof LetterPoolCell) {
-            LetterPoolCell cell = (LetterPoolCell) e.getComponent();
+        if (e.getComponent() instanceof LetterPoolCellButton) {
+            LetterPoolCellButton cell = (LetterPoolCellButton) e.getComponent();
             this.leftClickLetterPoolCell(cell);
         } else if (SwingUtilities.isLeftMouseButton(e) && e.getSource() instanceof GridCellPanel) {
             GridCellPanel cell = (GridCellPanel) e.getSource();
@@ -133,10 +131,6 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
             if (!this.selectionMode) {
                 cell.hoverOn();
             }
-//            else if (this.canSelectCell(cell)) {
-//                System.out.println("can select");
-//                this.selectCell(cell);
-//            }
         }
     }
 
@@ -146,10 +140,6 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
             GridCellPanel cell = (GridCellPanel) e.getSource();
             if (!this.selectionMode) {
                 cell.hoverOff();
-            } else if (cell.isSelected()) {
-                if (cell == tailSelection) {
-                    //de
-                }
             }
         }
     }
@@ -161,34 +151,31 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() instanceof SubmitButton) {
-            List<LetterContainer> selectedContainers = this.player.getSelectedContainers();
-            if (this.player.submitSelectedLetters()) {
-                this.scoreLabel.setText(this.player.getScore() + "");
-                this.updateLetterPoolPanel();
-                this.deselectCells(selectedContainers);
-                this.selectedLettersLabel.setText("");
-            }
-            this.stateLabel.setText(this.player.getStatus());
-        }
+//        if (e.getSource() instanceof SubmitButton) {
+//            List<LetterContainer> selectedContainers = this.player.getSelectedContainers();
+//            if (this.player.submitSelectedLetters()) {
+//                this.scoreLabel.setText(this.player.getScore() + "");
+//                this.updateLetterPoolPanel();
+//                this.deselectCells(selectedContainers);
+//                this.selectedLettersLabel.setText("");
+//            }
+//            this.stateLabel.setText(this.player.getStatus());
+//        }
         System.out.println(this.contentPane.isFocusOwner());
         this.contentPane.requestFocusInWindow();
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        System.out.println("key typed");
         if (e.getKeyChar() == 'a') {
             int selection = this.letterPool.getCurrentSelectedIndex();
             int newSelection = selection - 1;
             newSelection = newSelection < 0 ? 8 + newSelection : newSelection;
-            System.out.println(newSelection);
             this.letterPool.setCurrentSelection(newSelection);
             this.letterPoolPanel.setCurrentSelectionTo(newSelection);
         } else if (e.getKeyChar() == 'd') {
             int selection = this.letterPool.getCurrentSelectedIndex();
             int newSelection = (selection + 1) % 8;
-            System.out.println("d: " + newSelection);
             this.letterPool.setCurrentSelection(newSelection);
             this.letterPoolPanel.setCurrentSelectionTo(newSelection);
         }
@@ -212,19 +199,17 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
 
     private void deselectCells(List<LetterContainer> selectedContainers) {
         for (LetterContainer container : selectedContainers) {
-            //System.out.print(container.letter + " ");
             this.letterGridPanel.setCellSelectionAt(false, container.getX(), container.getY());
         }
     }
 
-    private void leftClickLetterPoolCell(LetterPoolCell cell) {
+    private void leftClickLetterPoolCell(LetterPoolCellButton cell) {
         this.letterPool.setCurrentSelection(cell.index);
         this.letterPoolPanel.setCurrentSelectionTo(cell.index);
     }
 
     private void leftClickGridCell(GridCellPanel cell) {
         if (!this.player.getSelectedContainers().isEmpty() && this.cellIsTail(cell)) {
-            System.out.println("submitting");
             this.attemptToSubmitSelections();
         } else if (this.player.getSelectedContainers().isEmpty()
                 || cellIsAlignedWithAndNeighbourOfLastSelection(cell)) {
@@ -237,18 +222,24 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
             LetterContainer container = this.letterPool.getCurrentSelection();
             this.letterPoolPanel.grayOutLetter(container.letterPoolIndex());
         }
+        LetterContainer previousSelection = this.player.getLastSelection();
         if (this.player.selectLetterAt(cell.x, cell.y)) {
             this.selectionMode = true;
             LetterContainer container = this.grid.getContainerAt(cell.x, cell.y);
             String letter = container.letter.toString();
             this.letterGridPanel.getCellAt(cell.x, cell.y).setLetter(letter);
             this.updateSelectedLettersLabel();
+            if (previousSelection != null) {
+                this.removeSelectableLightUpsAroundContainer(previousSelection);
+            }
+            this.lightUpSelectableCells();
             this.selectCell(cell);
         }
     }
 
     private void attemptToSubmitSelections() {
         this.selectionMode = false;
+        LetterContainer tail = this.player.getLastSelection();
         List<LetterContainer> selections = this.player.getSelectedContainers();
         List<LetterContainer> added = this.player.getAddedContainers();
         if (this.player.submitSelectedLetters()) {
@@ -257,28 +248,17 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
             this.removeLettersFromCells(added);
         }
         this.clearSelections(selections);
+        this.removeSelectableLightUpsAroundContainer(tail);
     }
 
-//    private boolean canSelectCell(GridCellPanel cell) {
-//        if (this.selectionMode && !cell.isSelected() && this.player.selectLetterAt(cell.x, cell.y)) {
-//            if (cellOnSameRowWithRootAndTail(cell)) {
-//                int diff = Math.abs(cell.x - tailSelection.x);
-//                return diff == 1;
-//            } else if (cellOnSameColumnWithRootAndTail(cell)) {
-//                int diff = Math.abs(cell.y - tailSelection.y);
-//                return diff == 1;
-//            }
-//        }
-//        return false;
-//    }
     private boolean cellIsTail(GridCellPanel cell) {
-        LetterContainer tail = this.getTailSelection();
+        LetterContainer tail = this.player.getLastSelection();
         return cell.x == tail.getX() && cell.y == tail.getY();
     }
 
     private boolean cellIsAlignedWithAndNeighbourOfLastSelection(GridCellPanel cell) {
-        LetterContainer root = this.getRootSelection();
-        LetterContainer tail = this.getTailSelection();
+        LetterContainer root = this.player.getFirstSelection();
+        LetterContainer tail = this.player.getLastSelection();
         if (cellOnSameRowWithRootAndTail(cell, root, tail)) {
             return this.cellHasNoHorizontalGapToTail(cell, tail);
         } else if (cellOnSameColumnWithRootAndTail(cell, root, tail)) {
@@ -306,28 +286,72 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
     private void selectCell(GridCellPanel cell) {
         cell.select();
         this.updateSelectedLettersLabel();
-        this.tailSelection = cell;
     }
 
     private void deselectCell(GridCellPanel cell) {
         cell.deselect();
         this.updateSelectedLettersLabel();
-        this.tailSelection = cell;
+    }
+
+    private void lightUpSelectableCells() {
+        LetterContainer tail = this.player.getLastSelection();
+        if (this.grid.isWithinGrid(tail.getX(), tail.getY() + 1)) {
+            GridCellPanel cell = this.letterGridPanel.getCellAt(tail.getX(), tail.getY() + 1);
+            if (this.cellIsAlignedWithAndNeighbourOfLastSelection(cell) && !cell.isSelected()) {
+                cell.showAsSelectable(true);
+            }
+        }
+        if (this.grid.isWithinGrid(tail.getX(), tail.getY() - 1)) {
+            GridCellPanel cell = this.letterGridPanel.getCellAt(tail.getX(), tail.getY() - 1);
+            if (this.cellIsAlignedWithAndNeighbourOfLastSelection(cell) && !cell.isSelected()) {
+                cell.showAsSelectable(true);
+            }
+        }
+        if (this.grid.isWithinGrid(tail.getX() + 1, tail.getY())) {
+            GridCellPanel cell = this.letterGridPanel.getCellAt(tail.getX() + 1, tail.getY());
+            if (this.cellIsAlignedWithAndNeighbourOfLastSelection(cell) && !cell.isSelected()) {
+                cell.showAsSelectable(true);
+            }
+        }
+        if (this.grid.isWithinGrid(tail.getX() - 1, tail.getY())) {
+            GridCellPanel cell = this.letterGridPanel.getCellAt(tail.getX() - 1, tail.getY());
+            if (this.cellIsAlignedWithAndNeighbourOfLastSelection(cell) && !cell.isSelected()) {
+                cell.showAsSelectable(true);
+            }
+        }
+    }
+
+    private void removeSelectableLightUpsAroundContainer(LetterContainer container) {
+        if (this.grid.isWithinGrid(container.getX(), container.getY() + 1)) {
+            this.letterGridPanel.getCellAt(container.getX(), container.getY() + 1).showAsSelectable(false);
+        }
+        if (this.grid.isWithinGrid(container.getX(), container.getY() - 1)) {
+            this.letterGridPanel.getCellAt(container.getX(), container.getY() - 1).showAsSelectable(false);
+        }
+        if (this.grid.isWithinGrid(container.getX() + 1, container.getY())) {
+            this.letterGridPanel.getCellAt(container.getX() + 1, container.getY()).showAsSelectable(false);
+        }
+        if (this.grid.isWithinGrid(container.getX() - 1, container.getY())) {
+            this.letterGridPanel.getCellAt(container.getX() - 1, container.getY()).showAsSelectable(false);
+        }
     }
 
     private void rightClick() {
-        this.selectionMode = false;
         List<LetterContainer> containers = this.player.getSelectedContainers();
         if (!containers.isEmpty()) {
             LetterContainer tail = this.player.getLastSelection();
             this.player.removeLastSelection();
             GridCellPanel cell = this.letterGridPanel.getCellAt(tail.getX(), tail.getY());
             cell.deselect();
+            this.removeSelectableLightUpsAroundContainer(tail);
             if (!tail.isPermanent()) {
                 cell.removeLetter();
                 this.letterPoolPanel.letterReturnedToPool(tail.letterPoolIndex());
             }
             this.updateSelectedLettersLabel();
+            if(containers.isEmpty()){
+                this.selectionMode = false;
+            }
         }
 
 //        for (LetterContainer container : containers) {
@@ -354,16 +378,6 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
         this.selectedLettersLabel.setText(letters.toString());
     }
 
-    private LetterContainer getRootSelection() {
-        List<LetterContainer> selections = this.player.getSelectedContainers();
-        return selections.get(0);
-    }
-
-    private LetterContainer getTailSelection() {
-        List<LetterContainer> selections = this.player.getSelectedContainers();
-        return selections.get(selections.size() - 1);
-    }
-
     private void clearSelections(List<LetterContainer> selections) {
         this.deselectCells(selections);
         this.updateLetterPoolPanel();
@@ -372,7 +386,6 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
 
     private void removeLettersFromCells(List<LetterContainer> addedContainers) {
         for (LetterContainer container : addedContainers) {
-            System.out.println("removing added");
             this.letterGridPanel.getCellAt(container.getX(), container.getY()).removeLetter();
         }
     }

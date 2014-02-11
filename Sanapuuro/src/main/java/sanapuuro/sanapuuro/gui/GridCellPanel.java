@@ -26,12 +26,13 @@ public class GridCellPanel extends JPanel{
     public final int x, y;
     private boolean isHighlighted = false;
     private boolean isSelected = false;
+    private boolean showAsSelectable = false;
     
     public GridCellPanel(int x, int y, int cellSize){
         this.cellSize = cellSize;
         this.x = x;
         this.y = y;
-        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
         this.setBackground(GUISettings.getColorButton1());
         this.setPreferredSize(new Dimension(cellSize, cellSize));
     }
@@ -59,11 +60,14 @@ public class GridCellPanel extends JPanel{
     }
     
     public void hoverOn(){
-        this.setBackground(GUISettings.getColorBackground2());
+        this.setBackground(GUISettings.getColorSelectedCell());
     }
     
     public void hoverOff(){
-        if (isSelected){
+        if (this.showAsSelectable){
+            this.setBackground(GUISettings.getColorSelectableCell());
+        }
+        else if (isSelected){
             this.setBackground(GUISettings.getColorBackground3());
         }
         else if (isHighlighted){
@@ -85,15 +89,27 @@ public class GridCellPanel extends JPanel{
     
     public void select(){
         this.isSelected = true;
-        this.setBackground(GUISettings.getColorBackground2());
-        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        this.setBackground(GUISettings.getColorSelectedCell());
+        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         this.repaint();
     }
     
     public void deselect(){
         this.isSelected = false;
         this.setBackground(GUISettings.getColorButton1());
-        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        this.repaint();
+    }
+    
+    public void showAsSelectable(boolean show){
+        this.showAsSelectable = show;
+        if (show){
+            this.setBackground(GUISettings.getColorSelectableCell());
+        }else if (this.isSelected){
+            this.setBackground(GUISettings.getColorSelectedCell());
+        }else{
+            this.setBackground(GUISettings.getColorButton1());
+        }
         this.repaint();
     }
 }
