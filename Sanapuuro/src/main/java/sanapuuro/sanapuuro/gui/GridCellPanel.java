@@ -11,18 +11,18 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
 /**
  *
  * @author skaipio
  */
-public class GridCellPanel extends JPanel{
+public class GridCellPanel extends JLabel{
     private String letter = "";
     private final int cellSize;
-    private int letterSize = 24;
-    private Color fontColor = Color.WHITE;
     public final int x, y;
     private boolean isHighlighted = false;
     private boolean isSelected = false;
@@ -32,17 +32,12 @@ public class GridCellPanel extends JPanel{
         this.cellSize = cellSize;
         this.x = x;
         this.y = y;
+        this.setOpaque(true);
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
         this.setBackground(GUISettings.getColorButton1());
         this.setPreferredSize(new Dimension(cellSize, cellSize));
-    }
-    
-    @Override
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-        g.setColor(fontColor);
-        g.setFont(GUISettings.getMediumFont());
-        g.drawString(letter, this.getWidth()/2-8, this.getHeight()/2+10);
+        this.setFont(GUISettings.getMediumFont());
+        this.setHorizontalAlignment(SwingConstants.CENTER);
     }
     
     public boolean isSelected(){
@@ -50,17 +45,17 @@ public class GridCellPanel extends JPanel{
     }
     
     public void setLetter(String letter){
-        this.letter = letter;
-        this.repaint();
+        this.setText(letter);
+        //this.repaint();
     }
     
     public void removeLetter(){
-        this.letter = "";
-        this.repaint();
+        this.setText("");
+        //this.repaint();
     }
     
     public void hoverOn(){
-        this.setBackground(GUISettings.getColorSelectedCell());
+        this.setBackground(GUISettings.getGridButtonHighlight());
     }
     
     public void hoverOff(){
@@ -68,7 +63,7 @@ public class GridCellPanel extends JPanel{
             this.setBackground(GUISettings.getColorSelectableCell());
         }
         else if (isSelected){
-            this.setBackground(GUISettings.getColorBackground3());
+            this.setBackground(GUISettings.getColorSelectedCell());
         }
         else if (isHighlighted){
             this.setBackground(GUISettings.getColorBorder());

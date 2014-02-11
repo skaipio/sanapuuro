@@ -15,10 +15,9 @@ import javax.swing.JToggleButton;
  */
 public class LetterPoolCellButton extends JToggleButton {
 
-    private String letter = "";
     private final int cellSize = 40;
-    private boolean selected = false;
     private boolean inUse = false;
+    private boolean hoverOn = false;
     public final int index;
 
     public LetterPoolCellButton(int index) {
@@ -31,37 +30,32 @@ public class LetterPoolCellButton extends JToggleButton {
     }
 
     public void setLetter(String letter) {
-        this.letter = letter;
         this.setText(letter);
         this.repaint();
     }
 
     public void setInUse(boolean enabled) {
         this.inUse = enabled;
-        if (enabled){          
+        this.setSelected(enabled);
+        if (this.hoverOn) {
+            this.setBackground(GUISettings.getColorButtonHighlight2());
+        } else if (enabled) {
             this.setBackground(GUISettings.getColorLetterPoolButtonUsed());
-            this.setSelected(true);
-        }else{
-            this.setBackground(GUISettings.getColorButton2());
-            this.setSelected(false);
-        }
-        this.repaint();
-    }
-
-    void deselect() {
-        this.selected = false;
-        if (this.inUse){
-            this.setBackground(GUISettings.getColorLetterPoolButtonUsed());
-        }
-        else{
+        } else {
             this.setBackground(GUISettings.getColorButton2());
         }
         this.repaint();
     }
 
-    void select() {
-        this.selected = true;
-        this.setBackground(GUISettings.getColorButtonHighlight2());
+    void hover(boolean enabled) {
+        hoverOn = enabled;
+        if (enabled) {
+            this.setBackground(GUISettings.getColorButtonHighlight2());
+        } else if (this.inUse) {
+            this.setBackground(GUISettings.getColorLetterPoolButtonUsed());
+        } else {
+            this.setBackground(GUISettings.getColorButton2());
+        }
         this.repaint();
     }
 }

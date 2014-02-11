@@ -99,10 +99,14 @@ public class Grid {
         }
         this.containers[x][y] = null;
     }
+    
+    public void removeContainer(LetterContainer container){
+        this.removeContainerAt(container.getX(), container.getY());
+    }
 
     public void removeContainersFromGrid(List<LetterContainer> containers) {
         for (LetterContainer container : containers) {
-            this.removeContainerAt(container.getX(), container.getY());
+            this.removeContainer(container);
         }
     }
 

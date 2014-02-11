@@ -36,6 +36,10 @@ public class LetterPool{
         return this.currentSelection;
     }
     
+    public boolean isIndexUsed(int i){
+        return this.usedLetterIndices.contains(i);
+    }
+    
     /**
      * @return Currently selected LetterContainer.
      */

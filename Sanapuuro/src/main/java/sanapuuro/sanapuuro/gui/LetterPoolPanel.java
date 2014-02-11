@@ -6,7 +6,6 @@
 
 package sanapuuro.sanapuuro.gui;
 
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseListener;
 import javax.swing.JPanel;
@@ -16,9 +15,8 @@ import javax.swing.JPanel;
  * @author skaipio
  */
 public class LetterPoolPanel extends JPanel {
-    private final int cellSize = 32;
     private LetterPoolCellButton[] letterCells;
-    private LetterPoolCellButton currentSelection;
+    private LetterPoolCellButton currentHoverOn;
     
     public LetterPoolPanel(){
         this.setLayout(new FlowLayout(FlowLayout.LEADING, 0,0));
@@ -31,11 +29,9 @@ public class LetterPoolPanel extends JPanel {
             LetterPoolCellButton cell = new LetterPoolCellButton(i);
             this.letterCells[i] = cell;
             this.add(cell);           
-            //cell.setBounds(i*cellSize, 0, cellSize, cellSize);
         }
-        //this.setPreferredSize(new Dimension(cellSize*size,cellSize));
-        this.letterCells[0].select();
-        this.currentSelection = this.letterCells[0];
+        this.currentHoverOn = this.letterCells[0];
+        this.setHoverTo(0);
         this.repaint();
     }
     
@@ -50,17 +46,14 @@ public class LetterPoolPanel extends JPanel {
         this.letterCells[i].setInUse(false);
     }
     
-    public void grayOutLetter(int i){
-        this.letterCells[i].setInUse(true);
+    public void setContainerAsUsed(int i, boolean enabled){
+        this.letterCells[i].setInUse(enabled);
     }
     
-    public void letterReturnedToPool(int i){
-        this.letterCells[i].setInUse(false);
-    }
-    
-    public void setCurrentSelectionTo(int i){
-        this.currentSelection.deselect();
-        this.currentSelection = this.letterCells[i];
-        this.currentSelection.select();
+    public void setHoverTo(int i){
+        System.out.println("hover at: " + i);
+        this.currentHoverOn.hover(false);
+        this.currentHoverOn = this.letterCells[i];
+        this.currentHoverOn.hover(true);
     }
 }

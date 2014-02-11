@@ -106,7 +106,7 @@ public class Player {
         if (this.grid.hasContainerAt(x, y)) {
             LetterContainer container = this.grid.getContainerAt(x, y);
             if (this.addedContainers.contains(container)) {
-                this.grid.removeContainerAt(x, y);
+                this.grid.removeContainer(container);
                 this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
                 return true;
             }
@@ -152,6 +152,7 @@ public class Player {
             LetterContainer container = this.selectedContainers.get(index);           
             if (this.addedContainers.contains(container)){
                 this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
+                this.grid.removeContainerAt(container.getX(), container.getY());
                 this.addedContainers.remove(container);
             }
             this.selectedContainers.remove(index);
