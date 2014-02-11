@@ -131,19 +131,24 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
             GridCellPanel cell = (GridCellPanel) e.getSource();
             if (!this.selectionMode) {
                 cell.hoverOn();
-            } else if (this.canSelectCell(cell)) {
-                System.out.println("can select");
-                this.selectCell(cell);
             }
+//            else if (this.canSelectCell(cell)) {
+//                System.out.println("can select");
+//                this.selectCell(cell);
+//            }
         }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         if (e.getSource() instanceof GridCellPanel) {
+            GridCellPanel cell = (GridCellPanel) e.getSource();
             if (!this.selectionMode) {
-                GridCellPanel cell = (GridCellPanel) e.getSource();
                 cell.hoverOff();
+            } else if (cell.isSelected()) {
+                if (cell == tailSelection) {
+                    //de
+                }
             }
         }
     }
@@ -217,50 +222,84 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
     }
 
     private void leftClickGridCell(GridCellPanel cell) {
-        if (!this.selectionMode) {
-            if (this.player.selectLetterAt(cell.x, cell.y)) {
-                this.rootSelection = cell;
-                this.selectionMode = true;
-                this.selectCell(cell);
-            } else if (this.player.addLetterTo(cell.x, cell.y)) {
-                cell.highlight();
-                this.letterPoolPanel.grayOutLetter(this.letterPool.getCurrentSelectedIndex());
-                LetterContainer container = this.grid.getContainerAt(cell.x, cell.y);
-                String letter = container.letter.toString();
-                this.letterGridPanel.setLetterToCell(letter, cell.x, cell.y);
-                this.updateSelectedLettersLabel();
-            }
-        } else {
-            this.selectionMode =false;
-            List<LetterContainer> selectedContainers = this.player.getSelectedContainers();
-            if (this.player.submitSelectedLetters()) {
-                this.scoreLabel.setText(this.player.getScore() + "");
-                this.updateLetterPoolPanel();
-                this.deselectCells(selectedContainers);
-                this.selectedLettersLabel.setText("");
-            }
+        if (!this.player.getSelectedContainers().isEmpty() && this.cellIsTail(cell)) {
+            System.out.println("submitting");
+            this.attemptToSubmitSelections();
+        } else if (this.player.getSelectedContainers().isEmpty()
+                || cellIsAlignedWithAndNeighbourOfLastSelection(cell)) {
+            this.attemptToSelectOrAddCell(cell);
         }
     }
 
-    private boolean canSelectCell(GridCellPanel cell) {
-        if (this.selectionMode && !cell.isSelected() && this.player.selectLetterAt(cell.x, cell.y)) {
-            if (cellOnSameRowWithRootAndTail(cell)) {
-                int diff = Math.abs(cell.x - tailSelection.x);
-                return diff == 1;
-            } else if (cellOnSameColumnWithRootAndTail(cell)) {
-                int diff = Math.abs(cell.y - tailSelection.y);
-                return diff == 1;
-            }
+    private void attemptToSelectOrAddCell(GridCellPanel cell) {
+        if (this.player.addLetterTo(cell.x, cell.y)) {
+            LetterContainer container = this.letterPool.getCurrentSelection();
+            this.letterPoolPanel.grayOutLetter(container.letterPoolIndex());
+        }
+        if (this.player.selectLetterAt(cell.x, cell.y)) {
+            this.selectionMode = true;
+            LetterContainer container = this.grid.getContainerAt(cell.x, cell.y);
+            String letter = container.letter.toString();
+            this.letterGridPanel.getCellAt(cell.x, cell.y).setLetter(letter);
+            this.updateSelectedLettersLabel();
+            this.selectCell(cell);
+        }
+    }
+
+    private void attemptToSubmitSelections() {
+        this.selectionMode = false;
+        List<LetterContainer> selections = this.player.getSelectedContainers();
+        List<LetterContainer> added = this.player.getAddedContainers();
+        if (this.player.submitSelectedLetters()) {
+            this.scoreLabel.setText(this.player.getScore() + "");
+        } else {
+            this.removeLettersFromCells(added);
+        }
+        this.clearSelections(selections);
+    }
+
+//    private boolean canSelectCell(GridCellPanel cell) {
+//        if (this.selectionMode && !cell.isSelected() && this.player.selectLetterAt(cell.x, cell.y)) {
+//            if (cellOnSameRowWithRootAndTail(cell)) {
+//                int diff = Math.abs(cell.x - tailSelection.x);
+//                return diff == 1;
+//            } else if (cellOnSameColumnWithRootAndTail(cell)) {
+//                int diff = Math.abs(cell.y - tailSelection.y);
+//                return diff == 1;
+//            }
+//        }
+//        return false;
+//    }
+    private boolean cellIsTail(GridCellPanel cell) {
+        LetterContainer tail = this.getTailSelection();
+        return cell.x == tail.getX() && cell.y == tail.getY();
+    }
+
+    private boolean cellIsAlignedWithAndNeighbourOfLastSelection(GridCellPanel cell) {
+        LetterContainer root = this.getRootSelection();
+        LetterContainer tail = this.getTailSelection();
+        if (cellOnSameRowWithRootAndTail(cell, root, tail)) {
+            return this.cellHasNoHorizontalGapToTail(cell, tail);
+        } else if (cellOnSameColumnWithRootAndTail(cell, root, tail)) {
+            return this.cellHasNoVerticalGapToTail(cell, tail);
         }
         return false;
     }
 
-    private boolean cellOnSameRowWithRootAndTail(GridCellPanel cell) {
-        return cell.y == this.tailSelection.y && cell.y == this.rootSelection.y;
+    private boolean cellOnSameRowWithRootAndTail(GridCellPanel cell, LetterContainer root, LetterContainer tail) {
+        return cell.y == tail.getY() && cell.y == root.getY();
     }
 
-    private boolean cellOnSameColumnWithRootAndTail(GridCellPanel cell) {
-        return cell.x == this.tailSelection.x && cell.x == this.rootSelection.x;
+    private boolean cellOnSameColumnWithRootAndTail(GridCellPanel cell, LetterContainer root, LetterContainer tail) {
+        return cell.x == tail.getX() && cell.x == root.getX();
+    }
+
+    private boolean cellHasNoHorizontalGapToTail(GridCellPanel cell, LetterContainer tail) {
+        return Math.abs(cell.x - tail.getX()) == 1;
+    }
+
+    private boolean cellHasNoVerticalGapToTail(GridCellPanel cell, LetterContainer tail) {
+        return Math.abs(cell.y - tail.getY()) == 1;
     }
 
     private void selectCell(GridCellPanel cell) {
@@ -269,15 +308,32 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
         this.tailSelection = cell;
     }
 
+    private void deselectCell(GridCellPanel cell) {
+        cell.deselect();
+        this.updateSelectedLettersLabel();
+        this.tailSelection = cell;
+    }
+
     private void rightClick() {
         this.selectionMode = false;
         List<LetterContainer> containers = this.player.getSelectedContainers();
-        for (LetterContainer container : containers) {
-            GridCellPanel cell = this.letterGridPanel.getCellAt(container.getX(), container.getY());
+        if (!containers.isEmpty()) {
+            LetterContainer tail = this.getTailSelection();
+            this.player.removeSelectionAt(tail.getX(), tail.getY());
+            GridCellPanel cell = this.letterGridPanel.getCellAt(tail.getX(), tail.getY());
             cell.deselect();
+            if(!tail.isPermanent()){
+                cell.removeLetter();
+                this.letterPoolPanel.letterReturnedToPool(tail.letterPoolIndex());
+            }
+            this.updateSelectedLettersLabel();
         }
-        this.player.clearSelections();
-        this.updateSelectedLettersLabel();
+
+//        for (LetterContainer container : containers) {
+//            GridCellPanel cell = this.letterGridPanel.getCellAt(container.getX(), container.getY());
+//            cell.deselect();
+//        }
+//        this.player.clearSelections();
     }
 
     private void returnAddedLetter(GridCellPanel cell) {
@@ -296,6 +352,29 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
             letters.append(lc.letter.character);
         }
         this.selectedLettersLabel.setText(letters.toString());
+    }
+
+    private LetterContainer getRootSelection() {
+        List<LetterContainer> selections = this.player.getSelectedContainers();
+        return selections.get(0);
+    }
+
+    private LetterContainer getTailSelection() {
+        List<LetterContainer> selections = this.player.getSelectedContainers();
+        return selections.get(selections.size() - 1);
+    }
+
+    private void clearSelections(List<LetterContainer> selections) {
+        this.deselectCells(selections);
+        this.updateLetterPoolPanel();
+        this.selectedLettersLabel.setText("");
+    }
+
+    private void removeLettersFromCells(List<LetterContainer> addedContainers) {
+        for (LetterContainer container : addedContainers) {
+            System.out.println("removing added");
+            this.letterGridPanel.getCellAt(container.getX(), container.getY()).removeLetter();
+        }
     }
 
 }

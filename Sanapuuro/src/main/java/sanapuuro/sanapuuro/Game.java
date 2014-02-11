@@ -7,8 +7,7 @@ package sanapuuro.sanapuuro;
 
 import java.util.Random;
 import sanapuuro.sanapuuro.grid.Grid;
-import sanapuuro.sanapuuro.grid.GridCursor;
-import sanapuuro.sanapuuro.letters.LetterPool;
+
 import sanapuuro.sanapuuro.letters.LetterReader;
 import sanapuuro.sanapuuro.letters.Letters;
 import sanapuuro.sanapuuro.words.WordEvaluator;

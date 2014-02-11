@@ -15,14 +15,12 @@ import sanapuuro.sanapuuro.letters.Letter;
  */
 public class LetterContainer {
     public final Letter letter;
-    private boolean fromLetterPool;
     private boolean isPermanent = false;
     private int letterPoolIndex;
     private int x, y;
     
     public LetterContainer(Letter letter, boolean fromLetterPool, int letterPoolIndex){
         this.letter = letter;
-        this.fromLetterPool = fromLetterPool;
         this.letterPoolIndex = letterPoolIndex;
     }
     
@@ -55,18 +53,9 @@ public class LetterContainer {
     }
     
     /**
-     * True if container has been placed on the grid from a letter pool.
-     * @return 
-     */
-    public boolean isFromLetterPool(){
-        return this.fromLetterPool;
-    }
-    
-    /**
      * Sets the container to the grid permanently so that it can no longer be removed.
      */
     public void setToGridPermanently(){
-        this.fromLetterPool = false;
         this.isPermanent = true;
     }
     

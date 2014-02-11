@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Grid that is used to get and set letter containers to it.
+ *
  * @author skaipio
  */
 public class Grid {
@@ -33,9 +34,10 @@ public class Grid {
             }
         }
     }
-    
+
     /**
      * Tells whether the grid has a letter container at given coordinates.
+     *
      * @param x coordinate
      * @param y coordinate
      * @return True if grid has letter container at x and y, false otherwise.
@@ -49,9 +51,11 @@ public class Grid {
 
     /**
      * Returns the letter container at given coordinates.
+     *
      * @param x coordinate
      * @param y coordinate
-     * @return Returns letter container at x and y, if none exists, returns null.
+     * @return Returns letter container at x and y, if none exists, returns
+     * null.
      */
     public LetterContainer getContainerAt(int x, int y) {
         if (!isWithinGrid(x, y)) {
@@ -59,19 +63,22 @@ public class Grid {
         }
         return this.containers[x][y];
     }
-    
+
     /**
-     * Sets the letter container at given coordinates if there is none present yet.
+     * Sets the letter container at given coordinates if there is none present
+     * yet.
+     *
      * @param container Letter container to set to x and y.
      * @param x coordinate
      * @param y coordinate
-     * @return True if letter container was set to grid successfully, false otherwise.
+     * @return True if letter container was set to grid successfully, false
+     * otherwise.
      */
     public boolean setContainerAt(LetterContainer container, int x, int y) {
         if (!isWithinGrid(x, y)) {
             throw new IllegalArgumentException("Given coordinates are not within grid.");
         }
-        if (!this.hasContainerAt(x, y)){
+        if (!this.hasContainerAt(x, y)) {
             this.containers[x][y] = container;
             container.setX(x);
             container.setY(y);
@@ -79,9 +86,10 @@ public class Grid {
         }
         return false;
     }
-    
+
     /**
      * Removes the letter container - if there is any - at given coordinates.
+     *
      * @param x coordinate
      * @param y coordinate
      */
@@ -91,15 +99,13 @@ public class Grid {
         }
         this.containers[x][y] = null;
     }
-    
-    public void removeLetterPoolContainersFromGrid(List<LetterContainer> containers) {
+
+    public void removeContainersFromGrid(List<LetterContainer> containers) {
         for (LetterContainer container : containers) {
-            if (container.isFromLetterPool()) {
-                this.removeContainerAt(container.getX(), container.getY());
-            }
+            this.removeContainerAt(container.getX(), container.getY());
         }
     }
-    
+
     /**
      * Sets the currently selected letters to the grid permanently and also
      * removes them from the player's letter pool.
@@ -112,6 +118,7 @@ public class Grid {
 
     /**
      * Checks whether given coordinates are within grid bounds.
+     *
      * @param x coordinate
      * @param y coordinate
      * @return True if x and y are within bounds, false otherwise.
