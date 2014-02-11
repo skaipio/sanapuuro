@@ -21,7 +21,7 @@ public class Player {
     private final WordEvaluator wordEval;
     private final List<LetterContainer> selectedContainers = new ArrayList<>();
     private final List<LetterContainer> addedContainers = new ArrayList<>();
-    private boolean controlsEnabled;
+    private boolean controlsEnabled = true;
 
     private String status = "";
     private int score = 0;

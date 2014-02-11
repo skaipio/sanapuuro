@@ -14,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import sanapuuro.sanapuuro.grid.Grid;
+import sanapuuro.sanapuuro.grid.LetterContainer;
 import sanapuuro.sanapuuro.letters.Letter;
 import sanapuuro.sanapuuro.letters.LetterPool;
 import sanapuuro.sanapuuro.letters.Letters;
@@ -27,6 +28,8 @@ public class PlayerTest {
 
     private Player player;
     private LetterPool letterPool;
+    private Grid grid;
+    private final WordEvaluator evaluator = new WordEvaluator();
 
     public PlayerTest() {
 
@@ -42,34 +45,108 @@ public class PlayerTest {
 
     @Before
     public void setUp() {
-        Grid grid = new Grid(8, 8);
-        letterPool = new LetterPool(new LettersForTest());
-        WordEvaluator evaluator = new WordEvaluator();
+        this.grid = new Grid(8, 8);
+        Letters letters = new LettersForTest();
+        this.player = new Player(grid, evaluator, letters);
+        this.letterPool = this.player.getLetterPool();
     }
 
     @After
     public void tearDown() {
     }
 
+    
+    
+    
+
     @Test
-    public void playerHasStatusAndGridCursor() {
-//        assertNotNull(this.player.getControlledCursor());
-//        assertNotNull(this.player.getStatus());
+    public void letterIsAddedToCellIfCellEmpty() {
+        boolean letterWasSet = this.player.addLetterTo(0, 0);
+        assertTrue(letterWasSet);
+        assertTrue(this.grid.hasContainerAt(0, 0));
+        assertFalse(this.player.getAddedContainers().isEmpty());
     }
 
     @Test
-    public void playerGetsScoreForSubmittedWord() {
-//        GridCursor cursor = player.getControlledCursor();
-//        cursor.addLetterUnderCursor();
-//        cursor.moveRight();
-//        this.letterPool.setCurrentSelection(1);
-//        cursor.addLetterUnderCursor();
-//        cursor.moveRight();
-//        this.letterPool.setCurrentSelection(2);
-//        cursor.addLetterUnderCursor();
-//        boolean submission = player.submitSelectedLetters();
-//        assertTrue(submission);
-//        assertEquals(6, player.getScore());
+    public void letterIsNotAddedToCellIfCellNotEmpty() {
+        Letter letter = new Letter('a', 0, 0);
+        this.grid.setContainerAt(new LetterContainer(letter), 0, 0);
+        LetterContainer container = this.grid.getContainerAt(0, 0);
+        boolean letterWasSet = this.player.addLetterTo(0, 0);
+        assertFalse(letterWasSet);
+        assertSame(this.grid.getContainerAt(0, 0), container);
+        assertTrue(this.player.getAddedContainers().isEmpty());
+    }
+
+    @Test
+    public void letterIsSelectedIfCellIsNotSelected() {
+        Letter letter = new Letter('a', 0, 0);
+        this.grid.setContainerAt(new LetterContainer(letter), 0, 0);
+        boolean letterWasSelected = this.player.selectLetterAt(0, 0);
+        assertTrue(letterWasSelected);
+        assertTrue(this.player.getAddedContainers().isEmpty());
+        assertFalse(this.player.getSelectedContainers().isEmpty());
+    }
+    
+    @Test
+    public void letterIsNotSelectedIfCellIsSelected() {
+        Letter letter = new Letter('a', 0, 0);
+        this.grid.setContainerAt(new LetterContainer(letter), 0, 0);
+        boolean letterWasSelected = this.player.selectLetterAt(0, 0);
+        assertTrue(letterWasSelected);
+        assertTrue(this.player.getAddedContainers().isEmpty());
+        assertFalse(this.player.getSelectedContainers().isEmpty());
+        letterWasSelected = this.player.selectLetterAt(0, 0);
+        assertFalse(letterWasSelected);
+        assertFalse(this.player.getSelectedContainers().size() > 1);
+    }
+    
+    @Test
+    public void lettersAreNotSelectedOrAddedIfControlsAreNotEnabled(){
+        this.player.setControlsEnabled(false);
+        
+        boolean letterWasSet = this.player.addLetterTo(0, 0);
+        assertFalse(letterWasSet);
+        assertFalse(this.grid.hasContainerAt(0, 0));
+        assertTrue(this.player.getAddedContainers().isEmpty());
+        
+        Letter letter = new Letter('a', 0, 0);
+        this.grid.setContainerAt(new LetterContainer(letter), 0, 0);
+        boolean letterWasSelected = this.player.selectLetterAt(0, 0);
+        assertFalse(letterWasSelected);
+        assertTrue(this.player.getSelectedContainers().isEmpty());
+    }
+    
+    @Test
+    public void playerGetsScoreForSubmittedWordWhenAllAddedByPlayer() {
+        this.player.addLetterTo(0, 0);
+        this.letterPool.setCurrentSelection(1);
+        this.player.addLetterTo(0, 1);
+        this.letterPool.setCurrentSelection(2);
+        this.player.addLetterTo(0, 2);
+        
+        this.player.selectLetterAt(0, 0);
+        this.player.selectLetterAt(0, 1);
+        this.player.selectLetterAt(0, 2);
+        
+        boolean submission = player.submitSelectedLetters();
+        assertTrue(submission);
+        assertEquals(6, player.getScore());
+    }
+    
+    @Test
+    public void playerGetsScoreForSubmittedWordWhenAllPreAddedAndThenSelected() {
+        this.grid.setContainerAt(new LetterContainer(new Letter('t', 1, 0)), 0, 0);
+        this.grid.setContainerAt(new LetterContainer(new Letter('o', 2, 0)), 0, 1);
+        this.grid.setContainerAt(new LetterContainer(new Letter('e', 3, 0)), 0, 2);
+        
+        this.player.selectLetterAt(0, 0);
+        this.player.selectLetterAt(0, 1);
+        this.player.selectLetterAt(0, 2);
+        
+        boolean submission = player.submitSelectedLetters();
+        assertTrue(submission);
+        assertEquals(6, player.getScore());
     }
 
     private class LettersForTest implements Letters {
@@ -106,6 +183,5 @@ public class PlayerTest {
             i++;
             return this.letters.get(i - 1);
         }
-
     }
 }
