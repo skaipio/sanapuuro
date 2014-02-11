@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sanapuuro.sanapuuro.words;
+package sanapuuro.sanapuuro.filereaders;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import sanapuuro.sanapuuro.words.WordList;
 
 /**
  * Holds and reads valid English words from a file.

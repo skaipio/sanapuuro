@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sanapuuro.sanapuuro.letters;
+package sanapuuro.sanapuuro.filereaders;
 
 import sanapuuro.sanapuuro.utils.LetterFrequencyComparator;
 import java.io.File;
@@ -14,6 +14,8 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import sanapuuro.sanapuuro.letters.Letter;
+import sanapuuro.sanapuuro.letters.Letters;
 
 /**
  * Used for reading in valid English letters from a file.

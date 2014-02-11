@@ -8,7 +8,7 @@ package sanapuuro.sanapuuro;
 import java.util.Random;
 import sanapuuro.sanapuuro.grid.Grid;
 
-import sanapuuro.sanapuuro.letters.LetterReader;
+import sanapuuro.sanapuuro.filereaders.LetterReader;
 import sanapuuro.sanapuuro.letters.Letters;
 import sanapuuro.sanapuuro.words.WordEvaluator;
 
@@ -35,7 +35,7 @@ public class Game implements GameTimerListener{
     public void newGame(GameTimer timer) {
         this.grid.clear();
         this.timer = timer;
-        this.timer.startCountdownFrom(10);
+        this.timer.startCountdownFrom(60);
         this.letters = new LetterReader(new Random());
         
         WordEvaluator wordEval = new WordEvaluator();
@@ -49,14 +49,6 @@ public class Game implements GameTimerListener{
     
     public Grid getGrid(){
         return this.grid;
-    }
-
-    public int getGridWidth() {
-        return this.grid.width;
-    }
-
-    public int getGridHeight() {
-        return this.grid.height;
     }
 
     @Override

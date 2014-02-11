@@ -5,6 +5,7 @@
  */
 package sanapuuro.sanapuuro.words;
 
+import sanapuuro.sanapuuro.filereaders.WordReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

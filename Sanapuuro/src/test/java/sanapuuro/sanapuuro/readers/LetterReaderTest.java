@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package sanapuuro.sanapuuro.letters;
+package sanapuuro.sanapuuro.readers;
 
+import sanapuuro.sanapuuro.filereaders.LetterReader;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -14,6 +15,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import sanapuuro.sanapuuro.letters.Letter;
 import static org.junit.Assert.*;
 
 /**

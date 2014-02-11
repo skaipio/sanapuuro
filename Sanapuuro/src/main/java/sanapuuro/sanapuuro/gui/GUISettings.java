@@ -20,7 +20,7 @@ public class GUISettings {
     private static Color colorBackground1;
     private static Color colorSelectedCell;
     private static Color colorBorder;
-    private static Color colorButton1;
+    private static Color gridButtonDefault;
     private static Color colorButton2;
     private static Color colorButtonHighlight2;
     private static Color colorLetterPoolButtonUsed;
@@ -30,16 +30,18 @@ public class GUISettings {
 
     public static void initGUISettings() {
         mediumFont = new Font(LogicalFont, Font.PLAIN, 20);
-        colorBackground1 = new Color(Integer.parseInt("f9e0b0", hex));
+        //colorBackground1 = new Color(Integer.parseInt("f9e0b0", hex));
+        colorBackground1 = new Color(Integer.parseInt("d1ccc0", hex));
         //colorSelectedCell = new Color(Integer.parseInt("f9ca6d", hex));
         colorSelectedCell = new Color(Integer.parseInt("e6a117", hex));
         colorBorder = new Color(Integer.parseInt("8f753f", hex));
-        colorButton1 = new Color(Integer.parseInt("6d4a03", hex));
+        //gridButtonDefault = new Color(Integer.parseInt("6d4a03", hex));
+        gridButtonDefault = new Color(Integer.parseInt("8e8778", hex));
         colorButton2 = new Color(Integer.parseInt("1e439a", hex));      
         colorButtonHighlight2 = new Color(Integer.parseInt("7295e6", hex));
         colorLetterPoolButtonUsed = new Color(Integer.parseInt("303e60", hex));
         colorGridButtonHighlight = new Color(Integer.parseInt("f9ca6d", hex));
-        colorSelectableCell = new Color(Integer.parseInt("8f753f", hex));
+        colorSelectableCell = new Color(Integer.parseInt("aabce6", hex));
         colorDefaultFont = new Color(Integer.parseInt("000000", hex));
     }
 
@@ -60,7 +62,7 @@ public class GUISettings {
     }
 
     public static Color getColorButton1() {
-        return colorButton1;
+        return gridButtonDefault;
     }
 
     public static Color getColorButton2() {

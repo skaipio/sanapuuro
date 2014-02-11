@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package sanapuuro.sanapuuro.words;
+package sanapuuro.sanapuuro.readers;
 
+import sanapuuro.sanapuuro.filereaders.WordReader;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;

@@ -43,6 +43,10 @@ public class Player {
     public int getScore() {
         return this.score;
     }
+    
+    public boolean isEnabled(){
+        return this.controlsEnabled;
+    }
 
     public List<LetterContainer> getSelectedContainers() {
         return new ArrayList<>(this.selectedContainers);
@@ -70,18 +74,14 @@ public class Player {
         this.controlsEnabled = enabled;
     }
 
-    public void resetScore() {
-        this.score = 0;
-    }
-
-    public boolean clearSelections() {
-        if (this.controlsEnabled) {
-            this.returnAllAddedLettersBackToLetterPool();
-            this.addedContainers.clear();
-            this.selectedContainers.clear();
-        }
-        return false;
-    }
+//    public boolean clearSelections() {
+//        if (this.controlsEnabled) {
+//            this.returnAllAddedLettersBackToLetterPool();
+//            this.addedContainers.clear();
+//            this.selectedContainers.clear();
+//        }
+//        return false;
+//    }
 
     /**
      * Adds a letter container from the letter pool on the current cursor
@@ -106,17 +106,17 @@ public class Player {
         return false;
     }
 
-    public boolean returnContainerToLetterPoolAt(int x, int y) {
-        if (this.controlsEnabled && this.grid.hasContainerAt(x, y)) {
-            LetterContainer container = this.grid.getContainerAt(x, y);
-            if (this.addedContainers.contains(container)) {
-                this.grid.removeContainer(container);
-                this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean returnContainerToLetterPoolAt(int x, int y) {
+//        if (this.controlsEnabled && this.grid.hasContainerAt(x, y)) {
+//            LetterContainer container = this.grid.getContainerAt(x, y);
+//            if (this.addedContainers.contains(container)) {
+//                this.grid.removeContainer(container);
+//                this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     /**
      * Adds the letter under the cursor to selected letter containers if there

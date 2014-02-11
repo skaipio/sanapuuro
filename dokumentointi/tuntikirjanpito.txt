@@ -14,3 +14,7 @@
 
 23.1.2014
 ~4h Rakenteen uudelleenjärjestelyä ja luokkakaavion päivitystä.
+
+13.2.2014
+~4h GUI:n ja erityisesti interaktiivisuuden hiomista. 
+~2h Testien uusimista jälleen kerran, koska luokkarakenteen muutos.
