@@ -9,7 +9,8 @@ import sanapuuro.sanapuuro.letters.Letters;
 import sanapuuro.sanapuuro.words.WordEvaluator;
 
 /**
- * Keeps track of score and gives access to a controllable letter grid cursor.
+ * Keeps track of score and has methods for selecting and adding letters for
+ * submission.
  *
  * @author skaipio@cs
  */
@@ -20,6 +21,7 @@ public class Player {
     private final WordEvaluator wordEval;
     private final List<LetterContainer> selectedContainers = new ArrayList<>();
     private final List<LetterContainer> addedContainers = new ArrayList<>();
+    private boolean controlsEnabled;
 
     private String status = "";
     private int score = 0;
@@ -49,34 +51,36 @@ public class Player {
     public List<LetterContainer> getAddedContainers() {
         return new ArrayList<>(this.addedContainers);
     }
-    
-    public LetterContainer getLastSelection(){
-        if (!this.selectedContainers.isEmpty()){
-            return this.selectedContainers.get(this.selectedContainers.size()-1);
+
+    public LetterContainer getLastSelection() {
+        if (!this.selectedContainers.isEmpty()) {
+            return this.selectedContainers.get(this.selectedContainers.size() - 1);
         }
         return null;
     }
-    
-    public LetterContainer getFirstSelection(){
-        if (!this.selectedContainers.isEmpty()){
+
+    public LetterContainer getFirstSelection() {
+        if (!this.selectedContainers.isEmpty()) {
             return this.selectedContainers.get(0);
         }
         return null;
+    }
+
+    void setControlsEnabled(boolean enabled) {
+        this.controlsEnabled = enabled;
     }
 
     public void resetScore() {
         this.score = 0;
     }
 
-    public void clearSelections() {
-        this.returnAllAddedLettersBackToLetterPool();
-        this.addedContainers.clear();
-        this.selectedContainers.clear();
-    }
-
-    private void returnAllAddedLettersBackToLetterPool() {
-        this.grid.removeContainersFromGrid(this.addedContainers);
-        this.letterPool.clearLetterPicks();
+    public boolean clearSelections() {
+        if (this.controlsEnabled) {
+            this.returnAllAddedLettersBackToLetterPool();
+            this.addedContainers.clear();
+            this.selectedContainers.clear();
+        }
+        return false;
     }
 
     /**
@@ -89,7 +93,7 @@ public class Player {
      */
     public boolean addLetterTo(int x, int y) {
         LetterContainer container = this.letterPool.useLetter();
-        if (container != null) {
+        if (this.controlsEnabled && container != null) {
 
             boolean containerSet = this.grid.setContainerAt(container, x, y);
             if (!containerSet) {
@@ -103,7 +107,7 @@ public class Player {
     }
 
     public boolean returnContainerToLetterPoolAt(int x, int y) {
-        if (this.grid.hasContainerAt(x, y)) {
+        if (this.controlsEnabled && this.grid.hasContainerAt(x, y)) {
             LetterContainer container = this.grid.getContainerAt(x, y);
             if (this.addedContainers.contains(container)) {
                 this.grid.removeContainer(container);
@@ -121,7 +125,7 @@ public class Player {
      * @return True if there was a container to select, false otherwise.
      */
     public boolean selectLetterAt(int x, int y) {
-        if (this.grid.hasContainerAt(x, y)) {
+        if (this.controlsEnabled && this.grid.hasContainerAt(x, y)) {
             LetterContainer selection = this.grid.getContainerAt(x, y);
             if (!this.selectedContainers.contains(selection)) {
                 this.selectedContainers.add(selection);
@@ -131,26 +135,11 @@ public class Player {
         return false;
     }
 
-    /**
-     * Removes letter container under cursor from selected containers if it was
-     * there to begin with.
-     *
-     * @return True, if there was a letter container from a letter pool to
-     * remove, false otherwise.
-     */
-//    public boolean removeSelectionAndAdditionAt(int x, int y) {
-//        if (this.grid.hasContainerAt(x, y)) {
-//            LetterContainer container = this.grid.getContainerAt(x, y);
-//            return this.selectedContainers.remove(container);
-//        }
-//        return false;
-//    }
-    
     public boolean removeLastSelection() {
-        if (!this.selectedContainers.isEmpty()){
-            int index = this.selectedContainers.size()-1;
-            LetterContainer container = this.selectedContainers.get(index);           
-            if (this.addedContainers.contains(container)){
+        if (this.controlsEnabled && !this.selectedContainers.isEmpty()) {
+            int index = this.selectedContainers.size() - 1;
+            LetterContainer container = this.selectedContainers.get(index);
+            if (this.addedContainers.contains(container)) {
                 this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
                 this.grid.removeContainerAt(container.getX(), container.getY());
                 this.addedContainers.remove(container);
@@ -168,6 +157,9 @@ public class Player {
      * @return True if letters formed a valid word, false otherwise.
      */
     public boolean submitSelectedLetters() {
+        if(!this.controlsEnabled){
+            return false;
+        }
         if (this.selectedContainers.isEmpty()) {
             this.status = "No letters have been selected!";
             return false;
@@ -185,7 +177,7 @@ public class Player {
             this.clearSelectionsAndAdditions();
             return true;
         }
-        
+
         this.returnAllAddedLettersBackToLetterPool();
         this.clearSelectionsAndAdditions();
         return false;
@@ -204,5 +196,10 @@ public class Player {
     private void clearSelectionsAndAdditions() {
         this.addedContainers.clear();
         this.selectedContainers.clear();
+    }
+
+    private void returnAllAddedLettersBackToLetterPool() {
+        this.grid.removeContainersFromGrid(this.addedContainers);
+        this.letterPool.clearLetterPicks();
     }
 }

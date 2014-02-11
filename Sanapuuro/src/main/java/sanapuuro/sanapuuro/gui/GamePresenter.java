@@ -39,7 +39,9 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
     private LetterGridPanel letterGridPanel;
     private LetterPoolPanel letterPoolPanel;
     private JLabel scoreLabel;
+    private TimeLabel timeLabel;
     private JLabel stateLabel;
+    private TimerWrapper timer = new TimerWrapper();
 
     private boolean selectionMode = false;
 
@@ -53,7 +55,7 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
      * Starts a new game and prepares the views.
      */
     public void newGame() {
-        this.game.newGame();
+        this.game.newGame(timer);
         this.grid = this.game.getGrid();
         this.player = this.game.getPlayer();
         this.letterPool = this.player.getLetterPool();
@@ -83,6 +85,11 @@ public class GamePresenter implements MouseListener, KeyListener, ActionListener
 
     public void setScoreLabel(JLabel scoreLabel) {
         this.scoreLabel = scoreLabel;
+    }
+    
+    public void setTimeLabel(TimeLabel label){
+        this.timeLabel = label;
+        this.timer.addActionListener(label);
     }
 
     public void setStateLabel(JLabel label) {

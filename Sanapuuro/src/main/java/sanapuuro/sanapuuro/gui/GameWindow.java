@@ -102,7 +102,7 @@ public class GameWindow extends javax.swing.JFrame {
         statusPanel.setBackground(GUISettings.getColorBackground1());
         statusPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 
-        JLabel timeLabel = new TimeLabel();
+        TimeLabel timeLabel = new TimeLabel();
         timeLabel.setPreferredSize(new Dimension(this.getWidth() / 2, 30));
         statusPanel.add(timeLabel, BorderLayout.WEST);
 
@@ -183,6 +183,7 @@ public class GameWindow extends javax.swing.JFrame {
         controller.setLetterGridPanel(cells);
         controller.setLetterPoolPanel(letterPoolPanel);
         controller.setScoreLabel(scoreLabel);
+        controller.setTimeLabel(timeLabel);
         controller.setStateLabel(stateLabel);
 
         this.getContentPane().setFocusable(true);

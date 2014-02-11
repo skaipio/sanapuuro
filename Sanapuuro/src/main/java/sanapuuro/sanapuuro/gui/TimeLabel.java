@@ -6,19 +6,44 @@
 
 package sanapuuro.sanapuuro.gui;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 
 /**
  *
  * @author skaipio
  */
-public class TimeLabel extends JLabel{
+public class TimeLabel extends JLabel implements ActionListener{
+    private String prefix = "TIME LEFT ";
+    
     public TimeLabel(){
         super();
         this.setFont(GUISettings.getMediumFont());
         this.setForeground(GUISettings.getColorDefaultFont());
-        this.setText("TIME LEFT: ");
+        this.setText("");
+    }
+    
+    @Override
+    public void setText(String text){
+        if (text.isEmpty()){
+            super.setText(prefix);
+        }else{
+            super.setText(prefix + text);
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        TimerWrapper timer = (TimerWrapper) e.getSource();
+        String minutes = timer.getMinutes() + "";
+        String seconds = timer.getSeconds() + "";
+        if (timer.getMinutes() < 10){
+            minutes = "0" + minutes;
+        }
+        if (timer.getSeconds() < 10){
+            seconds = "0" + seconds;
+        }
+        this.setText(minutes + ":" + seconds);
     }
 }

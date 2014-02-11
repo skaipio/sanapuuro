@@ -17,21 +17,25 @@ import sanapuuro.sanapuuro.words.WordEvaluator;
  * retrieve the grid cursor and letter pool for input.
  * @author skaipio
  */
-public class Game {
+public class Game implements GameTimerListener{
     private final Grid grid;
+    private GameTimer timer;
     private Letters letters;
     private Player player;
-    private int gridSize = 8;
+    private final int gridSize = 8;
 
     public Game() {
         this.grid = new Grid(gridSize, gridSize);
     }
 
     /**
-     * Starts a new game and loads in valid letters and words.
+     * Starts a new game,loads in valid letters and words and starts the countdown timer.
+     * @param timer A timer that notifies the game when it has counted down to zero.
      */
-    public void newGame() {
+    public void newGame(GameTimer timer) {
         this.grid.clear();
+        this.timer = timer;
+        this.timer.startCountdownFrom(10);
         this.letters = new LetterReader(new Random());
         
         WordEvaluator wordEval = new WordEvaluator();
@@ -53,5 +57,10 @@ public class Game {
 
     public int getGridHeight() {
         return this.grid.height;
+    }
+
+    @Override
+    public void notifyTimeOut() {
+        this.player.setControlsEnabled(false);
     }
 }
