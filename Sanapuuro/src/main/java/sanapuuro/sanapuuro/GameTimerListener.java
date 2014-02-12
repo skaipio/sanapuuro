@@ -7,7 +7,7 @@
 package sanapuuro.sanapuuro;
 
 /**
- *
+ * Listener to GameTimer.
  * @author skaipio
  */
 public interface GameTimerListener {

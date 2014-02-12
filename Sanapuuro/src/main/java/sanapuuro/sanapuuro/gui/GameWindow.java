@@ -5,8 +5,7 @@
  */
 package sanapuuro.sanapuuro.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -15,7 +14,6 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
@@ -30,6 +28,7 @@ public class GameWindow extends javax.swing.JFrame {
      * Creates new form GameWindow
      */
     public GameWindow() {
+
         initComponents();
     }
 
@@ -45,9 +44,8 @@ public class GameWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sanapuuro");
         setBackground(new java.awt.Color(47, 41, 35));
-        setMinimumSize(new java.awt.Dimension(400, 400));
         setName("gameWindowFrame"); // NOI18N
-        getContentPane().setLayout(new java.awt.GridBagLayout());
+        setResizable(false);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -85,40 +83,44 @@ public class GameWindow extends javax.swing.JFrame {
             public void run() {
                 GUISettings.initGUISettings();
                 GameWindow window = new GameWindow();
+                window.initWindows();
                 window.setVisible(true);
-                window.newGame();
+                window.pack();
             }
         });
     }
 
-    private void newGame() {
-        //this.setPreferredSize(new Dimension(500, 500));
-        int hex = 16;
-        this.getContentPane().setBackground(GUISettings.getColorBackground1());
-        this.getContentPane().setLayout(new GridBagLayout());
+    private void initWindows() {
+        this.getContentPane().setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+
+        Container mainGameView = new JPanel(new GridBagLayout());
+        mainGameView.setBackground(GUISettings.getColorBackground1());
+        mainGameView.setFocusable(true);
+
+        this.add(mainGameView);
+
         GridBagConstraints constraints = new GridBagConstraints();
 
-        JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
+        JPanel statusPanel = new JPanel(new GridLayout(1, 2));
         statusPanel.setBackground(GUISettings.getColorBackground1());
         statusPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 
         TimeLabel timeLabel = new TimeLabel();
-        timeLabel.setPreferredSize(new Dimension(this.getWidth() / 2, 30));
-        statusPanel.add(timeLabel, BorderLayout.WEST);
+        statusPanel.add(timeLabel);
 
         JLabel scoreLabel = new ScoreLabel();
         scoreLabel.setText("");
-        statusPanel.add(scoreLabel, BorderLayout.EAST);
+        statusPanel.add(scoreLabel);
 
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 3;
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        this.add(statusPanel, constraints);
-        
+        mainGameView.add(statusPanel, constraints);
+
         constraints.gridx = 0;
         constraints.gridy = 1;
-        this.add(Box.createVerticalStrut(5), constraints);
+        mainGameView.add(Box.createVerticalStrut(5), constraints);
 
         JPanel submissionPanel = new JPanel();
         submissionPanel.setLayout(new BoxLayout(submissionPanel, BoxLayout.LINE_AXIS));
@@ -128,69 +130,63 @@ public class GameWindow extends javax.swing.JFrame {
         JPanel selectedLettersPanel = new JPanel();
         selectedLettersPanel.setBorder(BorderFactory.createLineBorder(GUISettings.getColorBorder()));
         selectedLettersPanel.setBackground(GUISettings.getColorSelectedCell());
-        int width=200, height=40;
+        int width = 200, height = 40;
         selectedLettersPanel.setPreferredSize(new Dimension(width, height));
         selectedLettersPanel.add(selectedLettersLabel);
-        submissionPanel.add(selectedLettersPanel);
-        
-        submissionPanel.add(Box.createHorizontalGlue());
 
-        JButton submitButton = new SubmitButton();
-        submissionPanel.add(submitButton);
-        
         constraints.gridx = 1;
         constraints.gridy = 2;
         constraints.gridwidth = 1;
-        this.add(submissionPanel, constraints);
+        constraints.fill = GridBagConstraints.NONE;
+        mainGameView.add(selectedLettersPanel, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 3;
+        constraints.gridwidth = 1;
+        mainGameView.add(Box.createVerticalStrut(5), constraints);
 
         constraints.gridx = 0;
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         int fillerWidth = 50;
-        this.add(Box.createHorizontalStrut(fillerWidth), constraints);
-        
+        mainGameView.add(Box.createHorizontalStrut(fillerWidth), constraints);
+
         LetterGridPanel cells = new LetterGridPanel(8, 8);
         constraints.gridx = 1;
         constraints.anchor = GridBagConstraints.CENTER;
-        this.add(cells, constraints);
-        
+        mainGameView.add(cells, constraints);
+
         constraints.gridx = 2;
-        this.add(Box.createHorizontalStrut(fillerWidth), constraints);
-        
+        mainGameView.add(Box.createHorizontalStrut(fillerWidth), constraints);
+
         constraints.gridx = 0;
-        constraints.gridy = 4;
+        constraints.gridy = 5;
         constraints.gridwidth = 3;
         constraints.fill = GridBagConstraints.NONE;
-        this.add(Box.createVerticalStrut(5), constraints);
+        mainGameView.add(Box.createVerticalStrut(5), constraints);
 
         constraints.gridx = 1;
-        constraints.gridy = 5;
+        constraints.gridy = 6;
         constraints.gridwidth = 1;
-        //constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.anchor = GridBagConstraints.CENTER;
         LetterPoolPanel letterPoolPanel = new LetterPoolPanel();
-        this.add(letterPoolPanel, constraints);
+        mainGameView.add(letterPoolPanel, constraints);
 
         JLabel stateLabel = new JLabel("Press left mouse button to add letters to or select letters from grid.");
-        constraints.fill = GridBagConstraints.NONE;
-        constraints.gridx = 0;
-        constraints.gridy = 6;
-        constraints.gridwidth = 3;
-        this.add(stateLabel, constraints);
+//        constraints.fill = GridBagConstraints.NONE;
+//        constraints.gridx = 0;
+//        constraints.gridy = 7;
+//        constraints.gridwidth = 3;
+//        mainGameView.add(stateLabel, constraints);
 
-        GamePresenter controller = new GamePresenter(this.getContentPane());
-        controller.setSelectedLettersLabel(selectedLettersLabel);
-        controller.setSubmitButton(submitButton);
-        controller.setLetterGridPanel(cells);
-        controller.setLetterPoolPanel(letterPoolPanel);
-        controller.setScoreLabel(scoreLabel);
-        controller.setTimeLabel(timeLabel);
-        controller.setStateLabel(stateLabel);
+        GamePresenter presenter = new GamePresenter(mainGameView);
+        presenter.setSelectedLettersLabel(selectedLettersLabel);
+        presenter.setLetterGridPanel(cells);
+        presenter.setLetterPoolPanel(letterPoolPanel);
+        presenter.setScoreLabel(scoreLabel);
+        presenter.setTimeLabel(timeLabel);
+        presenter.setStateLabel(stateLabel);
 
-        this.getContentPane().setFocusable(true);
-
-        this.getContentPane().addKeyListener(controller);
-
-        controller.newGame();
+        presenter.newGame();
 
         this.pack();
     }

@@ -6,7 +6,9 @@
 
 package sanapuuro.sanapuuro.gui;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
@@ -21,23 +23,26 @@ public class LetterPoolPanel extends JPanel {
     public LetterPoolPanel(){
         this.setLayout(new FlowLayout(FlowLayout.LEADING, 0,0));
         this.setBackground(GUISettings.getColorBackground1());
-    }
-    
-    public void init(int size){
-        this.letterCells = new LetterPoolCellButton[size];
+        this.letterCells = new LetterPoolCellButton[8];
         for(int i = 0; i < letterCells.length; i++){
             LetterPoolCellButton cell = new LetterPoolCellButton(i);
             this.letterCells[i] = cell;
             this.add(cell);           
         }
+    }
+    
+    public void init(int size){
+//        int width = this.letterCells[0].getPreferredSize().width*8;
+//        int height = this.letterCells[0].getPreferredSize().height;
+//        this.setPreferredSize(new Dimension(width,height));
         this.currentHoverOn = this.letterCells[0];
         this.setHoverTo(0);
         this.repaint();
     }
     
-    public void addListenerToCells(MouseListener listener){
+    public void addListenerToCells(ActionListener listener){
         for (LetterPoolCellButton letterCell : letterCells) {
-            letterCell.addMouseListener(listener);
+            letterCell.addActionListener(listener);
         }
     }   
     

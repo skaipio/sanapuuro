@@ -56,6 +56,10 @@ public class Player {
         return new ArrayList<>(this.addedContainers);
     }
 
+    /**
+     * Gets player's latest selection.
+     * @return Latest selected letter container, null if none has been selected.
+     */
     public LetterContainer getLastSelection() {
         if (!this.selectedContainers.isEmpty()) {
             return this.selectedContainers.get(this.selectedContainers.size() - 1);
@@ -63,6 +67,10 @@ public class Player {
         return null;
     }
 
+    /**
+     * Gets player's first selection.
+     * @return First selected letter container, null if none has been selected.
+     */
     public LetterContainer getFirstSelection() {
         if (!this.selectedContainers.isEmpty()) {
             return this.selectedContainers.get(0);
@@ -70,6 +78,10 @@ public class Player {
         return null;
     }
 
+    /**
+     * Disables all control methods if set to false. Enables them again if set to true.
+     * @param enabled True for control enabling, false for disabling.
+     */
     void setControlsEnabled(boolean enabled) {
         this.controlsEnabled = enabled;
     }
@@ -84,10 +96,12 @@ public class Player {
 //    }
 
     /**
-     * Adds a letter container from the letter pool on the current cursor
+     * Adds a letter container from the letter pool on the given location
      * location if there is no other container already present and adds it to
-     * selected containers.
+     * added containers.
      *
+     * @param x Coordinate to set to.
+     * @param y Coordinate to set to.
      * @return True if adding letter from the letter pool was successful, false
      * otherwise.
      */
@@ -119,8 +133,8 @@ public class Player {
 //    }
 
     /**
-     * Adds the letter under the cursor to selected letter containers if there
-     * is any.
+     * Selects the letter from the given location and adds to selected
+     * letter containers if there is any at the location.
      *
      * @return True if there was a container to select, false otherwise.
      */
@@ -135,6 +149,11 @@ public class Player {
         return false;
     }
 
+    /**
+     * Removes the latest selection from player's selected
+     * letter containers if there is any.
+     * @return True if controls are enabled and there were selected containers, false otherwise.
+     */
     public boolean removeLastSelection() {
         if (this.controlsEnabled && !this.selectedContainers.isEmpty()) {
             int index = this.selectedContainers.size() - 1;
@@ -183,13 +202,8 @@ public class Player {
         return false;
     }
 
-    /**
-     * Sets the currently selected letters to the grid permanently and also
-     * removes them from the player's letter pool.
-     */
     private void setSelectedLettersToGridPermanently() {
         this.grid.setLettersToGridPermanently(this.selectedContainers);
-        //this.addedContainers.removeAll(this.selectedContainers);
         this.letterPool.replacePickedLetters();
     }
 

@@ -5,6 +5,7 @@
  */
 package sanapuuro.sanapuuro.gui;
 
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Time;
@@ -58,6 +59,8 @@ public class TimerWrapper implements GameTimer, ActionListener {
         for (ActionListener listener : otherListeners) {
             listener.actionPerformed(new ActionEvent(this, 0, ""));
         }
+
+        
     }
 
     @Override

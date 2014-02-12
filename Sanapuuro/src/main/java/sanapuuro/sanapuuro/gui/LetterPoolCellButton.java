@@ -7,13 +7,14 @@ package sanapuuro.sanapuuro.gui;
 
 import java.awt.Dimension;
 import java.awt.Insets;
+import javax.swing.JButton;
 import javax.swing.JToggleButton;
 
 /**
  *
  * @author skaipio
  */
-public class LetterPoolCellButton extends JToggleButton {
+public class LetterPoolCellButton extends JButton {
 
     private final int cellSize = 40;
     private boolean inUse = false;
@@ -22,6 +23,7 @@ public class LetterPoolCellButton extends JToggleButton {
 
     public LetterPoolCellButton(int index) {
         this.index = index;
+        this.setFocusable(false);
         this.setBorder(null);
         this.setMargin(new Insets(0, 0, 0, 0));
         this.setBackground(GUISettings.getColorButton2());
@@ -36,7 +38,8 @@ public class LetterPoolCellButton extends JToggleButton {
 
     public void setInUse(boolean enabled) {
         this.inUse = enabled;
-        this.setSelected(enabled);
+        //this.setSelected(enabled);
+        this.setEnabled(!enabled);
         if (this.hoverOn) {
             this.setBackground(GUISettings.getColorButtonHighlight2());
         } else if (enabled) {
@@ -48,14 +51,14 @@ public class LetterPoolCellButton extends JToggleButton {
     }
 
     void hover(boolean enabled) {
-        hoverOn = enabled;
-        if (enabled) {
-            this.setBackground(GUISettings.getColorButtonHighlight2());
-        } else if (this.inUse) {
-            this.setBackground(GUISettings.getColorLetterPoolButtonUsed());
-        } else {
-            this.setBackground(GUISettings.getColorButton2());
-        }
-        this.repaint();
+//        hoverOn = enabled;
+//        if (enabled) {
+//            this.setBackground(GUISettings.getColorButtonHighlight2());
+//        } else if (this.inUse) {
+//            this.setBackground(GUISettings.getColorLetterPoolButtonUsed());
+//        } else {
+//            this.setBackground(GUISettings.getColorButton2());
+//        }
+//        this.repaint();
     }
 }

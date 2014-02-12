@@ -7,7 +7,7 @@
 package sanapuuro.sanapuuro;
 
 /**
- *
+ * A timer counting down to zero.
  * @author skaipio
  */
 public interface GameTimer {

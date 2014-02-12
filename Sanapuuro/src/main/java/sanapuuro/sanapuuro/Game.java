@@ -51,6 +51,9 @@ public class Game implements GameTimerListener{
         return this.grid;
     }
 
+    /**
+     * Disabled player's controls.
+     */
     @Override
     public void notifyTimeOut() {
         this.player.setControlsEnabled(false);

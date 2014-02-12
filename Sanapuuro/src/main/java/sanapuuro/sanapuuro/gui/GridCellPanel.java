@@ -6,7 +6,6 @@
 
 package sanapuuro.sanapuuro.gui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -27,6 +26,7 @@ public class GridCellPanel extends JLabel{
     private boolean isHighlighted = false;
     private boolean isSelected = false;
     private boolean showAsSelectable = false;
+    private boolean cursorEnabled = false;
     
     public GridCellPanel(int x, int y, int cellSize){
         this.cellSize = cellSize;
@@ -44,14 +44,16 @@ public class GridCellPanel extends JLabel{
         return this.isSelected;
     }
     
+    public boolean isSelectable(){
+        return this.showAsSelectable;
+    }
+    
     public void setLetter(String letter){
         this.setText(letter);
-        //this.repaint();
     }
     
     public void removeLetter(){
         this.setText("");
-        //this.repaint();
     }
     
     public void hoverOn(){
@@ -67,6 +69,17 @@ public class GridCellPanel extends JLabel{
         }
         else if (isHighlighted){
             this.setBackground(GUISettings.getColorBorder());
+        }else if(cursorEnabled){
+            this.setBackground(GUISettings.getColorButton2());
+        }else{
+            this.setBackground(GUISettings.getColorButton1());
+        }
+    }
+    
+    public void enableCursor(boolean enabled){
+        this.cursorEnabled = enabled;
+        if (enabled){
+            this.setBackground(GUISettings.getColorButton2());
         }else{
             this.setBackground(GUISettings.getColorButton1());
         }
