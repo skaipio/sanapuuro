@@ -14,14 +14,14 @@ import java.awt.Font;
  */
 public class GUISettings {
 
-    private static int hex = 16;
+    private static final int hex = 16;
     private static final String LogicalFont = "SansSerif";
     private static Font mediumFont;
     private static Color colorBackground1;
     private static Color colorSelectedCell;
     private static Color colorBorder;
     private static Color gridButtonDefault;
-    private static Color colorButton2;
+    private static Color cursorEnabled;
     private static Color colorButtonHighlight2;
     private static Color colorLetterPoolButtonUsed;
     private static Color colorGridButtonHighlight;
@@ -37,7 +37,7 @@ public class GUISettings {
         colorBorder = new Color(Integer.parseInt("8f753f", hex));
         //gridButtonDefault = new Color(Integer.parseInt("6d4a03", hex));
         gridButtonDefault = new Color(Integer.parseInt("8e8778", hex));
-        colorButton2 = new Color(Integer.parseInt("1e439a", hex));      
+        cursorEnabled = new Color(Integer.parseInt("1e439a", hex));      
         colorButtonHighlight2 = new Color(Integer.parseInt("7295e6", hex));
         colorLetterPoolButtonUsed = new Color(Integer.parseInt("303e60", hex));
         colorGridButtonHighlight = new Color(Integer.parseInt("f9ca6d", hex));
@@ -65,8 +65,8 @@ public class GUISettings {
         return gridButtonDefault;
     }
 
-    public static Color getColorButton2() {
-        return colorButton2;
+    public static Color getColorCursorEnabled() {
+        return cursorEnabled;
     }
 
     public static Color getColorLetterPoolButtonUsed() {

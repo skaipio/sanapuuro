@@ -136,6 +136,8 @@ public class Player {
      * Selects the letter from the given location and adds to selected
      * letter containers if there is any at the location.
      *
+     * @param x Coordinate to set to.
+     * @param y Coordinate to set to.
      * @return True if there was a container to select, false otherwise.
      */
     public boolean selectLetterAt(int x, int y) {

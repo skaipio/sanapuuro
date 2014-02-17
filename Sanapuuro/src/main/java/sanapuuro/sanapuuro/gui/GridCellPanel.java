@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sanapuuro.sanapuuro.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -19,7 +19,8 @@ import javax.swing.border.BevelBorder;
  *
  * @author skaipio
  */
-public class GridCellPanel extends JLabel{
+public class GridCellPanel extends JLabel {
+
     private String letter = "";
     private final int cellSize;
     public final int x, y;
@@ -27,8 +28,8 @@ public class GridCellPanel extends JLabel{
     private boolean isSelected = false;
     private boolean showAsSelectable = false;
     private boolean cursorEnabled = false;
-    
-    public GridCellPanel(int x, int y, int cellSize){
+
+    public GridCellPanel(int x, int y, int cellSize) {
         this.cellSize = cellSize;
         this.x = x;
         this.y = y;
@@ -39,83 +40,91 @@ public class GridCellPanel extends JLabel{
         this.setFont(GUISettings.getMediumFont());
         this.setHorizontalAlignment(SwingConstants.CENTER);
     }
-    
-    public boolean isSelected(){
+
+    public boolean isSelected() {
         return this.isSelected;
     }
-    
-    public boolean isSelectable(){
+
+    public boolean isSelectable() {
         return this.showAsSelectable;
     }
-    
-    public void setLetter(String letter){
+
+    public void setLetter(String letter) {
         this.setText(letter);
     }
-    
-    public void removeLetter(){
+
+    public void removeLetter() {
         this.setText("");
     }
-    
-    public void hoverOn(){
+
+    public void hoverOn() {
         this.setBackground(GUISettings.getGridButtonHighlight());
     }
-    
-    public void hoverOff(){
-        if (this.showAsSelectable){
+
+    public void hoverOff() {
+        if (this.showAsSelectable) {
             this.setBackground(GUISettings.getColorSelectableCell());
-        }
-        else if (isSelected){
+        } else if (isSelected) {
             this.setBackground(GUISettings.getColorSelectedCell());
-        }
-        else if (isHighlighted){
+        } else if (isHighlighted) {
             this.setBackground(GUISettings.getColorBorder());
-        }else if(cursorEnabled){
-            this.setBackground(GUISettings.getColorButton2());
-        }else{
+        } else if (cursorEnabled) {
+            this.setBackground(GUISettings.getColorCursorEnabled());
+        } else {
             this.setBackground(GUISettings.getColorButton1());
         }
     }
-    
-    public void enableCursor(boolean enabled){
+
+    public void enableCursor(boolean enabled) {
         this.cursorEnabled = enabled;
-        if (enabled){
-            this.setBackground(GUISettings.getColorButton2());
-        }else{
+        if (enabled) {
+            this.setBackground(GUISettings.getColorCursorEnabled());
+        } else {
             this.setBackground(GUISettings.getColorButton1());
         }
     }
-    
-    public void highlight(){
+
+    public void highlight() {
         this.isHighlighted = true;
         this.setBackground(GUISettings.getColorBorder());
     }
-    
-    public void removeHighlight(){
+
+    public void removeHighlight() {
         this.isHighlighted = false;
         this.setBackground(GUISettings.getColorButton1());
     }
-    
-    public void select(){
+
+    public void select() {
         this.isSelected = true;
-        this.setBackground(GUISettings.getColorSelectedCell());
+        if (this.cursorEnabled) {
+            this.setBackground(GUISettings.getColorCursorEnabled());
+        } else {
+            this.setBackground(GUISettings.getColorSelectedCell());
+        }
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         this.repaint();
     }
-    
-    public void deselect(){
+
+    public void deselect() {
         this.isSelected = false;
-        this.setBackground(GUISettings.getColorButton1());
+        if (this.cursorEnabled) {
+            this.setBackground(GUISettings.getColorCursorEnabled());
+        } else {
+            this.setBackground(GUISettings.getColorButton1());
+        }
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
         this.repaint();
     }
-    
-    public void showAsSelectable(boolean show){
+
+    public void showAsSelectable(boolean show) {
         this.showAsSelectable = show;
-        if (show){
+        if (show) {
             this.setBackground(GUISettings.getColorSelectableCell());
-        }else if (this.isSelected){
+        } else if (this.cursorEnabled) {
+            this.setBackground(GUISettings.getColorCursorEnabled());
+        } else if (this.isSelected) {
             this.setBackground(GUISettings.getColorSelectedCell());
-        }else{
+        } else {
             this.setBackground(GUISettings.getColorButton1());
         }
         this.repaint();

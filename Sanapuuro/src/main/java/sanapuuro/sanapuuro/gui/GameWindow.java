@@ -5,6 +5,7 @@
  */
 package sanapuuro.sanapuuro.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -171,12 +172,20 @@ public class GameWindow extends javax.swing.JFrame {
         LetterPoolPanel letterPoolPanel = new LetterPoolPanel();
         mainGameView.add(letterPoolPanel, constraints);
 
-        JLabel stateLabel = new JLabel("Press left mouse button to add letters to or select letters from grid.");
-//        constraints.fill = GridBagConstraints.NONE;
-//        constraints.gridx = 0;
-//        constraints.gridy = 7;
-//        constraints.gridwidth = 3;
-//        mainGameView.add(stateLabel, constraints);
+        JPanel infoPanel = new JPanel(new BorderLayout(0, 0));
+        infoPanel.setBackground(GUISettings.getColorBackground1());
+//        JLabel stateText = new JLabel("<html><p>Use WASD keys to move the grid cursor "
+//                + "and click on the letter pool letters or letters in the grid to "
+//                + "form a word. Right click removes the previously selected/added letter.</p></html>");     
+        JLabel stateText = new JLabel("Add letters to grid to form a word.");
+        stateText.setFont(GUISettings.getMediumFont());
+        infoPanel.add(stateText, BorderLayout.NORTH);
+        //infoPanel.setPreferredSize(new Dimension(this.getPreferredSize().width, stateText.getPreferredSize().height * 3));
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.gridx = 0;
+        constraints.gridy = 7;
+        constraints.gridwidth = 3;
+        mainGameView.add(infoPanel, constraints);
 
         GamePresenter presenter = new GamePresenter(mainGameView);
         presenter.setSelectedLettersLabel(selectedLettersLabel);
@@ -184,7 +193,7 @@ public class GameWindow extends javax.swing.JFrame {
         presenter.setLetterPoolPanel(letterPoolPanel);
         presenter.setScoreLabel(scoreLabel);
         presenter.setTimeLabel(timeLabel);
-        presenter.setStateLabel(stateLabel);
+        presenter.setStateLabel(stateText);
 
         presenter.newGame();
 

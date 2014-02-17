@@ -26,7 +26,7 @@ public class LetterPoolCellButton extends JButton {
         this.setFocusable(false);
         this.setBorder(null);
         this.setMargin(new Insets(0, 0, 0, 0));
-        this.setBackground(GUISettings.getColorButton2());
+        this.setBackground(GUISettings.getColorCursorEnabled());
         this.setFont(GUISettings.getMediumFont());
         this.setPreferredSize(new Dimension(cellSize, cellSize));
     }
@@ -45,7 +45,7 @@ public class LetterPoolCellButton extends JButton {
         } else if (enabled) {
             this.setBackground(GUISettings.getColorLetterPoolButtonUsed());
         } else {
-            this.setBackground(GUISettings.getColorButton2());
+            this.setBackground(GUISettings.getColorCursorEnabled());
         }
         this.repaint();
     }
