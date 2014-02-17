@@ -17,6 +17,7 @@ public class GUISettings {
     private static final int hex = 16;
     private static final String LogicalFont = "SansSerif";
     private static Font mediumFont;
+    private static Font largeFont;
     private static Color background;
     private static Color colorSelectedCell;
     private static Color colorBorder;
@@ -31,6 +32,7 @@ public class GUISettings {
 
     public static void initGUISettings() {
         mediumFont = new Font(LogicalFont, Font.PLAIN, 20);
+        largeFont = new Font(LogicalFont, Font.PLAIN, 26);
         background = new Color(Integer.parseInt("b2d0f0", hex));
         colorSelectedCell = new Color(Integer.parseInt("d0e0f0", hex));
         colorBorder = new Color(Integer.parseInt("8f753f", hex));
@@ -46,6 +48,10 @@ public class GUISettings {
 
     public static Font getMediumFont() {
         return mediumFont;
+    }
+    
+    public static Font getLargeFont() {
+        return largeFont;
     }
 
     public static Color getColorBackground() {

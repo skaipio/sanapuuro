@@ -5,19 +5,7 @@
  */
 package sanapuuro.sanapuuro.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
 
 /**
  *
@@ -95,7 +83,7 @@ public class GameWindow extends javax.swing.JFrame {
 
         this.getContentPane().setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
 
-        MainGameView mainGameView = new MainGameView();
+        GameView mainGameView = new GameView();
         this.add(mainGameView);
 
         GamePresenter presenter = new GamePresenter(mainGameView);

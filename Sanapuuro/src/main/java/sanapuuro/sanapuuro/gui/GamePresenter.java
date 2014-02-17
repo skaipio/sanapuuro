@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import sanapuuro.sanapuuro.Game;
+import sanapuuro.sanapuuro.GameTimerListener;
 import sanapuuro.sanapuuro.Player;
 import sanapuuro.sanapuuro.grid.Grid;
 import sanapuuro.sanapuuro.grid.LetterContainer;
@@ -29,18 +30,18 @@ import sanapuuro.sanapuuro.letters.LetterPool;
  *
  * @author skaipio
  */
-public class GamePresenter implements MouseListener {
+public class GamePresenter implements MouseListener, GameTimerListener {
 
     private final Game game = new Game();
     private Player player;
     private Grid grid;
-    private final MainGameView mainGameView;
+    private final GameView gameView;
     private final TimerWrapper timer = new TimerWrapper();
     private final Selector selector = new Selector();
     private LetterPool letterPool;
 
-    public GamePresenter(MainGameView mainGameView) {
-        this.mainGameView = mainGameView;    
+    public GamePresenter(GameView gameView) {
+        this.gameView = gameView;    
     }
 
     /**
@@ -52,20 +53,21 @@ public class GamePresenter implements MouseListener {
         this.player = this.game.getPlayer();
         this.letterPool = this.player.getLetterPool();
         this.initComponents();
-        this.mainGameView.addMouseListener(this);
-        this.mainGameView.addKeyListener(selector);
+        this.gameView.addMouseListener(this);
+        this.gameView.addKeyListener(selector);
         this.updateLetterPoolPanel();
         this.selector.setLocation(grid.width / 2, grid.height / 2);
     }
     
     private void initComponents(){
-        this.mainGameView.letterPool.init(this.letterPool.poolSize);
-        this.mainGameView.letterPool.addListenerToCells(this.selector);
+        this.gameView.letterPool.init(this.letterPool.poolSize);
+        this.gameView.letterPool.addListenerToCells(this.selector);
         
 //        this.mainGameView.letterGrid.addMouseListener(this);
-        this.mainGameView.letterGrid.addListenerToCells(this);
+        this.gameView.letterGrid.addListenerToCells(this);
         
-        this.timer.addActionListener(mainGameView.time);
+        this.timer.addActionListener(gameView.time);
+        this.timer.addListener(this);
     }
 
     /**
@@ -127,13 +129,13 @@ public class GamePresenter implements MouseListener {
 
     private void deselectCells(List<LetterContainer> selectedContainers) {
         for (LetterContainer container : selectedContainers) {
-            this.mainGameView.letterGrid.setCellSelectionAt(false, container.getX(), container.getY());
+            this.gameView.letterGrid.setCellSelectionAt(false, container.getX(), container.getY());
         }
     }
 
     private void leftClickLetterPoolCell(LetterPoolCellButton cell) {
         this.letterPool.setCurrentSelection(cell.index);
-        this.mainGameView.letterPool.setHoverTo(cell.index);
+        this.gameView.letterPool.setHoverTo(cell.index);
     }
 
     private void leftClickGridCell(GridCellPanel cell) {
@@ -148,8 +150,8 @@ public class GamePresenter implements MouseListener {
         this.selector.selectionMode = true;
         if (this.player.addLetterTo(cell.x, cell.y)) {
             LetterContainer container = this.letterPool.getCurrentSelection();
-            this.mainGameView.letterPool.setContainerAsUsed(container.letterPoolIndex(), true);
-            this.mainGameView.letterGrid.getCellAt(cell.x, cell.y).setLetter(container.letter.toString());
+            this.gameView.letterPool.setContainerAsUsed(container.letterPoolIndex(), true);
+            this.gameView.letterGrid.getCellAt(cell.x, cell.y).setLetter(container.letter.toString());
         }
         LetterContainer previousSelection = this.player.getLastSelection();
         if (this.player.selectLetterAt(cell.x, cell.y)) {
@@ -172,11 +174,11 @@ public class GamePresenter implements MouseListener {
         List<LetterContainer> selections = this.player.getSelectedContainers();
         List<LetterContainer> added = this.player.getAddedContainers();
         if (this.player.submitSelectedLetters()) {
-            this.mainGameView.score.setText(this.player.getScore() + "");
+            this.gameView.score.setText(this.player.getScore() + "");
         } else {
             this.removeLettersFromCells(added);
         }
-        this.mainGameView.state.setText(this.player.getStatus());
+        this.gameView.state.setText(this.player.getStatus());
         this.clearSelections(selections);
         this.removeSelectableLightUpsAroundContainer(tail);
         this.selector.selectionMode = false;
@@ -231,25 +233,25 @@ public class GamePresenter implements MouseListener {
     private void lightUpSelectableCells() {
         LetterContainer tail = this.player.getLastSelection();
         if (this.grid.isWithinGrid(tail.getX(), tail.getY() + 1)) {
-            GridCellPanel cell = this.mainGameView.letterGrid.getCellAt(tail.getX(), tail.getY() + 1);
+            GridCellPanel cell = this.gameView.letterGrid.getCellAt(tail.getX(), tail.getY() + 1);
             if (this.cellIsAlignedWithAndNeighbourOfLastSelection(cell) && !cell.isSelected()) {
                 cell.showAsSelectable(true);
             }
         }
         if (this.grid.isWithinGrid(tail.getX(), tail.getY() - 1)) {
-            GridCellPanel cell = this.mainGameView.letterGrid.getCellAt(tail.getX(), tail.getY() - 1);
+            GridCellPanel cell = this.gameView.letterGrid.getCellAt(tail.getX(), tail.getY() - 1);
             if (this.cellIsAlignedWithAndNeighbourOfLastSelection(cell) && !cell.isSelected()) {
                 cell.showAsSelectable(true);
             }
         }
         if (this.grid.isWithinGrid(tail.getX() + 1, tail.getY())) {
-            GridCellPanel cell = this.mainGameView.letterGrid.getCellAt(tail.getX() + 1, tail.getY());
+            GridCellPanel cell = this.gameView.letterGrid.getCellAt(tail.getX() + 1, tail.getY());
             if (this.cellIsAlignedWithAndNeighbourOfLastSelection(cell) && !cell.isSelected()) {
                 cell.showAsSelectable(true);
             }
         }
         if (this.grid.isWithinGrid(tail.getX() - 1, tail.getY())) {
-            GridCellPanel cell = this.mainGameView.letterGrid.getCellAt(tail.getX() - 1, tail.getY());
+            GridCellPanel cell = this.gameView.letterGrid.getCellAt(tail.getX() - 1, tail.getY());
             if (this.cellIsAlignedWithAndNeighbourOfLastSelection(cell) && !cell.isSelected()) {
                 cell.showAsSelectable(true);
             }
@@ -258,16 +260,16 @@ public class GamePresenter implements MouseListener {
 
     private void removeSelectableLightUpsAroundContainer(LetterContainer container) {
         if (this.grid.isWithinGrid(container.getX(), container.getY() + 1)) {
-            this.mainGameView.letterGrid.getCellAt(container.getX(), container.getY() + 1).showAsSelectable(false);
+            this.gameView.letterGrid.getCellAt(container.getX(), container.getY() + 1).showAsSelectable(false);
         }
         if (this.grid.isWithinGrid(container.getX(), container.getY() - 1)) {
-            this.mainGameView.letterGrid.getCellAt(container.getX(), container.getY() - 1).showAsSelectable(false);
+            this.gameView.letterGrid.getCellAt(container.getX(), container.getY() - 1).showAsSelectable(false);
         }
         if (this.grid.isWithinGrid(container.getX() + 1, container.getY())) {
-            this.mainGameView.letterGrid.getCellAt(container.getX() + 1, container.getY()).showAsSelectable(false);
+            this.gameView.letterGrid.getCellAt(container.getX() + 1, container.getY()).showAsSelectable(false);
         }
         if (this.grid.isWithinGrid(container.getX() - 1, container.getY())) {
-            this.mainGameView.letterGrid.getCellAt(container.getX() - 1, container.getY()).showAsSelectable(false);
+            this.gameView.letterGrid.getCellAt(container.getX() - 1, container.getY()).showAsSelectable(false);
         }
     }
 
@@ -277,28 +279,34 @@ public class GamePresenter implements MouseListener {
         for (LetterContainer lc : selectedLetters) {
             letters.append(lc.letter.character);
         }
-        this.mainGameView.selectedLetters.setText(letters.toString());
+        this.gameView.selectedLetters.setText(letters.toString());
     }
 
     private void updateLetterPoolPanel() {
         for (LetterContainer container : this.letterPool.getLetters()) {
             int index = container.letterPoolIndex();
-            this.mainGameView.letterPool.setContainerAsUsed(index, letterPool.isIndexUsed(index));
-            this.mainGameView.letterPool.setLetterToCell(container.letter.toString(), container.letterPoolIndex());
+            this.gameView.letterPool.setContainerAsUsed(index, letterPool.isIndexUsed(index));
+            this.gameView.letterPool.setLetterToCell(container.letter.toString(), container.letterPoolIndex());
         }
-        this.mainGameView.letterPool.setHoverTo(this.letterPool.getCurrentSelectedIndex());
+        this.gameView.letterPool.setHoverTo(this.letterPool.getCurrentSelectedIndex());
     }
 
     private void clearSelections(List<LetterContainer> selections) {
         this.deselectCells(selections);
         this.updateLetterPoolPanel();
-        this.mainGameView.selectedLetters.setText("");
+        this.gameView.selectedLetters.setText("");
     }
 
     private void removeLettersFromCells(List<LetterContainer> addedContainers) {
         for (LetterContainer container : addedContainers) {
-            this.mainGameView.letterGrid.getCellAt(container.getX(), container.getY()).removeLetter();
+            this.gameView.letterGrid.getCellAt(container.getX(), container.getY()).removeLetter();
         }
+    }
+
+    @Override
+    public void notifyTimeOut() {
+        this.gameView.gameOverMessage.setText("You finished with a score of " + this.player.getScore());
+        this.gameView.showGameOverView();
     }
 
     private class Selector implements KeyListener, ActionListener {
@@ -356,7 +364,7 @@ public class GamePresenter implements MouseListener {
 
         public boolean canMoveTo(int x, int y) {
             if (x >= 0 && x < grid.width && y >= 0 && y < grid.height) {
-                GridCellPanel cell = mainGameView.letterGrid.getCellAt(x, y);
+                GridCellPanel cell = gameView.letterGrid.getCellAt(x, y);
                 return cell.isSelectable() || cellIsTail(cell);
             }
             return false;
@@ -376,7 +384,7 @@ public class GamePresenter implements MouseListener {
             if (!containers.isEmpty()) {
                 LetterContainer tail = player.getLastSelection();
                 if (player.removeLastSelection()) {
-                    GridCellPanel cell = mainGameView.letterGrid.getCellAt(tail.getX(), tail.getY());
+                    GridCellPanel cell = gameView.letterGrid.getCellAt(tail.getX(), tail.getY());
                     cell.deselect();
                     removeSelectableLightUpsAroundContainer(tail);
                     if (!tail.isPermanent()) {
@@ -449,7 +457,7 @@ public class GamePresenter implements MouseListener {
         }
 
         private GridCellPanel getCellAtCurrentLocation() {
-            return mainGameView.letterGrid.getCellAt(x, y);
+            return gameView.letterGrid.getCellAt(x, y);
         }
 
         private void addLetterUsing(LetterPoolCellButton btn, GridCellPanel cell) {
