@@ -6,8 +6,6 @@
 
 package sanapuuro.sanapuuro.gui;
 
-import java.awt.Color;
-import java.awt.Font;
 import javax.swing.JLabel;
 
 /**
@@ -15,12 +13,12 @@ import javax.swing.JLabel;
  * @author skaipio
  */
 public class ScoreLabel extends JLabel {
-    private String prefix = "SCORE: ";
+    private final String prefix = "SCORE: ";
      public ScoreLabel(){
         super();
         this.setFont(GUISettings.getMediumFont());
         this.setForeground(GUISettings.getColorDefaultFont());
-        this.setText("");
+        this.setText("0");
     }
     
     @Override

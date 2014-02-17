@@ -92,104 +92,13 @@ public class GameWindow extends javax.swing.JFrame {
     }
 
     private void initWindows() {
+
         this.getContentPane().setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
 
-        Container mainGameView = new JPanel(new GridBagLayout());
-        mainGameView.setBackground(GUISettings.getColorBackground());
-        mainGameView.setFocusable(true);
-
+        MainGameView mainGameView = new MainGameView();
         this.add(mainGameView);
 
-        GridBagConstraints constraints = new GridBagConstraints();
-
-        JPanel statusPanel = new JPanel(new GridLayout(1, 2));
-        statusPanel.setBackground(GUISettings.getColorBackground());
-        statusPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-
-        TimeLabel timeLabel = new TimeLabel();
-        statusPanel.add(timeLabel);
-
-        JLabel scoreLabel = new ScoreLabel();
-        scoreLabel.setText("");
-        statusPanel.add(scoreLabel);
-
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.gridwidth = 3;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        mainGameView.add(statusPanel, constraints);
-
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        mainGameView.add(Box.createVerticalStrut(5), constraints);
-
-        JPanel submissionPanel = new JPanel();
-        submissionPanel.setLayout(new BoxLayout(submissionPanel, BoxLayout.LINE_AXIS));
-        submissionPanel.setBackground(GUISettings.getColorBackground());
-
-        JLabel selectedLettersLabel = new SelectedLettersLabel();
-        JPanel selectedLettersPanel = new JPanel();
-        selectedLettersPanel.setBorder(BorderFactory.createLineBorder(GUISettings.getColorBorder()));
-        selectedLettersPanel.setBackground(GUISettings.getColorLetterPoolCell());
-        int width = 200, height = 40;
-        selectedLettersPanel.setPreferredSize(new Dimension(width, height));
-        selectedLettersPanel.add(selectedLettersLabel);
-
-        constraints.gridx = 1;
-        constraints.gridy = 2;
-        constraints.gridwidth = 1;
-        constraints.fill = GridBagConstraints.NONE;
-        mainGameView.add(selectedLettersPanel, constraints);
-
-        constraints.gridx = 1;
-        constraints.gridy = 3;
-        constraints.gridwidth = 1;
-        mainGameView.add(Box.createVerticalStrut(5), constraints);
-
-        constraints.gridx = 0;
-        constraints.gridy = 4;
-        int fillerWidth = 50;
-        mainGameView.add(Box.createHorizontalStrut(fillerWidth), constraints);
-
-        LetterGridPanel cells = new LetterGridPanel(8, 8);
-        constraints.gridx = 1;
-        constraints.anchor = GridBagConstraints.CENTER;
-        mainGameView.add(cells, constraints);
-
-        constraints.gridx = 2;
-        mainGameView.add(Box.createHorizontalStrut(fillerWidth), constraints);
-
-        constraints.gridx = 0;
-        constraints.gridy = 5;
-        constraints.gridwidth = 3;
-        constraints.fill = GridBagConstraints.NONE;
-        mainGameView.add(Box.createVerticalStrut(5), constraints);
-
-        constraints.gridx = 1;
-        constraints.gridy = 6;
-        constraints.gridwidth = 1;
-        constraints.anchor = GridBagConstraints.CENTER;
-        LetterPoolPanel letterPoolPanel = new LetterPoolPanel();
-        mainGameView.add(letterPoolPanel, constraints);
-
-        JPanel infoPanel = new JPanel(new BorderLayout(0, 0));
-        infoPanel.setBackground(GUISettings.getColorBackground());   
-        JLabel stateText = new JLabel("Add letters to grid to form a word.");
-        stateText.setFont(GUISettings.getMediumFont());
-        infoPanel.add(stateText, BorderLayout.NORTH);
-        constraints.fill = GridBagConstraints.NONE;
-        constraints.gridx = 0;
-        constraints.gridy = 7;
-        constraints.gridwidth = 3;
-        mainGameView.add(infoPanel, constraints);
-
         GamePresenter presenter = new GamePresenter(mainGameView);
-        presenter.setSelectedLettersLabel(selectedLettersLabel);
-        presenter.setLetterGridPanel(cells);
-        presenter.setLetterPoolPanel(letterPoolPanel);
-        presenter.setScoreLabel(scoreLabel);
-        presenter.setTimeLabel(timeLabel);
-        presenter.setStateLabel(stateText);
 
         presenter.newGame();
 

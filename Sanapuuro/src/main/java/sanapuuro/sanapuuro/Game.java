@@ -35,7 +35,8 @@ public class Game implements GameTimerListener{
     public void newGame(GameTimer timer) {
         this.grid.clear();
         this.timer = timer;
-        this.timer.startCountdownFrom(60);
+        this.timer.addListener(this);
+        this.timer.startCountdownFrom(10);
         this.letters = new LetterReader(new Random());
         
         WordEvaluator wordEval = new WordEvaluator();
