@@ -21,10 +21,8 @@ import javax.swing.border.BevelBorder;
  */
 public class GridCellPanel extends JLabel {
 
-    private String letter = "";
     private final int cellSize;
     public final int x, y;
-    private boolean isHighlighted = false;
     private boolean isSelected = false;
     private boolean showAsSelectable = false;
     private boolean cursorEnabled = false;
@@ -35,7 +33,7 @@ public class GridCellPanel extends JLabel {
         this.y = y;
         this.setOpaque(true);
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-        this.setBackground(GUISettings.getColorButton1());
+        this.setBackground(GUISettings.getColorGridCell());
         this.setPreferredSize(new Dimension(cellSize, cellSize));
         this.setFont(GUISettings.getMediumFont());
         this.setHorizontalAlignment(SwingConstants.CENTER);
@@ -62,16 +60,14 @@ public class GridCellPanel extends JLabel {
     }
 
     public void hoverOff() {
-        if (this.showAsSelectable) {
+        if (cursorEnabled) {
+            this.setBackground(GUISettings.getColorCursorEnabled());
+        } else if (this.showAsSelectable) {
             this.setBackground(GUISettings.getColorSelectableCell());
         } else if (isSelected) {
             this.setBackground(GUISettings.getColorSelectedCell());
-        } else if (isHighlighted) {
-            this.setBackground(GUISettings.getColorBorder());
-        } else if (cursorEnabled) {
-            this.setBackground(GUISettings.getColorCursorEnabled());
         } else {
-            this.setBackground(GUISettings.getColorButton1());
+            this.setBackground(GUISettings.getColorGridCell());
         }
     }
 
@@ -80,18 +76,12 @@ public class GridCellPanel extends JLabel {
         if (enabled) {
             this.setBackground(GUISettings.getColorCursorEnabled());
         } else {
-            this.setBackground(GUISettings.getColorButton1());
+            if (this.isSelected) {
+                this.setBackground(GUISettings.getColorSelectedCell());
+            } else {
+                this.setBackground(GUISettings.getColorGridCell());
+            }
         }
-    }
-
-    public void highlight() {
-        this.isHighlighted = true;
-        this.setBackground(GUISettings.getColorBorder());
-    }
-
-    public void removeHighlight() {
-        this.isHighlighted = false;
-        this.setBackground(GUISettings.getColorButton1());
     }
 
     public void select() {
@@ -110,7 +100,7 @@ public class GridCellPanel extends JLabel {
         if (this.cursorEnabled) {
             this.setBackground(GUISettings.getColorCursorEnabled());
         } else {
-            this.setBackground(GUISettings.getColorButton1());
+            this.setBackground(GUISettings.getColorGridCell());
         }
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
         this.repaint();
@@ -125,7 +115,7 @@ public class GridCellPanel extends JLabel {
         } else if (this.isSelected) {
             this.setBackground(GUISettings.getColorSelectedCell());
         } else {
-            this.setBackground(GUISettings.getColorButton1());
+            this.setBackground(GUISettings.getColorGridCell());
         }
         this.repaint();
     }

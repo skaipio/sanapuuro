@@ -95,7 +95,7 @@ public class GameWindow extends javax.swing.JFrame {
         this.getContentPane().setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
 
         Container mainGameView = new JPanel(new GridBagLayout());
-        mainGameView.setBackground(GUISettings.getColorBackground1());
+        mainGameView.setBackground(GUISettings.getColorBackground());
         mainGameView.setFocusable(true);
 
         this.add(mainGameView);
@@ -103,7 +103,7 @@ public class GameWindow extends javax.swing.JFrame {
         GridBagConstraints constraints = new GridBagConstraints();
 
         JPanel statusPanel = new JPanel(new GridLayout(1, 2));
-        statusPanel.setBackground(GUISettings.getColorBackground1());
+        statusPanel.setBackground(GUISettings.getColorBackground());
         statusPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 
         TimeLabel timeLabel = new TimeLabel();
@@ -125,12 +125,12 @@ public class GameWindow extends javax.swing.JFrame {
 
         JPanel submissionPanel = new JPanel();
         submissionPanel.setLayout(new BoxLayout(submissionPanel, BoxLayout.LINE_AXIS));
-        submissionPanel.setBackground(GUISettings.getColorBackground1());
+        submissionPanel.setBackground(GUISettings.getColorBackground());
 
         JLabel selectedLettersLabel = new SelectedLettersLabel();
         JPanel selectedLettersPanel = new JPanel();
         selectedLettersPanel.setBorder(BorderFactory.createLineBorder(GUISettings.getColorBorder()));
-        selectedLettersPanel.setBackground(GUISettings.getColorSelectedCell());
+        selectedLettersPanel.setBackground(GUISettings.getColorLetterPoolCell());
         int width = 200, height = 40;
         selectedLettersPanel.setPreferredSize(new Dimension(width, height));
         selectedLettersPanel.add(selectedLettersLabel);
@@ -173,14 +173,10 @@ public class GameWindow extends javax.swing.JFrame {
         mainGameView.add(letterPoolPanel, constraints);
 
         JPanel infoPanel = new JPanel(new BorderLayout(0, 0));
-        infoPanel.setBackground(GUISettings.getColorBackground1());
-//        JLabel stateText = new JLabel("<html><p>Use WASD keys to move the grid cursor "
-//                + "and click on the letter pool letters or letters in the grid to "
-//                + "form a word. Right click removes the previously selected/added letter.</p></html>");     
+        infoPanel.setBackground(GUISettings.getColorBackground());   
         JLabel stateText = new JLabel("Add letters to grid to form a word.");
         stateText.setFont(GUISettings.getMediumFont());
         infoPanel.add(stateText, BorderLayout.NORTH);
-        //infoPanel.setPreferredSize(new Dimension(this.getPreferredSize().width, stateText.getPreferredSize().height * 3));
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridx = 0;
         constraints.gridy = 7;

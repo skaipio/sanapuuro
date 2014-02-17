@@ -26,7 +26,7 @@ public class LetterGridPanel extends JPanel {
         this.columns = columns;
         this.cells = new GridCellPanel[rows][columns];
         this.setLayout(new GridBagLayout());
-        this.setBackground(GUISettings.getColorBackground1());
+        this.setBackground(GUISettings.getColorBackground());
         this.initCells();
         this.setPreferredSize(new Dimension(columns * cellSize, rows * cellSize));
         System.out.println(this.getSize());

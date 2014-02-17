@@ -17,31 +17,30 @@ public class GUISettings {
     private static final int hex = 16;
     private static final String LogicalFont = "SansSerif";
     private static Font mediumFont;
-    private static Color colorBackground1;
+    private static Color background;
     private static Color colorSelectedCell;
     private static Color colorBorder;
-    private static Color gridButtonDefault;
+    private static Color gridCell;
+    private static Color letterPoolCell;
     private static Color cursorEnabled;
     private static Color colorButtonHighlight2;
     private static Color colorLetterPoolButtonUsed;
-    private static Color colorGridButtonHighlight;
+    private static Color gridCellHover;
     private static Color colorSelectableCell;
     private static Color colorDefaultFont;
 
     public static void initGUISettings() {
         mediumFont = new Font(LogicalFont, Font.PLAIN, 20);
-        //colorBackground1 = new Color(Integer.parseInt("f9e0b0", hex));
-        colorBackground1 = new Color(Integer.parseInt("d1ccc0", hex));
-        //colorSelectedCell = new Color(Integer.parseInt("f9ca6d", hex));
-        colorSelectedCell = new Color(Integer.parseInt("e6a117", hex));
+        background = new Color(Integer.parseInt("b2d0f0", hex));
+        colorSelectedCell = new Color(Integer.parseInt("d0e0f0", hex));
         colorBorder = new Color(Integer.parseInt("8f753f", hex));
-        //gridButtonDefault = new Color(Integer.parseInt("6d4a03", hex));
-        gridButtonDefault = new Color(Integer.parseInt("8e8778", hex));
-        cursorEnabled = new Color(Integer.parseInt("1e439a", hex));      
-        colorButtonHighlight2 = new Color(Integer.parseInt("7295e6", hex));
+        gridCell = new Color(Integer.parseInt("7097bf", hex));
+        letterPoolCell = new Color(Integer.parseInt("d0e0f0", hex));      
+        cursorEnabled = new Color(Integer.parseInt("fff1db", hex));      
+        colorButtonHighlight2 = new Color(Integer.parseInt("b2d0f0", hex));
         colorLetterPoolButtonUsed = new Color(Integer.parseInt("303e60", hex));
-        colorGridButtonHighlight = new Color(Integer.parseInt("f9ca6d", hex));
-        colorSelectableCell = new Color(Integer.parseInt("aabce6", hex));
+        gridCellHover = new Color(Integer.parseInt("d0e0f0", hex));
+        colorSelectableCell = new Color(Integer.parseInt("b2d0f0", hex));
         colorDefaultFont = new Color(Integer.parseInt("000000", hex));
     }
 
@@ -49,8 +48,8 @@ public class GUISettings {
         return mediumFont;
     }
 
-    public static Color getColorBackground1() {
-        return colorBackground1;
+    public static Color getColorBackground() {
+        return background;
     }
 
     public static Color getColorSelectedCell() {
@@ -61,8 +60,12 @@ public class GUISettings {
         return colorBorder;
     }
 
-    public static Color getColorButton1() {
-        return gridButtonDefault;
+    public static Color getColorGridCell() {
+        return gridCell;
+    }
+    
+    public static Color getColorLetterPoolCell() {
+        return letterPoolCell;
     }
 
     public static Color getColorCursorEnabled() {
@@ -74,7 +77,7 @@ public class GUISettings {
     }
     
     public static Color getGridButtonHighlight() {
-        return colorGridButtonHighlight;
+        return gridCellHover;
     }
 
     public static Color getColorButtonHighlight2() {
