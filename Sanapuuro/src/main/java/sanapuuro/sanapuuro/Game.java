@@ -23,6 +23,7 @@ public class Game implements GameTimerListener{
     private Letters letters;
     private Player player;
     private final int gridSize = 8;
+    private final int timerStart = 120;
 
     public Game() {
         this.grid = new Grid(gridSize, gridSize);
@@ -36,7 +37,7 @@ public class Game implements GameTimerListener{
         this.grid.clear();
         this.timer = timer;
         this.timer.addListener(this);
-        this.timer.startCountdownFrom(10);
+        this.timer.startCountdownFrom(timerStart);
         this.letters = new LetterReader(new Random());
         
         WordEvaluator wordEval = new WordEvaluator();
