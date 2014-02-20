@@ -1,0 +1,35 @@
+Aihe: Sanapeli
+
+Pelissä on ruudukko (8x8), johon pelaajan on sijoitettava kirjaimia, valitsemalla
+kahdeksasta annetusta satunnaisesta kirjaimesta. Pelaaja voi sijoittaa kirjaimia,
+vain vaaka- tai pystysuorassa, hän voi myös käyttää sanan osana ruudukolla jo olevia
+kirjaimia. Kun pelaaja on sijoittanut haluamansa kirjaimet, hän antaa valitut kirjaimet pelin arvioitavaksi. Jos sana on validi englannin kielen sana, pelaaja saa pisteitä ja hänelle
+arvotaan lisää kirjaimia niin, että hänellä on niitä taas kahdeksan. Aikaa on rajallisesti, mutta pelaaja voi saada lisää aikaa antamalla sanoja oikein.
+
+Kontrollit:
+WSAD - Liikuttavat selektoria ruudukolla. Sen voi myös suoraan sijoittaa hiiren
+vasemmalla napilla.
+Right Click - Poistaa viimeksi valitun/lisätyn kirjaimen valituista kirjaimista.
+SPACE - Antaa valitut/lisätyt kirjaimet evaluoitavaksi.
+
+Mahdollisia ekstraominaisuuksia:
+Kontrollit ohjeista itse peliin.
+Pelaajan saadessa sijoitettuja sanoja peräkkäin oikein ns. kombokerroin kasvaa.
+Letter pooli arpoo kirjaimet niin, että pelaajalla on aina vähintään yksi vokaali.
+Kirjainten rerollaus (aika/score penalty).
+Pelaaja voi tyhjentää ruudun (aika/score penalty).
+Ruudukolla voi olla valmiiksi laitettuja kirjaimia pelin alkaessa. Ruudukossa saattaa olla
+erikoissoluja, joita voi käyttää muodostamalla sanan niin että yksi kirjaimista on erikoissolun kohdalla. Erikoissoluja syntyy satunnaisesti, mutta harvoin pelaajan muodostaessa eri pituisia sanoja. Jos sana on tarpeeksi pitkä, niin erikoissolun syntyminen on varmaa. Erikoissolun käyttämiseen riittää minkä tahansa pituinen sana.
+
+Sanalistalle on Public Domain lisenssi. Luojat: Mendel Cooper ja Alan Beale.
+Sanalista on otettu alla olevasta linkistä:
+http://www.cs.duke.edu/csed/data/yawl-0.3.2/
+
+Käyttäjät: Pelaaja
+Pelaajan toiminnot:
+Uuden pelin aloitus
+Selectorin liikuttaminen ruudulla
+Kirjaimen sijoitus selectorin kohdalle
+Sanan antaminen varmistettavaksi
+Ruudukon tyhjentäminen
+Pelin keskeyttäminen
