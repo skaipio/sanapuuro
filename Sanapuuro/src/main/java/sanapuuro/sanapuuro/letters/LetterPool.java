@@ -15,11 +15,11 @@ import java.util.Set;
  * @author skaipio
  */
 public class LetterPool{
-    public final int poolSize = 8;
-    private final Letters letters;
-    private final LetterContainer[] pool = new LetterContainer[poolSize];
-    private final Set<Integer> usedLetterIndices = new HashSet(poolSize);
-    private int currentSelection = 0;
+    public final int poolSize = 8;  // The maximum number of letters that can be placed at once.
+    private final Letters letters;  // For getting random letters.
+    private final LetterContainer[] pool = new LetterContainer[poolSize];   // Pool for holding the letters.
+    private final Set<Integer> usedLetterIndices = new HashSet(poolSize);   // A set of used letter indices (why isn't this an array of booleans???).
+    private int currentSelection = 0;   // Index of currently "highlighted" letter that can be added to the grid (probably obsolete now).
             
     public LetterPool(Letters letters){
         this.letters = letters;
@@ -35,7 +35,13 @@ public class LetterPool{
     public int getCurrentSelectedIndex(){
         return this.currentSelection;
     }
+
     
+    /**
+     * For checking whether a letter container at the given index is already in the grid.
+     * @param i Index of the letter container.
+     * @return True if the letter container is in use, false otherwise.
+     */
     public boolean isIndexUsed(int i){
         return this.usedLetterIndices.contains(i);
     }

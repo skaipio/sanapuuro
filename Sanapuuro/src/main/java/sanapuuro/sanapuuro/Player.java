@@ -16,15 +16,15 @@ import sanapuuro.sanapuuro.words.WordEvaluator;
  */
 public class Player {
 
-    private final Grid grid;
-    private final LetterPool letterPool;
-    private final WordEvaluator wordEval;
-    private final List<LetterContainer> selectedContainers = new ArrayList<>();
-    private final List<LetterContainer> addedContainers = new ArrayList<>();
-    private boolean controlsEnabled = true;
+    private final Grid grid;        // Letter grid.
+    private final LetterPool letterPool;    // Pool for picking letters from.
+    private final WordEvaluator wordEval;   // Evaluates letters on submission.
+    private final List<LetterContainer> selectedContainers = new ArrayList<>(); // Holds selected letters that are permanently in grid.
+    private final List<LetterContainer> addedContainers = new ArrayList<>();    // Holds letters that can still be removed from grid.
+    private boolean controlsEnabled = true;     // Switch for enabling and disabling controls.
 
-    private String status = "";
-    private int score = 0;
+    private String status = "";     // Status message that gives info about letter submissions.
+    private int score = 0;          // Score.
 
     public Player(Grid grid, WordEvaluator wordEvaluator, Letters letters) {
         this.grid = grid;
@@ -43,8 +43,8 @@ public class Player {
     public int getScore() {
         return this.score;
     }
-    
-    public boolean isEnabled(){
+
+    public boolean isEnabled() {
         return this.controlsEnabled;
     }
 
@@ -58,6 +58,7 @@ public class Player {
 
     /**
      * Gets player's latest selection.
+     *
      * @return Latest selected letter container, null if none has been selected.
      */
     public LetterContainer getLastSelection() {
@@ -69,6 +70,7 @@ public class Player {
 
     /**
      * Gets player's first selection.
+     *
      * @return First selected letter container, null if none has been selected.
      */
     public LetterContainer getFirstSelection() {
@@ -79,7 +81,9 @@ public class Player {
     }
 
     /**
-     * Disables all control methods if set to false. Enables them again if set to true.
+     * Disables all control methods if set to false. Enables them again if set
+     * to true.
+     *
      * @param enabled True for control enabling, false for disabling.
      */
     void setControlsEnabled(boolean enabled) {
@@ -94,7 +98,6 @@ public class Player {
 //        }
 //        return false;
 //    }
-
     /**
      * Adds a letter container from the letter pool on the given location
      * location if there is no other container already present and adds it to
@@ -120,21 +123,9 @@ public class Player {
         return false;
     }
 
-//    public boolean returnContainerToLetterPoolAt(int x, int y) {
-//        if (this.controlsEnabled && this.grid.hasContainerAt(x, y)) {
-//            LetterContainer container = this.grid.getContainerAt(x, y);
-//            if (this.addedContainers.contains(container)) {
-//                this.grid.removeContainer(container);
-//                this.letterPool.unpickLetterAtIndex(container.letterPoolIndex());
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
     /**
-     * Selects the letter from the given location and adds to selected
-     * letter containers if there is any at the location.
+     * Selects the letter from the given location and adds to selected letter
+     * containers if there is any at the location.
      *
      * @param x Coordinate to set to.
      * @param y Coordinate to set to.
@@ -152,9 +143,11 @@ public class Player {
     }
 
     /**
-     * Removes the latest selection from player's selected
-     * letter containers if there is any.
-     * @return True if controls are enabled and there were selected containers, false otherwise.
+     * Removes the latest selection from player's selected letter containers if
+     * there is any.
+     *
+     * @return True if controls are enabled and there were selected containers,
+     * false otherwise.
      */
     public boolean removeLastSelection() {
         if (this.controlsEnabled && !this.selectedContainers.isEmpty()) {
@@ -178,7 +171,7 @@ public class Player {
      * @return True if letters formed a valid word, false otherwise.
      */
     public boolean submitSelectedLetters() {
-        if(!this.controlsEnabled){
+        if (!this.controlsEnabled) {
             return false;
         }
         if (this.selectedContainers.isEmpty()) {
@@ -197,23 +190,32 @@ public class Player {
 
             this.clearSelectionsAndAdditions();
             return true;
+        } else {
+            this.returnAllAddedLettersBackToLetterPool();
+            this.clearSelectionsAndAdditions();
         }
-
-        this.returnAllAddedLettersBackToLetterPool();
-        this.clearSelectionsAndAdditions();
-        return false;
+        return result.succeeded;
     }
 
+    /**
+     * Sets this instance's selected letters to the letter grid permanently.
+     */
     private void setSelectedLettersToGridPermanently() {
         this.grid.setLettersToGridPermanently(this.selectedContainers);
         this.letterPool.replacePickedLetters();
     }
 
+    /**
+     * Clears selected and added letters (NOTE: does not return added letters back to pool).
+     */
     private void clearSelectionsAndAdditions() {
         this.addedContainers.clear();
         this.selectedContainers.clear();
     }
 
+    /**
+     * Returns all added letters back to pool but does not clear them.
+     */
     private void returnAllAddedLettersBackToLetterPool() {
         this.grid.removeContainersFromGrid(this.addedContainers);
         this.letterPool.clearLetterPicks();

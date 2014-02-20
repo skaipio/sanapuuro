@@ -11,9 +11,9 @@ package sanapuuro.sanapuuro.letters;
  * @author skaipio
  */
 public class Letter{
-    public final char character;
-    public final int score;
-    public final float frequency;
+    public final char character;    // Alphabet character
+    public final int score;         // Score for the letter on word submission.
+    public final float frequency;   // How often this letter appears in the letter pool
     public Letter(char character, int score, float frequency){
         this.character = character;
         this.score = score;

@@ -5,17 +5,13 @@
  */
 package sanapuuro.sanapuuro.gui;
 
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Iterator;
 import java.util.List;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import sanapuuro.sanapuuro.Game;
 import sanapuuro.sanapuuro.GameTimerListener;
@@ -155,9 +151,7 @@ public class GamePresenter implements MouseListener, GameTimerListener {
         }
         LetterContainer previousSelection = this.player.getLastSelection();
         if (this.player.selectLetterAt(cell.x, cell.y)) {
-            LetterContainer container = this.grid.getContainerAt(cell.x, cell.y);
-            String letter = container.letter.toString();
-
+            
             this.updateSelectedLettersLabel();
             if (previousSelection != null) {
                 this.removeSelectableLightUpsAroundContainer(previousSelection);
@@ -222,11 +216,6 @@ public class GamePresenter implements MouseListener, GameTimerListener {
     private void selectCell(GridCellPanel cell) {
         cell.select();
         cell.hoverOn();
-        this.updateSelectedLettersLabel();
-    }
-
-    private void deselectCell(GridCellPanel cell) {
-        cell.deselect();
         this.updateSelectedLettersLabel();
     }
 
@@ -309,11 +298,18 @@ public class GamePresenter implements MouseListener, GameTimerListener {
         this.gameView.showGameOverView();
     }
 
+    
+    /**
+     * A helper class for GamePresenter handling most of the user interaction, such as
+     * moving the selection cursor in grid and selecting/adding/removing letters.
+     */
     private class Selector implements KeyListener, ActionListener {
 
         private boolean selectionMode = false;
         private int x, y;
 
+        // TODO: At least some of the things handled by this class ought to be
+        // in the Game Logic classes, mainly Player.
         public Selector() {
 
         }

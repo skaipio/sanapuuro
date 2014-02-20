@@ -15,9 +15,9 @@ import sanapuuro.sanapuuro.words.WordList;
  * Holds and reads valid English words from a file.
  * @author skaipio
  */
-public class WordReader implements WordList {
+public final class WordReader implements WordList {
     private final String englishWordListPath = "assets/english_words";
-    private List<String> words;
+    private final List<String> words;
     
     public WordReader(){
         this.words = this.getWords();

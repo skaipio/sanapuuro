@@ -18,12 +18,12 @@ import sanapuuro.sanapuuro.words.WordEvaluator;
  * @author skaipio
  */
 public class Game implements GameTimerListener{
-    private final Grid grid;
-    private GameTimer timer;
-    private Letters letters;
-    private Player player;
-    private final int gridSize = 8;
-    private final int timerStart = 120;
+    private final Grid grid;    // Game grid for letters.
+    private GameTimer timer;    // Count down timer.
+    private Letters letters;    // For random letters from the alphabet,
+    private Player player;      // Player with score and control methods.
+    private final int gridSize = 8; // Grid size n x n
+    private final int timerStart = 60; // Count down starts from.
 
     public Game() {
         this.grid = new Grid(gridSize, gridSize);
@@ -54,7 +54,7 @@ public class Game implements GameTimerListener{
     }
 
     /**
-     * Disabled player's controls.
+     * Disables player's controls.
      */
     @Override
     public void notifyTimeOut() {

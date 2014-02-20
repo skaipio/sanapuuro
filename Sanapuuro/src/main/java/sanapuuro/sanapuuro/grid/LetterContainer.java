@@ -14,10 +14,10 @@ import sanapuuro.sanapuuro.letters.Letter;
  * @author skaipio
  */
 public class LetterContainer {
-    public final Letter letter;
-    private boolean isPermanent = false;
-    private int letterPoolIndex;
-    private int x, y;
+    public final Letter letter;     // A letter holding character and score info.
+    private boolean isPermanent = false;    // Is the container permanently in a grid or not.
+    private int letterPoolIndex;            // Container's index in the letter pool it is from, not valid if it no longer is in a letter pool.
+    private int x, y;   // Coordinates in the grid.
     
     public LetterContainer(Letter letter, boolean fromLetterPool, int letterPoolIndex){
         this.letter = letter;

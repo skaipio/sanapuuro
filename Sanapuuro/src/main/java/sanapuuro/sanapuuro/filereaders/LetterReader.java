@@ -23,11 +23,11 @@ import sanapuuro.sanapuuro.letters.Letters;
  */
 public class LetterReader implements Letters {
 
-    private Pattern linePattern = Pattern.compile("([a-z])\\s(\\d\\d?)\\s(0\\.\\d+)\\D*");
-    private String englishLettersPath = "assets/english_letters";
+    private final Pattern linePattern = Pattern.compile("([a-z])\\s(\\d\\d?)\\s(0\\.\\d+)\\D*");
+    private final String englishLettersPath = "assets/english_letters";
     private final Random random;
     private final LetterFrequencyComparator letterFreqComparator = new LetterFrequencyComparator();
-    private List<Letter> sortedLetters;
+    private final List<Letter> sortedLetters;
 
     public LetterReader(Random randomizer) {
         this.random = randomizer;

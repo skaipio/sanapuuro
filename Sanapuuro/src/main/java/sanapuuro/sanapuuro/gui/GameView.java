@@ -7,10 +7,7 @@ package sanapuuro.sanapuuro.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -22,7 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
 /**
- *
+ * The main game view presenting the grid, selected letters, score,
+ * time and letter pool.
  * @author skaipio
  */
 public class GameView extends JPanel {

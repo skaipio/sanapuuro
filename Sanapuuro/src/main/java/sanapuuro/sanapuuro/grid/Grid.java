@@ -5,7 +5,6 @@
  */
 package sanapuuro.sanapuuro.grid;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,8 +14,8 @@ import java.util.List;
  */
 public class Grid {
 
-    public final int width, height;
-    private final LetterContainer[][] containers;
+    public final int width, height;     // Grid height and width by cells, preferably square.
+    private final LetterContainer[][] containers;   // The actual grid as 2d-array.
 
     public Grid(int width, int height) {
         this.width = width;
@@ -100,10 +99,18 @@ public class Grid {
         this.containers[x][y] = null;
     }
     
+    /**
+     * Removes a container from the grid based on its coordinates.
+     * @param container Container to remove from the grid.
+     */
     public void removeContainer(LetterContainer container){
         this.removeContainerAt(container.getX(), container.getY());
     }
 
+    /**
+     * Removes given containers from the grid based on their coordinates.
+     * @param containers Containers to remove.
+     */
     public void removeContainersFromGrid(List<LetterContainer> containers) {
         for (LetterContainer container : containers) {
             this.removeContainer(container);

@@ -7,9 +7,14 @@
 package sanapuuro.sanapuuro.words;
 
 /**
- *
+ * Holds valid words.
  * @author skaipio
  */
 public interface WordList {
+    /**
+     * Checks if the given word is on the word list.
+     * @param word Word to check.
+     * @return True if the word was found on the list, false otherwise.
+     */
     boolean hasWord(String word);
 }

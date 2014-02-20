@@ -9,7 +9,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 /**
- *
+ * A class meant to be static. Holds GUI appearance settings.
  * @author skaipio
  */
 public class GUISettings {
@@ -29,6 +29,8 @@ public class GUISettings {
     private static Color gridCellHover;
     private static Color colorSelectableCell;
     private static Color colorDefaultFont;
+    
+    private GUISettings(){}
 
     public static void initGUISettings() {
         mediumFont = new Font(LogicalFont, Font.PLAIN, 20);

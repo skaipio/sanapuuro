@@ -18,8 +18,8 @@ import sanapuuro.sanapuuro.utils.LetterContainerCoordinateComparator;
  */
 public class WordEvaluator {
 
-    private final int wordLengthMinimum = 3;
-    private final WordList wordValidator = new WordReader();
+    private final int wordLengthMinimum = 3;    // A minimum length for a word to be evaluated.
+    private final WordList wordValidator = new WordReader();    // Checks if the given word is an actual word.
 
     /**
      * Evalutes the letters in the letter containers, checking if they form a word.
@@ -58,6 +58,11 @@ public class WordEvaluator {
         return new EvaluationResult(false, "Word must be on the same column or row and should not have gaps.");
     }
 
+    /**
+     * Evaluates the combined score of the given letters.
+     * @param letterContainers Letter containers with letters to evaluate.
+     * @return The combined score of the letters in the containers.
+     */
     private int evaluteLetters(List<LetterContainer> letterContainers) {
         int score = 0;
         for (LetterContainer container : letterContainers) {
@@ -66,6 +71,11 @@ public class WordEvaluator {
         return score;
     }
 
+    /**
+     * Checks that all the containers are on the same row and don't have gaps between them.
+     * @param letterContainers
+     * @return 
+     */
     private boolean allContainersOnSameRowWithoutGaps(List<LetterContainer> letterContainers) {
         Collections.sort(letterContainers, new LetterContainerCoordinateComparator(false));
         for (int i = 1; i < letterContainers.size(); i++) {
@@ -78,6 +88,11 @@ public class WordEvaluator {
         return true;
     }
 
+    /**
+     * Checks that all the containers are on the same row and don't have gaps between them.
+     * @param letterContainers
+     * @return 
+     */
     private boolean allContainersOnSameColumnWithoutGaps(List<LetterContainer> letterContainers) {
         Collections.sort(letterContainers, new LetterContainerCoordinateComparator(true));
         for (int i = 1; i < letterContainers.size(); i++) {

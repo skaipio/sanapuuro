@@ -11,5 +11,8 @@ package sanapuuro.sanapuuro;
  * @author skaipio
  */
 public interface GameTimerListener {
+    /**
+     * A method for handling the time out event.
+     */
     void notifyTimeOut();
 }
