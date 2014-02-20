@@ -60,7 +60,7 @@ public class GameTest {
      @Test
      public void timerStartsAtOneMinuteAfterNewGame() {
          this.game.newGame(this.timer);
-         assertEquals(1, this.timer.getMinutes());
+         assertEquals(5, this.timer.getMinutes());
      }
      
      @Test

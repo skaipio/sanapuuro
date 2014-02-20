@@ -23,7 +23,7 @@ public class Game implements GameTimerListener{
     private Letters letters;    // For random letters from the alphabet,
     private Player player;      // Player with score and control methods.
     private final int gridSize = 8; // Grid size n x n
-    private final int timerStart = 60; // Count down starts from.
+    private final int timerStart = 5*60; // Count down starts from.
 
     public Game() {
         this.grid = new Grid(gridSize, gridSize);
