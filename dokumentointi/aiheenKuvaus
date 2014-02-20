@@ -4,7 +4,7 @@ Pelissä on ruudukko (8x8), johon pelaajan on sijoitettava kirjaimia, valitsemal
 kahdeksasta annetusta satunnaisesta kirjaimesta. Pelaaja voi sijoittaa kirjaimia,
 vain vaaka- tai pystysuorassa, hän voi myös käyttää sanan osana ruudukolla jo olevia
 kirjaimia. Kun pelaaja on sijoittanut haluamansa kirjaimet, hän antaa valitut kirjaimet pelin arvioitavaksi. Jos sana on validi englannin kielen sana, pelaaja saa pisteitä ja hänelle
-arvotaan lisää kirjaimia niin, että hänellä on niitä taas kahdeksan. Aikaa on rajallisesti, mutta pelaaja voi saada lisää aikaa antamalla sanoja oikein.
+arvotaan lisää kirjaimia niin, että hänellä on niitä taas kahdeksan. Aikaa on rajallisesti.
 
 Kontrollit:
 WSAD - Liikuttavat selektoria ruudukolla. Sen voi myös suoraan sijoittaa hiiren
@@ -14,6 +14,7 @@ SPACE - Antaa valitut/lisätyt kirjaimet evaluoitavaksi.
 
 Mahdollisia ekstraominaisuuksia:
 Kontrollit ohjeista itse peliin.
+Lisää aikaa oikeista sanoista (pitäisi siirtää GameTimer viittaus Playerille -_-)
 Pelaajan saadessa sijoitettuja sanoja peräkkäin oikein ns. kombokerroin kasvaa.
 Letter pooli arpoo kirjaimet niin, että pelaajalla on aina vähintään yksi vokaali.
 Kirjainten rerollaus (aika/score penalty).
