@@ -6,12 +6,6 @@ vain vaaka- tai pystysuorassa, hän voi myös käyttää sanan osana ruudukolla 
 kirjaimia. Kun pelaaja on sijoittanut haluamansa kirjaimet, hän antaa valitut kirjaimet pelin arvioitavaksi. Jos sana on validi englannin kielen sana, pelaaja saa pisteitä ja hänelle
 arvotaan lisää kirjaimia niin, että hänellä on niitä taas kahdeksan. Aikaa on rajallisesti.
 
-Kontrollit:
-WSAD - Liikuttavat selektoria ruudukolla. Sen voi myös suoraan sijoittaa hiiren
-vasemmalla napilla.
-Right Click - Poistaa viimeksi valitun/lisätyn kirjaimen valituista kirjaimista.
-SPACE - Antaa valitut/lisätyt kirjaimet evaluoitavaksi.
-
 Mahdollisia ekstraominaisuuksia:
 Kontrollit ohjeista itse peliin.
 Lisää aikaa oikeista sanoista (pitäisi siirtää GameTimer viittaus Playerille -_-)

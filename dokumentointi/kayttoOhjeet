@@ -1,0 +1,9 @@
+Aseta kirjaimia ruudukkoon tai valitse niistä ruudukosta muodostaaksesi sana.
+Vain englanninkieliset sanat kelpaavat. Kirjaimia voi syöttää alhaalta ylös, ylhäältä alas,
+vasemmalta oikealle ja oikealta vasemmalle.
+
+Kontrollit:
+WSAD - Liikuttavat selektoria ruudukolla. Sen voi myös suoraan sijoittaa hiiren
+vasemmalla napilla.
+Right Click - Poistaa viimeksi valitun/lisätyn kirjaimen valituista kirjaimista.
+SPACE - Antaa valitut/lisätyt kirjaimet evaluoitavaksi.
