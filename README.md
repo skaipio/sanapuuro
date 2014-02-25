@@ -12,3 +12,11 @@ Controls:
 <li>Right mouse button for clearing a letter selection or returning a letter back to the pool (can be clicked anywhere).</li>
 <li>Space for submitting a word.</li>
 </ul>
+
+<h3>Planned features in descending order of priority</h3>
+<ul>
+<li>Button/key for clearing all letter selections/additions at once.</li>
+<li>Button for replacing the current letters in the pool with new ones.</li>
+<li>Submitting words gives you more time.</li>
+<li>A growing score modifier for submitting correct words in succession.</li>
+</ul>
