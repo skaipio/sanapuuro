@@ -6,6 +6,7 @@
 package sanapuuro.sanapuuro.filereaders;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -16,7 +17,7 @@ import sanapuuro.sanapuuro.words.WordList;
  * @author skaipio
  */
 public final class WordReader implements WordList {
-    private final String englishWordListPath = "assets/english_words";
+    private final String englishWordListPath = "words/english_words";
     private final List<String> words;
     
     public WordReader(){
@@ -28,7 +29,8 @@ public final class WordReader implements WordList {
      */
     public List<String> getWords() {
         try {
-            Scanner reader = new Scanner(new File(englishWordListPath));
+            InputStream file = ClassLoader.getSystemResourceAsStream(englishWordListPath);
+            Scanner reader = new Scanner(file);
             List<String> scannedWords = new ArrayList<>();
             while (reader.hasNext()) {
                 String word = reader.nextLine();
