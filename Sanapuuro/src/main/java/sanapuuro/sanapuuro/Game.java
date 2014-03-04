@@ -10,7 +10,6 @@ import sanapuuro.sanapuuro.grid.Grid;
 
 import sanapuuro.sanapuuro.filereaders.LetterReader;
 import sanapuuro.sanapuuro.letters.Letters;
-import sanapuuro.sanapuuro.words.WordEvaluator;
 
 /**
  * The main game logic class that is used to start a new game and
@@ -19,11 +18,11 @@ import sanapuuro.sanapuuro.words.WordEvaluator;
  */
 public class Game implements GameTimerListener{
     private final Grid grid;    // Game grid for letters.
-    private GameTimer timer;    // Count down timer.
     private Letters letters;    // For random letters from the alphabet,
     private Player player;      // Player with score and control methods.
+    private Evaluation evaluation;  // Evaluation class that keeps track of player score and time.
     private final int gridSize = 8; // Grid size n x n
-    private final int timerStart = 5*60; // Count down starts from.
+    private final int timerStart = 2*60; // Count down starts from.
 
     public Game() {
         this.grid = new Grid(gridSize, gridSize);
@@ -35,14 +34,12 @@ public class Game implements GameTimerListener{
      */
     public void newGame(GameTimer timer) {
         this.grid.clear();
-        this.timer = timer;
-        this.timer.addListener(this);
-        this.timer.startCountdownFrom(timerStart);
         this.letters = new LetterReader(new Random());
-        
-        WordEvaluator wordEval = new WordEvaluator();
-        
-        this.player = new Player(grid, wordEval, letters);
+        this.evaluation = new Evaluation();       
+        this.player = new Player(grid, this.evaluation, letters);
+        this.evaluation.registerPlayer(player, timer);
+        timer.addListener(this.player);
+        timer.startCountdownFrom(timerStart);
     }
 
     public Player getPlayer(){

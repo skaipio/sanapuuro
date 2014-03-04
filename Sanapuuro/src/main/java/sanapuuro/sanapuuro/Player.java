@@ -6,7 +6,7 @@ import sanapuuro.sanapuuro.grid.Grid;
 import sanapuuro.sanapuuro.grid.LetterContainer;
 import sanapuuro.sanapuuro.letters.LetterPool;
 import sanapuuro.sanapuuro.letters.Letters;
-import sanapuuro.sanapuuro.words.WordEvaluator;
+import sanapuuro.sanapuuro.words.WordEvaluator.EvaluationResult;
 
 /**
  * Keeps track of score and has methods for selecting and adding letters for
@@ -14,11 +14,11 @@ import sanapuuro.sanapuuro.words.WordEvaluator;
  *
  * @author skaipio@cs
  */
-public class Player {
+public class Player implements GameTimerListener {
 
     private final Grid grid;        // Letter grid.
     private final LetterPool letterPool;    // Pool for picking letters from.
-    private final WordEvaluator wordEval;   // Evaluates letters on submission.
+    private final Evaluation evaluation;   // Evaluates letters on submission.
     private final List<LetterContainer> selectedContainers = new ArrayList<>(); // Holds selected letters that are permanently in grid.
     private final List<LetterContainer> addedContainers = new ArrayList<>();    // Holds letters that can still be removed from grid.
     private boolean controlsEnabled = true;     // Switch for enabling and disabling controls.
@@ -26,10 +26,10 @@ public class Player {
     private String status = "";     // Status message that gives info about letter submissions.
     private int score = 0;          // Score.
 
-    public Player(Grid grid, WordEvaluator wordEvaluator, Letters letters) {
+    public Player(Grid grid, Evaluation evaluation, Letters letters) {
         this.grid = grid;
         this.letterPool = new LetterPool(letters);
-        this.wordEval = wordEvaluator;
+        this.evaluation = evaluation;
     }
 
     public LetterPool getLetterPool() {
@@ -178,8 +178,7 @@ public class Player {
             this.status = "No letters have been selected!";
             return false;
         }
-        List<LetterContainer> letterContainers = this.selectedContainers;
-        WordEvaluator.EvaluationResult result = this.wordEval.evalute(letterContainers);
+        EvaluationResult result = this.evaluation.submitWord(this, this.selectedContainers);
         this.status = result.reason;
 
         if (result.succeeded) {
@@ -219,5 +218,10 @@ public class Player {
     private void returnAllAddedLettersBackToLetterPool() {
         this.grid.removeContainersFromGrid(this.addedContainers);
         this.letterPool.clearLetterPicks();
+    }
+
+    @Override
+    public void notifyTimeOut() {
+        this.controlsEnabled = false;
     }
 }

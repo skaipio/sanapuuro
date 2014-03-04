@@ -15,6 +15,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import sanapuuro.sanapuuro.grid.Grid;
 import sanapuuro.sanapuuro.grid.LetterContainer;
+import sanapuuro.sanapuuro.gui.TimerWrapper;
 import sanapuuro.sanapuuro.letters.Letter;
 import sanapuuro.sanapuuro.letters.LetterPool;
 import sanapuuro.sanapuuro.letters.Letters;
@@ -29,6 +30,7 @@ public class PlayerTest {
     private Player player;
     private LetterPool letterPool;
     private Grid grid;
+    private final Evaluation evaluation = new Evaluation();
     private final WordEvaluator evaluator = new WordEvaluator();
 
     public PlayerTest() {
@@ -47,7 +49,8 @@ public class PlayerTest {
     public void setUp() {
         this.grid = new Grid(8, 8);
         Letters letters = new LettersForTest();
-        this.player = new Player(grid, evaluator, letters);
+        this.player = new Player(grid, evaluation, letters);
+        this.evaluation.registerPlayer(player, new TimerWrapper());
         this.letterPool = this.player.getLetterPool();
     }
 

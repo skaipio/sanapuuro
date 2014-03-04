@@ -58,9 +58,9 @@ public class GameTest {
      }
      
      @Test
-     public void timerStartsAtOneMinuteAfterNewGame() {
+     public void timerStartsAtTwoMinutesAfterNewGame() {
          this.game.newGame(this.timer);
-         assertEquals(5, this.timer.getMinutes());
+         assertEquals(2, this.timer.getMinutes());
      }
      
      @Test

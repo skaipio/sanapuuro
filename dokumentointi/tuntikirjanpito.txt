@@ -18,3 +18,8 @@
 13.2.2014
 ~4h GUI:n ja erityisesti interaktiivisuuden hiomista. 
 ~2h Testien uusimista jälleen kerran, koska luokkarakenteen muutos.
+
+2.3.2014
+~1h Uusi Evaluation-luokka, jonne pelaajien score ja GameTimer-oliot sekä sanojen evaluointi
+    + aikaa voi nyt kerryttää lisää antamalla sanoja oikein.
+̃~1h Myöhäinen koodikatselmointi V. Piilolan Laivanupotus pelille
